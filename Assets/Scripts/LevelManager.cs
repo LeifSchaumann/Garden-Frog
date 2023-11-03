@@ -23,24 +23,7 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-        level = new Level(
-            new int[,] {
-                { 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0 },
-            },
-            new int[,] {
-                { 0, 1, 2, 3, 4 },
-                { -1, -1, -1, -1, -1 },
-                { -1, 5, -1, -1, -1 },
-                { -1, -1, -1, -1, -1 },
-                { -1, 6, 7, -1, -1 },
-            },
-            Vector2Int.zero
-        );
-
+        level = LevelLoader.Load("testLevel");
         GenerateLevel();
     }
 

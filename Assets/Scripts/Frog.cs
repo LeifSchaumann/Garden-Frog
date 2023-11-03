@@ -7,6 +7,7 @@ using UnityEngine;
 public class Frog : MonoBehaviour
 {
     public float jumpSpeed;
+    public AnimationCurve jumpCurve;
 
     public void Jump(Vector2Int targetGridPos, Action onFinish)
     {
@@ -17,14 +18,13 @@ public class Frog : MonoBehaviour
     {
         Vector3 targetPos = LevelManager.instance.LevelToWorld(targetGridPos) + Vector3.up * transform.localScale.y / 2;
         Vector3 startPos = transform.position;
-        float jumpTime = Vector3.Distance(targetPos, startPos) / jumpSpeed;
+        float jumpDistance = Vector3.Distance(targetPos, startPos);
+        float jumpTime = jumpDistance / jumpSpeed;
         float timePassed = 0;
-
-        //Debug.Log("Starting jump which will take " + jumpTime);
 
         while (timePassed < jumpTime)
         {
-            transform.position = Vector3.Lerp(startPos, targetPos, timePassed / jumpTime);
+            transform.position = Vector3.Lerp(startPos, targetPos, timePassed / jumpTime) + Vector3.up * jumpCurve.Evaluate(timePassed / jumpTime) * jumpDistance;
             timePassed += Time.deltaTime;
             yield return null;
         }

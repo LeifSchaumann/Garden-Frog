@@ -4,23 +4,43 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    public float inputForgiveness;
+
+    private float lastInputTime;
+    private Vector2Int lastInputDir;
     void Update()
     {
+        Vector2Int inputDir = Vector2Int.zero;
         if (Input.GetKeyDown(KeyCode.W))
         {
-            LevelManager.instance.Move(Vector2Int.up);
+            inputDir = Vector2Int.up;
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            LevelManager.instance.Move(Vector2Int.left);
+            inputDir = Vector2Int.left;
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
-            LevelManager.instance.Move(Vector2Int.down);
+            inputDir = Vector2Int.down;
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            LevelManager.instance.Move(Vector2Int.right);
+            inputDir = Vector2Int.right;
+        }
+
+        if (inputDir != Vector2Int.zero)
+        {
+            lastInputDir = inputDir;
+            lastInputTime = Time.time;
+        }
+
+        if (Time.time < lastInputTime + inputForgiveness) { 
+            inputDir = lastInputDir;
+        }
+
+        if (inputDir != Vector2Int.zero)
+        {
+            LevelManager.instance.Move(inputDir);
         }
     }
 }
