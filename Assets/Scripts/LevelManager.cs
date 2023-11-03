@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
     public GameObject waterPrefab;
     public GameObject lilyPadPrefab;
     public float stepHeight;
+    public string startingLevel;
 
     public Level level;
     public Frog frog;
@@ -23,7 +24,7 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-        level = LevelLoader.Load("testLevel");
+        level = LevelLoader.Load(startingLevel);
         GenerateLevel();
     }
 

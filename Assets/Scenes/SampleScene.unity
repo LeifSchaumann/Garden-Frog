@@ -462,6 +462,7 @@ MonoBehaviour:
   lilyPadPrefab: {fileID: 2489254177889365862, guid: ca33cc011428b1a449bec1f390167f41,
     type: 3}
   stepHeight: 0.4
+  startingLevel: 3pile
   frog: {fileID: 6145703602678591830}
   lilyPads: []
 --- !u!4 &1100244808
