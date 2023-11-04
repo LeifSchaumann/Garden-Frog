@@ -8,39 +8,38 @@ public abstract class LevelUpdate
     public void OnFinish()
     {
         LevelManager.instance.updateQueue.Dequeue();
-        //Debug.Log("Removed from queue, now has length " + LevelManager.instance.updateQueue.Count);
         LevelManager.instance.NextUpdate();
     }
-}
 
-public class FrogJump : LevelUpdate
-{
-    public Vector2Int newGridPos;
-
-    public FrogJump(Vector2Int newPos)
+    public class FrogJump : LevelUpdate
     {
-        this.newGridPos = newPos;
+        public Vector2Int newGridPos;
+
+        public FrogJump(Vector2Int newPos)
+        {
+            this.newGridPos = newPos;
+        }
+
+        public override void Execute()
+        {
+            LevelManager.instance.frog.Jump(newGridPos, OnFinish);
+        }
     }
 
-    public override void Execute()
+    public class Float : LevelUpdate // ASSUMES PLAYER RIDES WITH OBJECT
     {
-        LevelManager.instance.frog.Jump(newGridPos, OnFinish);
-    }
-}
+        public GameObject gameObject;
+        public Vector2Int newPos;
 
-public class LilyFloat : LevelUpdate
-{
-    public int lilyId;
-    public Vector2Int newPos;
+        public Float(Layer1Data layer1Data, Vector2Int newPos)
+        {
+            this.gameObject = layer1Data.gameObject;
+            this.newPos = newPos;
+        }
 
-    public LilyFloat(int lilyId, Vector2Int newPos)
-    {
-        this.lilyId = lilyId;
-        this.newPos = newPos;
-    }
-
-    public override void Execute()
-    {
-        LevelManager.instance.lilyPads[lilyId].Float(newPos, OnFinish);
+        public override void Execute()
+        {
+            gameObject.GetComponent<FloatMovement>().Float(newPos, OnFinish);
+        }
     }
 }

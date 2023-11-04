@@ -13,7 +13,6 @@ public class LevelManager : MonoBehaviour
     
     public Level level;
     public Frog frog;
-    public List<LilyPad> lilyPads;
     public Queue<LevelUpdate> updateQueue;
 
     private void Awake()
@@ -42,7 +41,7 @@ public class LevelManager : MonoBehaviour
                 {
                     case Layer1Type.lilyPad:
                         Vector3 lilyPos = LevelToWorld(x, y) + Vector3.up * lilyPadPrefab.transform.localScale.y / 2;
-                        lilyPads.Add(Instantiate(lilyPadPrefab, lilyPos, Quaternion.identity).GetComponent<LilyPad>());
+                        layer1.gameObject = Instantiate(lilyPadPrefab, lilyPos, Quaternion.identity);
                         break;
                     case Layer1Type.rock:
                         Vector3 rockPos = LevelToWorld(x, y) + Vector3.up * rockPrefab.transform.localScale.y / 2;

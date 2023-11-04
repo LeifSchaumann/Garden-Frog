@@ -23,20 +23,18 @@ public class Level
         if (GetCell(frogPos + dir).layer1.isWalkable)
         {
             frogPos += dir;
-            LevelManager.instance.AddUpdate(new FrogJump(frogPos));
+            LevelManager.instance.AddUpdate(new LevelUpdate.FrogJump(frogPos));
         }
         else if (GetCell(frogPos + 2 * dir).layer1.isWalkable)
         {
             Cell landingCell = GetCell(frogPos + 2 * dir);
             frogPos = landingCell.pos;
-            LevelManager.instance.AddUpdate(new FrogJump(frogPos));
+            LevelManager.instance.AddUpdate(new LevelUpdate.FrogJump(frogPos));
 
             if (landingCell.layer1.type == Layer1Type.lilyPad)
             {
-                LevelManager.instance.AddUpdate(new FrogJump(frogPos));
-
                 Vector2Int newPos = landingCell.pos;
-                while (GetCell(newPos + dir).layer1.type == Layer1Type.water && GetCell(newPos + dir).height == landingCell.height)
+                while (GetCell(newPos + dir).layer1.type == Layer1Type.empty && GetCell(newPos + dir).height == landingCell.height)
                 {
                     newPos += dir;
                 }
@@ -44,10 +42,9 @@ public class Level
                 {
                     Cell endCell = GetCell(newPos);
                     endCell.layer1 = landingCell.layer1;
-                    landingCell.layer1 = new WaterData();
+                    landingCell.layer1 = new Layer1Data();
                     frogPos = newPos;
-
-                    LevelManager.instance.AddUpdate(new LilyFloat(endCell.layer1.id, newPos));
+                    LevelManager.instance.AddUpdate(new LevelUpdate.Float(endCell.layer1, newPos));
                 }
             }
         }
