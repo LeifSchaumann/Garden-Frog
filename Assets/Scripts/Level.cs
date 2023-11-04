@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class Level
 {
-    public int[,] heights;
-    public int[,] lilyPads;
+    public Cell[,] cells;
     public Vector2Int frogPos;
     public Vector2Int size;
 
-    public Level(int[,] heights, int[,] lilyPads, Vector2Int frogPos)
+    public Level(Cell[,] cells, Vector2Int frogPos)
     {
-        this.heights = heights;
-        this.lilyPads = lilyPads;
+        this.cells = cells;
         this.frogPos = frogPos;
 
-        this.size = new Vector2Int(heights.GetLength(0), heights.GetLength(1));
+        this.size = new Vector2Int(cells.GetLength(0), cells.GetLength(1));
     }
 
     public void Move(Vector2Int dir)
@@ -24,40 +22,36 @@ public class Level
 
         bool smallJump = false;
         Vector2Int newPos = frogPos + dir;
-        if (InBounds(newPos))
+        if (GetCell(newPos).layer1 == Layer1.lilyPad)
         {
-            if (lilyPads[newPos.x, newPos.y] >= 0)
-            {
-                frogPos = newPos;
-                smallJump = true;
-                LevelManager.instance.AddUpdate(new FrogJump(newPos));
-            }
+            frogPos = newPos;
+            smallJump = true;
+            LevelManager.instance.AddUpdate(new FrogJump(newPos));
         }
         if (!smallJump)
         {
             newPos = frogPos + 2 * dir;
-            if (InBounds(newPos))
+            if (GetCell(newPos).layer1 == Layer1.lilyPad)
             {
-                int lilyId = GetLily(newPos);
-                if (lilyId >= 0)
+                frogPos = newPos;
+                LevelManager.instance.AddUpdate(new FrogJump(newPos));
+
+                Vector2Int floatStart = newPos;
+                while (GetCell(newPos + dir).layer1 == Layer1.none)
                 {
+                    newPos += dir;
+                }
+                if (newPos != floatStart)
+                {
+                    Cell startCell = GetCell(floatStart);
+                    Cell endCell = GetCell(newPos);
+                    endCell.layer1 = Layer1.lilyPad;
+                    endCell.lilyId = startCell.lilyId;
+                    startCell.layer1 = Layer1.none;
+                    startCell.lilyId = -1;
                     frogPos = newPos;
-                    LevelManager.instance.AddUpdate(new FrogJump(newPos));
 
-                    bool floated = false;
-                    while (IsWater(newPos + dir))
-                    {
-                        floated = true;
-                        SetLily(newPos, -1);
-                        newPos += dir;
-                        frogPos = newPos;
-                        SetLily(newPos, lilyId);
-                    }
-
-                    if (floated)
-                    {
-                        LevelManager.instance.AddUpdate(new LilyFloat(lilyId, newPos));
-                    }
+                    LevelManager.instance.AddUpdate(new LilyFloat(endCell.lilyId, newPos));
                 }
             }
         }
@@ -68,29 +62,21 @@ public class Level
         return 0 <= pos.x && pos.x < size.x && 0 <= pos.y && pos.y < size.y;
     }
 
-    private bool IsWater(Vector2Int pos)
-    {
-        return InBounds(pos) && GetLily(pos) == -1;
-    }
-
-    private int GetLily(Vector2Int pos)
+    public Cell GetCell(Vector2Int pos)
     {
         if (InBounds(pos))
         {
-            return lilyPads[pos.x, pos.y];
+            return cells[pos.x, pos.y];
         }
         else
         {
-            return -1;
+            return new Cell();
         }
     }
 
-    private void SetLily(Vector2Int pos, int lily)
+    public Cell GetCell(int x, int y)
     {
-        if (InBounds(pos))
-        {
-            lilyPads[pos.x, pos.y] = lily;
-        }
+        return GetCell(new Vector2Int(x, y));
     }
 }
 

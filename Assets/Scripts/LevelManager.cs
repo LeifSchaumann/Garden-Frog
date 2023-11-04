@@ -9,8 +9,7 @@ public class LevelManager : MonoBehaviour
     public GameObject waterPrefab;
     public GameObject lilyPadPrefab;
     public float stepHeight;
-    public string startingLevel;
-
+    
     public Level level;
     public Frog frog;
     public List<LilyPad> lilyPads;
@@ -22,9 +21,9 @@ public class LevelManager : MonoBehaviour
         updateQueue = new Queue<LevelUpdate>();
     }
 
-    void Start()
+    public void LoadLevel(string levelName)
     {
-        level = LevelLoader.Load(startingLevel);
+        level = LevelData.Load(levelName);
         GenerateLevel();
     }
 
@@ -34,12 +33,12 @@ public class LevelManager : MonoBehaviour
         {
             for (int y = 0; y < level.size.y; y++)
             {
-                Vector3 waterPos = LevelToWorld(new Vector2Int(x, y)) + Vector3.down * waterPrefab.transform.localScale.y / 2;
+                Vector3 waterPos = LevelToWorld(x, y) + Vector3.down * waterPrefab.transform.localScale.y / 2;
                 Instantiate(waterPrefab, waterPos, Quaternion.identity);
 
-                if (level.lilyPads[x, y] >= 0)
+                if (level.GetCell(x, y).layer1 == Layer1.lilyPad)
                 {
-                    Vector3 lilyPos = LevelToWorld(new Vector2Int(x, y)) + Vector3.up * lilyPadPrefab.transform.localScale.y / 2;
+                    Vector3 lilyPos = LevelToWorld(x, y) + Vector3.up * lilyPadPrefab.transform.localScale.y / 2;
                     lilyPads.Add(Instantiate(lilyPadPrefab, lilyPos, Quaternion.identity).GetComponent<LilyPad>());
                 }
             }
@@ -77,7 +76,11 @@ public class LevelManager : MonoBehaviour
 
     public Vector3 LevelToWorld(Vector2Int gridPos)
     {
-        return new Vector3(gridPos.x, level.heights[gridPos.x, gridPos.y] * stepHeight, gridPos.y);
+        return new Vector3(gridPos.x, level.GetCell(gridPos).height * stepHeight, gridPos.y);
+    }
+    public Vector3 LevelToWorld(int x, int y)
+    {
+        return LevelToWorld(new Vector2Int(x, y));
     }
 }
 

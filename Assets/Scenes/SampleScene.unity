@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
+  - component: {fileID: 330585548}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -260,6 +261,19 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &330585548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33712e23471e0b648beaeb9445023f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewDirection: {x: -0.5, y: -2, z: 2}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,6 +452,7 @@ GameObject:
   - component: {fileID: 1100244808}
   - component: {fileID: 1100244807}
   - component: {fileID: 1100244809}
+  - component: {fileID: 1100244810}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -462,7 +477,6 @@ MonoBehaviour:
   lilyPadPrefab: {fileID: 2489254177889365862, guid: ca33cc011428b1a449bec1f390167f41,
     type: 3}
   stepHeight: 0.4
-  startingLevel: 3pile
   frog: {fileID: 6145703602678591830}
   lilyPads: []
 --- !u!4 &1100244808
@@ -493,6 +507,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputForgiveness: 0.1
+--- !u!114 &1100244810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1100244806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dd099b62027ed0418f999ad2cbc4f98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingLevel: 3pile
 --- !u!1001 &6145703602678591829
 PrefabInstance:
   m_ObjectHideFlags: 0
