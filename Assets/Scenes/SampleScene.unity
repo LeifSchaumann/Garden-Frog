@@ -421,6 +421,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc722deafc0856e4e88c938c3c534722, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  frogPrefab: {fileID: 6732860209809623108, guid: 3615033b52cef8646bd718138ed3b569,
+    type: 3}
   waterPrefab: {fileID: 1215374059786918146, guid: b740091880473d64aa621b7af05d927d,
     type: 3}
   lilyPadPrefab: {fileID: 2489254177889365862, guid: ca33cc011428b1a449bec1f390167f41,
@@ -428,7 +430,7 @@ MonoBehaviour:
   rockPrefab: {fileID: 2489254177889365862, guid: 7f42e03c3c839654ba00af6ca4664f63,
     type: 3}
   stepHeight: 0.4
-  frog: {fileID: 6145703602678591830}
+  frog: {fileID: 0}
 --- !u!4 &442310708
 Transform:
   m_ObjectHideFlags: 0
@@ -551,87 +553,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dd099b62027ed0418f999ad2cbc4f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingLevel: testLevel2
---- !u!1001 &6145703602678591829
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5919324885689175511, guid: 3615033b52cef8646bd718138ed3b569,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -4.355
-      objectReference: {fileID: 0}
-    - target: {fileID: 5919324885689175511, guid: 3615033b52cef8646bd718138ed3b569,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9.465
-      objectReference: {fileID: 0}
-    - target: {fileID: 5919324885689175511, guid: 3615033b52cef8646bd718138ed3b569,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1.924
-      objectReference: {fileID: 0}
-    - target: {fileID: 5919324885689175511, guid: 3615033b52cef8646bd718138ed3b569,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5919324885689175511, guid: 3615033b52cef8646bd718138ed3b569,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5919324885689175511, guid: 3615033b52cef8646bd718138ed3b569,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5919324885689175511, guid: 3615033b52cef8646bd718138ed3b569,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5919324885689175511, guid: 3615033b52cef8646bd718138ed3b569,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5919324885689175511, guid: 3615033b52cef8646bd718138ed3b569,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5919324885689175511, guid: 3615033b52cef8646bd718138ed3b569,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6732860209809623108, guid: 3615033b52cef8646bd718138ed3b569,
-        type: 3}
-      propertyPath: m_Name
-      value: Frog
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 3615033b52cef8646bd718138ed3b569, type: 3}
---- !u!114 &6145703602678591830 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 27436458427386115, guid: 3615033b52cef8646bd718138ed3b569,
-    type: 3}
-  m_PrefabInstance: {fileID: 6145703602678591829}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8a16bdb71ccb1e46867d79fcfbca88a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 144d034e58c45004c9112168c299c215, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -639,6 +561,5 @@ SceneRoots:
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
-  - {fileID: 6145703602678591829}
   - {fileID: 1100244808}
   - {fileID: 442310708}

@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public string startingLevel;
+    public GameSettings settings;
 
     private CameraMovement camMovement;
 
@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        LevelManager.instance.LoadLevel(startingLevel);
+        LevelManager.instance.LoadLevel(settings.startingLevel);
         camMovement.CenterOnLevel();
     }
 }

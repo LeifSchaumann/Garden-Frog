@@ -6,6 +6,7 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager instance;
 
+    public GameObject frogPrefab;
     public GameObject waterPrefab;
     public GameObject lilyPadPrefab;
     public GameObject rockPrefab;
@@ -50,6 +51,7 @@ public class LevelManager : MonoBehaviour
                 }
             }
         }
+        frog = Instantiate(frogPrefab, Vector3.zero, Quaternion.identity, transform).GetComponent<Frog>();
         frog.transform.position = LevelToWorld(level.frogPos) + Vector3.up * frog.transform.localScale.y / 2;
     }
 
