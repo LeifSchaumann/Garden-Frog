@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Water
+  m_Name: Goal
   m_Shader: {fileID: -6465566751694194690, guid: 897eda68de7610b41960b07506a81264,
     type: 3}
   m_Parent: {fileID: 2100000, guid: a3486ca2d3d0d9945b8bb92887176d15, type: 2}
@@ -26,8 +26,9 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _SineAmplitude: 0.05
-    m_Colors: []
+    - _SineAmplitude: 0.3
+    m_Colors:
+    - _Color: {r: 0.94509804, g: 0.31372547, b: 0.58645654, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &1538136273712457362
 MonoBehaviour:

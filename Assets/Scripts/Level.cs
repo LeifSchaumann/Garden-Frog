@@ -24,12 +24,20 @@ public class Level
         {
             frogPos += dir;
             LevelManager.instance.AddUpdate(new LevelUpdate.FrogJump(frogPos));
+            if (GetCell(frogPos).secondPO.type == ObjectType.goal)
+            {
+                LevelManager.instance.AddUpdate(new LevelUpdate.GoalReached());
+            }
         }
         else if (GetCell(frogPos + 2 * dir).mainPO.isWalkable)
         {
             Cell landingCell = GetCell(frogPos + 2 * dir);
             frogPos = landingCell.pos;
             LevelManager.instance.AddUpdate(new LevelUpdate.FrogJump(frogPos));
+            if (GetCell(frogPos).secondPO.type == ObjectType.goal)
+            {
+                LevelManager.instance.AddUpdate(new LevelUpdate.GoalReached());
+            }
 
             if (landingCell.mainPO.type == ObjectType.lilyPad)
             {

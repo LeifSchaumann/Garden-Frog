@@ -42,4 +42,13 @@ public abstract class LevelUpdate
             gameObject.GetComponent<FloatMovement>().Float(newPos, OnFinish);
         }
     }
+
+    public class GoalReached : LevelUpdate
+    {
+        public override void Execute()
+        {
+            Debug.Log("Goal reached!");
+            OnFinish();
+        }
+    }
 }

@@ -40,9 +40,17 @@ public class LevelData
                         break;
                 }
 
-                if (levelData.layer2[x][y] == 'F')
+                switch (levelData.layer2[x][y])
                 {
-                    frogPos = new Vector2Int(x, y);
+                    case 'F':
+                        frogPos = new Vector2Int(x, y);
+                        break;
+                    case 'G':
+                        cells[x, y].secondPO = new PuzzleObject.Goal();
+                        break;
+                    default:
+                        cells[x, y].secondPO = new PuzzleObject();
+                        break;
                 }
             }
         }
@@ -55,7 +63,7 @@ public enum ObjectType
     none,
     lilyPad,
     rock,
-    flower
+    goal
 }
 
 public class PuzzleObject
@@ -89,6 +97,14 @@ public class PuzzleObject
         {
             this.type = ObjectType.rock;
             this.isWalkable = true;
+        }
+    }
+
+    public class Goal : PuzzleObject
+    {
+        public Goal()
+        {
+            this.type = ObjectType.goal;
         }
     }
 }

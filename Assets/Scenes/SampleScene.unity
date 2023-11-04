@@ -429,6 +429,8 @@ MonoBehaviour:
     type: 3}
   rockPrefab: {fileID: 2489254177889365862, guid: 7f42e03c3c839654ba00af6ca4664f63,
     type: 3}
+  goalPrefab: {fileID: 3059360396552914193, guid: 1db7c7bc547125349a6a1761ccd3d2d2,
+    type: 3}
   stepHeight: 0.4
   frog: {fileID: 0}
 --- !u!4 &442310708

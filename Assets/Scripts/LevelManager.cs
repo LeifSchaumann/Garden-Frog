@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
     public GameObject waterPrefab;
     public GameObject lilyPadPrefab;
     public GameObject rockPrefab;
+    public GameObject goalPrefab;
     public float stepHeight;
     
     public Level level;
@@ -37,16 +38,24 @@ public class LevelManager : MonoBehaviour
                 Vector3 waterPos = LevelToWorld(x, y) + Vector3.down * waterPrefab.transform.localScale.y / 2;
                 Instantiate(waterPrefab, waterPos, Quaternion.identity, transform);
 
-                PuzzleObject layer1 = level.GetCell(x, y).mainPO;
-                switch (layer1.type)
+                PuzzleObject mainPO = level.GetCell(x, y).mainPO;
+                switch (mainPO.type)
                 {
                     case ObjectType.lilyPad:
                         Vector3 lilyPos = LevelToWorld(x, y) + Vector3.up * lilyPadPrefab.transform.localScale.y / 2;
-                        layer1.gameObject = Instantiate(lilyPadPrefab, lilyPos, Quaternion.identity, transform);
+                        mainPO.gameObject = Instantiate(lilyPadPrefab, lilyPos, Quaternion.identity, transform);
                         break;
                     case ObjectType.rock:
                         Vector3 rockPos = LevelToWorld(x, y) + Vector3.up * rockPrefab.transform.localScale.y / 2;
                         Instantiate(rockPrefab, rockPos, Quaternion.identity, transform);
+                        break;
+                }
+                PuzzleObject secondPO = level.GetCell(x, y).secondPO;
+                switch (secondPO.type)
+                {
+                    case ObjectType.goal:
+                        Vector3 goalPos = LevelToWorld(x, y) + Vector3.up * 0.5f;
+                        secondPO.gameObject = Instantiate(goalPrefab, goalPos, Quaternion.identity, transform);
                         break;
                 }
             }

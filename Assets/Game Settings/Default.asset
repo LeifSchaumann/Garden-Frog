@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0ce745baf19a3e4a9a47e00c47821dc, type: 3}
   m_Name: Default
   m_EditorClassIdentifier: 
-  startingLevel: 3pile
+  startingLevel: testLevel2
   fallingCurve:
     serializedVersion: 2
     m_Curve:
