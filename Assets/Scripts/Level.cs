@@ -20,43 +20,35 @@ public class Level
     {
         List<LevelUpdate> updates = new List<LevelUpdate>();
 
-        bool smallJump = false;
-        Vector2Int newPos = frogPos + dir;
-        if (GetCell(newPos).layer1 == Layer1.lilyPad)
+        if (GetCell(frogPos + dir).layer1.isWalkable)
         {
-            frogPos = newPos;
-            smallJump = true;
-            LevelManager.instance.AddUpdate(new FrogJump(newPos));
+            frogPos += dir;
+            LevelManager.instance.AddUpdate(new FrogJump(frogPos));
         }
-        if (!smallJump)
+        else if (GetCell(frogPos + 2 * dir).layer1.isWalkable)
         {
-            newPos = frogPos + 2 * dir;
-            Cell landingCell = GetCell(newPos);
-            if (landingCell.layer1 == Layer1.lilyPad)
-            {
-                frogPos = newPos;
-                LevelManager.instance.AddUpdate(new FrogJump(newPos));
+            Cell landingCell = GetCell(frogPos + 2 * dir);
+            frogPos = landingCell.pos;
+            LevelManager.instance.AddUpdate(new FrogJump(frogPos));
 
-                while (GetCell(newPos + dir).layer1 == Layer1.none && GetCell(newPos + dir).height == landingCell.height)
+            if (landingCell.layer1.type == Layer1Type.lilyPad)
+            {
+                LevelManager.instance.AddUpdate(new FrogJump(frogPos));
+
+                Vector2Int newPos = landingCell.pos;
+                while (GetCell(newPos + dir).layer1.type == Layer1Type.water && GetCell(newPos + dir).height == landingCell.height)
                 {
                     newPos += dir;
                 }
                 if (newPos != landingCell.pos)
                 {
                     Cell endCell = GetCell(newPos);
-                    endCell.layer1 = Layer1.lilyPad;
-                    endCell.lilyId = landingCell.lilyId;
-                    landingCell.layer1 = Layer1.none;
-                    landingCell.lilyId = -1;
+                    endCell.layer1 = landingCell.layer1;
+                    landingCell.layer1 = new WaterData();
                     frogPos = newPos;
 
-                    LevelManager.instance.AddUpdate(new LilyFloat(endCell.lilyId, newPos));
+                    LevelManager.instance.AddUpdate(new LilyFloat(endCell.layer1.id, newPos));
                 }
-            }
-            else if (landingCell.layer1 == Layer1.rock)
-            {
-                frogPos = newPos;
-                LevelManager.instance.AddUpdate(new FrogJump(newPos));
             }
         }
     }

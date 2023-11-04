@@ -37,14 +37,14 @@ public class LevelManager : MonoBehaviour
                 Vector3 waterPos = LevelToWorld(x, y) + Vector3.down * waterPrefab.transform.localScale.y / 2;
                 Instantiate(waterPrefab, waterPos, Quaternion.identity);
 
-                Layer1 layer1 = level.GetCell(x, y).layer1;
-                switch (layer1)
+                Layer1Data layer1 = level.GetCell(x, y).layer1;
+                switch (layer1.type)
                 {
-                    case Layer1.lilyPad:
+                    case Layer1Type.lilyPad:
                         Vector3 lilyPos = LevelToWorld(x, y) + Vector3.up * lilyPadPrefab.transform.localScale.y / 2;
                         lilyPads.Add(Instantiate(lilyPadPrefab, lilyPos, Quaternion.identity).GetComponent<LilyPad>());
                         break;
-                    case Layer1.rock:
+                    case Layer1Type.rock:
                         Vector3 rockPos = LevelToWorld(x, y) + Vector3.up * rockPrefab.transform.localScale.y / 2;
                         Instantiate(rockPrefab, rockPos, Quaternion.identity);
                         break;

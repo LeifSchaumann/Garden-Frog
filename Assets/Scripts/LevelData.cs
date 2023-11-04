@@ -29,19 +29,18 @@ public class LevelData
                 switch (levelData.layer1[x][y])
                 {
                     case 'L':
-                        cells[x, y].lilyId = currentLilyId;
-                        cells[x, y].layer1 = Layer1.lilyPad;
+                        cells[x, y].layer1 = new LilyPadData(currentLilyId);
                         currentLilyId++;
                         break;
                     case 'R':
-                        cells[x, y].layer1 = Layer1.rock;
+                        cells[x, y].layer1 = new RockData();
                         break;
                     default:
-                        cells[x, y].layer1 = Layer1.none;
+                        cells[x, y].layer1 = new WaterData();
                         break;
                 }
 
-                cells[x, y].layer2 = Layer2.none;
+                cells[x, y].layer2 = Layer2Data.none;
 
                 if (levelData.layer2[x][y] == 'F')
                 {
@@ -53,35 +52,69 @@ public class LevelData
     }
 }
 
-public enum Layer1
+public enum Layer1Type
 {
-    missing,
-    none,
+    water,
     lilyPad,
     rock
 }
 
-public enum Layer2
+public abstract class Layer1Data
+{
+    public Layer1Type type;
+    public bool isWalkable;
+    public bool canFloat;
+    public int id = -1;
+}
+
+public class LilyPadData : Layer1Data
+{
+    public LilyPadData(int id) { 
+        this.id = id;
+        this.type = Layer1Type.lilyPad;
+        this.isWalkable = true;
+        this.canFloat = true;
+    }
+}
+
+public class RockData : Layer1Data
+{
+    public RockData()
+    {
+        this.type = Layer1Type.rock;
+        this.isWalkable = true;
+        this.canFloat = false;
+    }
+}
+
+public class WaterData : Layer1Data
+{
+    public WaterData()
+    {
+        this.type = Layer1Type.water;
+        this.isWalkable = false;
+        this.canFloat = false;
+    }
+}
+
+public enum Layer2Data
 {
     missing,
-    none,
-    flower
+    none
 }
 
 public class Cell
 {
     public int height;
-    public Layer1 layer1;
-    public Layer2 layer2;
-    public int lilyId;
+    public Layer1Data layer1;
+    public Layer2Data layer2;
     public Vector2Int pos;
 
     public Cell()
     {
         this.height = -1;
-        this.layer1 = Layer1.missing;
-        this.layer2 = Layer2.missing;
-        this.lilyId = -1;
+        this.layer1 = new WaterData();
+        this.layer2 = Layer2Data.missing;
         this.pos = Vector2Int.zero;
     }
 }
