@@ -94,11 +94,15 @@ public class LevelManager : MonoBehaviour
 
     public Vector3 LevelToWorld(Vector2Int gridPos)
     {
-        return new Vector3(gridPos.x, level.GetCell(gridPos).height * stepHeight, gridPos.y);
+        return transform.TransformPoint(new Vector3(gridPos.x, level.GetCell(gridPos).height * stepHeight, gridPos.y));
     }
     public Vector3 LevelToWorld(int x, int y)
     {
         return LevelToWorld(new Vector2Int(x, y));
+    }
+    public Vector3 LevelToWorld(Vector3 pos)
+    {
+        return transform.TransformPoint(pos);
     }
 }
 

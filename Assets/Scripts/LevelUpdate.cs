@@ -47,7 +47,6 @@ public abstract class LevelUpdate
     {
         public override void Execute()
         {
-            Debug.Log("Goal reached!");
             OnFinish();
         }
     }

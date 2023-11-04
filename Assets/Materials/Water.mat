@@ -26,7 +26,7 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _SineAmplitude: 0.05
+    - _SineAmplitude: 0.03
     m_Colors: []
   m_BuildTextureStacks: []
 --- !u!114 &1538136273712457362
