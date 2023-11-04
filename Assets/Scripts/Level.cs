@@ -31,28 +31,32 @@ public class Level
         if (!smallJump)
         {
             newPos = frogPos + 2 * dir;
-            if (GetCell(newPos).layer1 == Layer1.lilyPad)
+            Cell landingCell = GetCell(newPos);
+            if (landingCell.layer1 == Layer1.lilyPad)
             {
                 frogPos = newPos;
                 LevelManager.instance.AddUpdate(new FrogJump(newPos));
 
-                Vector2Int floatStart = newPos;
-                while (GetCell(newPos + dir).layer1 == Layer1.none)
+                while (GetCell(newPos + dir).layer1 == Layer1.none && GetCell(newPos + dir).height == landingCell.height)
                 {
                     newPos += dir;
                 }
-                if (newPos != floatStart)
+                if (newPos != landingCell.pos)
                 {
-                    Cell startCell = GetCell(floatStart);
                     Cell endCell = GetCell(newPos);
                     endCell.layer1 = Layer1.lilyPad;
-                    endCell.lilyId = startCell.lilyId;
-                    startCell.layer1 = Layer1.none;
-                    startCell.lilyId = -1;
+                    endCell.lilyId = landingCell.lilyId;
+                    landingCell.layer1 = Layer1.none;
+                    landingCell.lilyId = -1;
                     frogPos = newPos;
 
                     LevelManager.instance.AddUpdate(new LilyFloat(endCell.lilyId, newPos));
                 }
+            }
+            else if (landingCell.layer1 == Layer1.rock)
+            {
+                frogPos = newPos;
+                LevelManager.instance.AddUpdate(new FrogJump(newPos));
             }
         }
     }

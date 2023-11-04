@@ -476,6 +476,8 @@ MonoBehaviour:
     type: 3}
   lilyPadPrefab: {fileID: 2489254177889365862, guid: ca33cc011428b1a449bec1f390167f41,
     type: 3}
+  rockPrefab: {fileID: 2489254177889365862, guid: 7f42e03c3c839654ba00af6ca4664f63,
+    type: 3}
   stepHeight: 0.4
   frog: {fileID: 6145703602678591830}
   lilyPads: []
@@ -519,7 +521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dd099b62027ed0418f999ad2cbc4f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingLevel: 3pile
+  startingLevel: testLevel
 --- !u!1001 &6145703602678591829
 PrefabInstance:
   m_ObjectHideFlags: 0

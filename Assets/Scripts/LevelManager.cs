@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour
 
     public GameObject waterPrefab;
     public GameObject lilyPadPrefab;
+    public GameObject rockPrefab;
     public float stepHeight;
     
     public Level level;
@@ -36,10 +37,17 @@ public class LevelManager : MonoBehaviour
                 Vector3 waterPos = LevelToWorld(x, y) + Vector3.down * waterPrefab.transform.localScale.y / 2;
                 Instantiate(waterPrefab, waterPos, Quaternion.identity);
 
-                if (level.GetCell(x, y).layer1 == Layer1.lilyPad)
+                Layer1 layer1 = level.GetCell(x, y).layer1;
+                switch (layer1)
                 {
-                    Vector3 lilyPos = LevelToWorld(x, y) + Vector3.up * lilyPadPrefab.transform.localScale.y / 2;
-                    lilyPads.Add(Instantiate(lilyPadPrefab, lilyPos, Quaternion.identity).GetComponent<LilyPad>());
+                    case Layer1.lilyPad:
+                        Vector3 lilyPos = LevelToWorld(x, y) + Vector3.up * lilyPadPrefab.transform.localScale.y / 2;
+                        lilyPads.Add(Instantiate(lilyPadPrefab, lilyPos, Quaternion.identity).GetComponent<LilyPad>());
+                        break;
+                    case Layer1.rock:
+                        Vector3 rockPos = LevelToWorld(x, y) + Vector3.up * rockPrefab.transform.localScale.y / 2;
+                        Instantiate(rockPrefab, rockPos, Quaternion.identity);
+                        break;
                 }
             }
         }

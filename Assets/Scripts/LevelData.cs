@@ -23,17 +23,22 @@ public class LevelData
             for (int y = 0; y < levelData.size.y; y++)
             {
                 cells[x, y] = new Cell();
+                cells[x, y].pos = new Vector2Int(x, y);
                 cells[x, y].height = levelData.heightMap[x][y] - '0';
 
-                if (levelData.layer1[x][y] == 'L')
+                switch (levelData.layer1[x][y])
                 {
-                    cells[x, y].lilyId = currentLilyId;
-                    cells[x, y].layer1 = Layer1.lilyPad;
-                    currentLilyId++;
-                }
-                else
-                {
-                    cells[x, y].layer1 = Layer1.none;
+                    case 'L':
+                        cells[x, y].lilyId = currentLilyId;
+                        cells[x, y].layer1 = Layer1.lilyPad;
+                        currentLilyId++;
+                        break;
+                    case 'R':
+                        cells[x, y].layer1 = Layer1.rock;
+                        break;
+                    default:
+                        cells[x, y].layer1 = Layer1.none;
+                        break;
                 }
 
                 cells[x, y].layer2 = Layer2.none;
@@ -69,6 +74,7 @@ public class Cell
     public Layer1 layer1;
     public Layer2 layer2;
     public int lilyId;
+    public Vector2Int pos;
 
     public Cell()
     {
@@ -76,13 +82,6 @@ public class Cell
         this.layer1 = Layer1.missing;
         this.layer2 = Layer2.missing;
         this.lilyId = -1;
-    }
-
-    public Cell(int height, Layer1 layer1, Layer2 layer2, int lilyId)
-    {
-        this.height = height;
-        this.layer1 = layer1;
-        this.layer2 = layer2;
-        this.lilyId = lilyId;
+        this.pos = Vector2Int.zero;
     }
 }

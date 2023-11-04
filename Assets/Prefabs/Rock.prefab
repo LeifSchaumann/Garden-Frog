@@ -11,9 +11,8 @@ GameObject:
   - component: {fileID: 4882356090610271513}
   - component: {fileID: 7017854960682292530}
   - component: {fileID: 6901491261436883408}
-  - component: {fileID: 7702765070326722988}
   m_Layer: 0
-  m_Name: Lily Pad
+  m_Name: Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 046f5891ec71c92419e1f990d6ee870a, type: 2}
+  - {fileID: 2100000, guid: 57417fc1810a05c4c9a8bbb1bfba9e2c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,16 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7702765070326722988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2489254177889365862}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15c66c37bc68c674fadf213711bd3e09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  floatSpeed: 3
