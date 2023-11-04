@@ -2,25 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class LevelData
 {
+    public Vector2Int size;
+    public string[] heightMap;
+    public string[] layer1;
+    public string[] layer2;
     public static Level Load(string levelName)
     {
         TextAsset levelJson = Resources.Load<TextAsset>("Levels/" + levelName);
-        LevelSetup setup = JsonUtility.FromJson<LevelSetup>(levelJson.text);
+        LevelData levelData = JsonUtility.FromJson<LevelData>(levelJson.text);
 
-        Cell[,] cells = new Cell[setup.size.x, setup.size.y];
+        Cell[,] cells = new Cell[levelData.size.x, levelData.size.y];
         Vector2Int frogPos = Vector2Int.zero;
 
         int currentLilyId = 0;
-        for (int x = 0; x < setup.size.x; x++)
+        for (int x = 0; x < levelData.size.x; x++)
         {
-            for (int y = 0; y < setup.size.y; y++)
+            for (int y = 0; y < levelData.size.y; y++)
             {
                 cells[x, y] = new Cell();
-                cells[x, y].height = setup.heightMap[x][y] - '0';
+                cells[x, y].height = levelData.heightMap[x][y] - '0';
 
-                if (setup.layer1[x][y] == 'L')
+                if (levelData.layer1[x][y] == 'L')
                 {
                     cells[x, y].lilyId = currentLilyId;
                     cells[x, y].layer1 = Layer1.lilyPad;
@@ -33,7 +38,7 @@ public class LevelData
 
                 cells[x, y].layer2 = Layer2.none;
 
-                if (setup.layer2[x][y] == 'F')
+                if (levelData.layer2[x][y] == 'F')
                 {
                     frogPos = new Vector2Int(x, y);
                 }
@@ -80,13 +85,4 @@ public class Cell
         this.layer2 = layer2;
         this.lilyId = lilyId;
     }
-}
-
-[System.Serializable]
-public class LevelSetup
-{
-    public Vector2Int size;
-    public string[] heightMap;
-    public string[] layer1;
-    public string[] layer2;
 }
