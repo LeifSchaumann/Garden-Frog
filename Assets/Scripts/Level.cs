@@ -20,31 +20,31 @@ public class Level
     {
         List<LevelUpdate> updates = new List<LevelUpdate>();
 
-        if (GetCell(frogPos + dir).layer1.isWalkable)
+        if (GetCell(frogPos + dir).mainPO.isWalkable)
         {
             frogPos += dir;
             LevelManager.instance.AddUpdate(new LevelUpdate.FrogJump(frogPos));
         }
-        else if (GetCell(frogPos + 2 * dir).layer1.isWalkable)
+        else if (GetCell(frogPos + 2 * dir).mainPO.isWalkable)
         {
             Cell landingCell = GetCell(frogPos + 2 * dir);
             frogPos = landingCell.pos;
             LevelManager.instance.AddUpdate(new LevelUpdate.FrogJump(frogPos));
 
-            if (landingCell.layer1.type == Layer1Type.lilyPad)
+            if (landingCell.mainPO.type == ObjectType.lilyPad)
             {
                 Vector2Int newPos = landingCell.pos;
-                while (GetCell(newPos + dir).layer1.type == Layer1Type.empty && GetCell(newPos + dir).height == landingCell.height)
+                while (GetCell(newPos + dir).mainPO.type == ObjectType.none && GetCell(newPos + dir).height == landingCell.height)
                 {
                     newPos += dir;
                 }
                 if (newPos != landingCell.pos)
                 {
                     Cell endCell = GetCell(newPos);
-                    endCell.layer1 = landingCell.layer1;
-                    landingCell.layer1 = new Layer1Data();
+                    endCell.mainPO = landingCell.mainPO;
+                    landingCell.mainPO = new PuzzleObject();
                     frogPos = newPos;
-                    LevelManager.instance.AddUpdate(new LevelUpdate.Float(endCell.layer1, newPos));
+                    LevelManager.instance.AddUpdate(new LevelUpdate.Float(endCell.mainPO, newPos));
                 }
             }
         }

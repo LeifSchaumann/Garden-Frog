@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7017854960682292530}
   - component: {fileID: 6901491261436883408}
   - component: {fileID: 7702765070326722988}
+  - component: {fileID: -5220995970821640820}
   m_Layer: 0
   m_Name: Lily Pad
   m_TagString: Untagged
@@ -62,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 046f5891ec71c92419e1f990d6ee870a, type: 2}
+  - {fileID: 2100000, guid: 256286e08746d084cbd025fa03d6871b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -97,3 +98,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   floatSpeed: 3
+--- !u!114 &-5220995970821640820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2489254177889365862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d73986d4a06d8af4fb1ee43b209c9381, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

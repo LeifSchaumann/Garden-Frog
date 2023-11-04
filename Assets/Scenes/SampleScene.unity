@@ -392,6 +392,58 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
+--- !u!1 &442310706
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 442310708}
+  - component: {fileID: 442310707}
+  m_Layer: 0
+  m_Name: Level
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &442310707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 442310706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc722deafc0856e4e88c938c3c534722, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterPrefab: {fileID: 1215374059786918146, guid: b740091880473d64aa621b7af05d927d,
+    type: 3}
+  lilyPadPrefab: {fileID: 2489254177889365862, guid: ca33cc011428b1a449bec1f390167f41,
+    type: 3}
+  rockPrefab: {fileID: 2489254177889365862, guid: 7f42e03c3c839654ba00af6ca4664f63,
+    type: 3}
+  stepHeight: 0.4
+  frog: {fileID: 6145703602678591830}
+--- !u!4 &442310708
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 442310706}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 62.52395, y: -58.480408, z: 38.78102}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,7 +502,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1100244808}
-  - component: {fileID: 1100244807}
   - component: {fileID: 1100244809}
   - component: {fileID: 1100244810}
   m_Layer: 0
@@ -460,26 +511,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1100244807
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1100244806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc722deafc0856e4e88c938c3c534722, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waterPrefab: {fileID: 1215374059786918146, guid: b740091880473d64aa621b7af05d927d,
-    type: 3}
-  lilyPadPrefab: {fileID: 2489254177889365862, guid: ca33cc011428b1a449bec1f390167f41,
-    type: 3}
-  rockPrefab: {fileID: 2489254177889365862, guid: 7f42e03c3c839654ba00af6ca4664f63,
-    type: 3}
-  stepHeight: 0.4
-  frog: {fileID: 6145703602678591830}
 --- !u!4 &1100244808
 Transform:
   m_ObjectHideFlags: 0
@@ -547,22 +578,22 @@ PrefabInstance:
     - target: {fileID: 5919324885689175511, guid: 3615033b52cef8646bd718138ed3b569,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.24398087
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5919324885689175511, guid: 3615033b52cef8646bd718138ed3b569,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5919324885689175511, guid: 3615033b52cef8646bd718138ed3b569,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.96978
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5919324885689175511, guid: 3615033b52cef8646bd718138ed3b569,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5919324885689175511, guid: 3615033b52cef8646bd718138ed3b569,
         type: 3}
@@ -572,7 +603,7 @@ PrefabInstance:
     - target: {fileID: 5919324885689175511, guid: 3615033b52cef8646bd718138ed3b569,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -1951.757
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5919324885689175511, guid: 3615033b52cef8646bd718138ed3b569,
         type: 3}
@@ -610,3 +641,4 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 6145703602678591829}
   - {fileID: 1100244808}
+  - {fileID: 442310708}

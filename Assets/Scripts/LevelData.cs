@@ -29,18 +29,16 @@ public class LevelData
                 switch (levelData.layer1[x][y])
                 {
                     case 'L':
-                        cells[x, y].layer1 = new Layer1Data.LilyPad();
+                        cells[x, y].mainPO = new PuzzleObject.LilyPad();
                         currentLilyId++;
                         break;
                     case 'R':
-                        cells[x, y].layer1 = new Layer1Data.Rock();
+                        cells[x, y].mainPO = new PuzzleObject.Rock();
                         break;
                     default:
-                        cells[x, y].layer1 = new Layer1Data();
+                        cells[x, y].mainPO = new PuzzleObject();
                         break;
                 }
-
-                cells[x, y].layer2 = Layer2Data.none;
 
                 if (levelData.layer2[x][y] == 'F')
                 {
@@ -52,67 +50,61 @@ public class LevelData
     }
 }
 
-public enum Layer1Type
+public enum ObjectType
 {
-    empty,
+    none,
     lilyPad,
-    rock
+    rock,
+    flower
 }
 
-public class Layer1Data
+public class PuzzleObject
 {
-    public Layer1Type type;
+    public ObjectType type;
     public bool isWalkable;
     public bool canFloat;
     public GameObject gameObject;
 
-    public Layer1Data()
+    public PuzzleObject()
     {
-        type = Layer1Type.empty;
+        type = ObjectType.none;
         isWalkable = false;
         canFloat = false;
         gameObject = null;
     }
 
-    public class LilyPad : Layer1Data
+    public class LilyPad : PuzzleObject
     {
         public LilyPad()
         {
-            this.type = Layer1Type.lilyPad;
+            this.type = ObjectType.lilyPad;
             this.isWalkable = true;
             this.canFloat = true;
         }
     }
 
-    public class Rock : Layer1Data
+    public class Rock : PuzzleObject
     {
         public Rock()
         {
-            this.type = Layer1Type.rock;
+            this.type = ObjectType.rock;
             this.isWalkable = true;
         }
     }
 }
 
-
-public enum Layer2Data
-{
-    missing,
-    none
-}
-
 public class Cell
 {
     public int height;
-    public Layer1Data layer1;
-    public Layer2Data layer2;
+    public PuzzleObject mainPO;
+    public PuzzleObject secondPO;
     public Vector2Int pos;
 
     public Cell()
     {
         this.height = -1;
-        this.layer1 = new Layer1Data();
-        this.layer2 = Layer2Data.missing;
+        this.mainPO = new PuzzleObject();
+        this.secondPO = new PuzzleObject();
         this.pos = Vector2Int.zero;
     }
 }

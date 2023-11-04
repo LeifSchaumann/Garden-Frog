@@ -31,7 +31,7 @@ public abstract class LevelUpdate
         public GameObject gameObject;
         public Vector2Int newPos;
 
-        public Float(Layer1Data layer1Data, Vector2Int newPos)
+        public Float(PuzzleObject layer1Data, Vector2Int newPos)
         {
             this.gameObject = layer1Data.gameObject;
             this.newPos = newPos;

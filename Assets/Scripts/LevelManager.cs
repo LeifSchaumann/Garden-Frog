@@ -34,18 +34,18 @@ public class LevelManager : MonoBehaviour
             for (int y = 0; y < level.size.y; y++)
             {
                 Vector3 waterPos = LevelToWorld(x, y) + Vector3.down * waterPrefab.transform.localScale.y / 2;
-                Instantiate(waterPrefab, waterPos, Quaternion.identity);
+                Instantiate(waterPrefab, waterPos, Quaternion.identity, transform);
 
-                Layer1Data layer1 = level.GetCell(x, y).layer1;
+                PuzzleObject layer1 = level.GetCell(x, y).mainPO;
                 switch (layer1.type)
                 {
-                    case Layer1Type.lilyPad:
+                    case ObjectType.lilyPad:
                         Vector3 lilyPos = LevelToWorld(x, y) + Vector3.up * lilyPadPrefab.transform.localScale.y / 2;
-                        layer1.gameObject = Instantiate(lilyPadPrefab, lilyPos, Quaternion.identity);
+                        layer1.gameObject = Instantiate(lilyPadPrefab, lilyPos, Quaternion.identity, transform);
                         break;
-                    case Layer1Type.rock:
+                    case ObjectType.rock:
                         Vector3 rockPos = LevelToWorld(x, y) + Vector3.up * rockPrefab.transform.localScale.y / 2;
-                        Instantiate(rockPrefab, rockPos, Quaternion.identity);
+                        Instantiate(rockPrefab, rockPos, Quaternion.identity, transform);
                         break;
                 }
             }
