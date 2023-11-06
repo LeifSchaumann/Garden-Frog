@@ -27,9 +27,10 @@ public class LevelManager : MonoBehaviour
     {
         level = LevelData.Load(levelName);
         GenerateLevel();
+        FallIn();
     }
 
-    public void GenerateLevel()
+    private void GenerateLevel()
     {
         for (int x = 0; x < level.size.x; x++)
         {
@@ -62,6 +63,14 @@ public class LevelManager : MonoBehaviour
         }
         frog = Instantiate(frogPrefab, Vector3.zero, Quaternion.identity, transform).GetComponent<Frog>();
         frog.transform.position = LevelToWorld(level.frogPos) + Vector3.up * frog.transform.localScale.y / 2;
+    }
+
+    private void FallIn()
+    {
+        foreach (Transform child in transform)
+        {
+            child.GetComponent<MaterialController>().FallIn(Vector3.zero);
+        }
     }
 
     public void AddUpdate(LevelUpdate update)

@@ -6,7 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public GameSettings settings;
+    public FallingSettings fallingSettings;
+    public MainSettings settings;
 
     private CameraMovement camMovement;
 

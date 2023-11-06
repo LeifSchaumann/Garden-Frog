@@ -10,43 +10,51 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0ce745baf19a3e4a9a47e00c47821dc, type: 3}
-  m_Name: Default
+  m_Name: Falling Settings
   m_EditorClassIdentifier: 
-  startingLevel: testLevel
-  fallingCurve:
+  motionCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -3.498088
-      outSlope: -3.498088
+      inSlope: -5.1634674
+      outSlope: -5.1634674
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.10781186
+      outWeight: 0.034564618
     - serializedVersion: 3
-      time: 0.35252848
-      value: 0.21518365
-      inSlope: -0.957145
-      outSlope: -0.957145
+      time: 0.35195956
+      value: -0.03902882
+      inSlope: -0.030773723
+      outSlope: -0.030773723
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.30096754
-      outWeight: 0.33333334
+      inWeight: 0.33333334
+      outWeight: 0.29675135
+    - serializedVersion: 3
+      time: 0.7449828
+      value: 0.02634954
+      inSlope: -0.01251508
+      outSlope: -0.01251508
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.47063076
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: 0.007888813
-      outSlope: 0.007888813
+      inSlope: -0.035528705
+      outSlope: -0.035528705
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.2168753
+      inWeight: 0.1173988
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  fallingCurveAlpha:
+  alphaCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -61,14 +69,14 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 2
-      outSlope: 2
+      inSlope: 3.0235465
+      outSlope: 3.0235465
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.041385293
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  fallingInitialHeight: 20
-  fallingDuration: 1
+  initialHeight: 20
+  duration: 1

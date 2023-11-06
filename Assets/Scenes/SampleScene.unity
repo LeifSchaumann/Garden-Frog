@@ -555,7 +555,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dd099b62027ed0418f999ad2cbc4f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings: {fileID: 11400000, guid: 144d034e58c45004c9112168c299c215, type: 2}
+  fallingSettings: {fileID: 11400000, guid: 144d034e58c45004c9112168c299c215, type: 2}
+  settings: {fileID: 11400000, guid: a95ec8290213db9499f2a62ceecc8566, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
