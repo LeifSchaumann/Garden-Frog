@@ -5,14 +5,14 @@ using UnityEngine;
 public class MaterialController : MonoBehaviour
 {
     private Material material;
-    private FallingSettings settings;
+    private GameSettings settings;
 
     private void Start()
     {
         material = GetComponent<Renderer>().material;
-        settings = GameManager.instance.fallingSettings;
+        settings = GameManager.instance.settings;
 
-        SetFallState(0f);
+        FallInState(0f);
     }
 
     public void FallIn(Vector3 origin)
@@ -22,22 +22,46 @@ public class MaterialController : MonoBehaviour
         StartCoroutine(FallInRoutine(distance2D.magnitude * 0.1f));
     }
 
-    private void SetFallState(float t)
+    public void FallOut(Vector3 origin)
     {
-        material.SetFloat("_HeightOffset", settings.motionCurve.Evaluate(t / settings.duration) * settings.initialHeight);
-        material.SetFloat("_Alpha", settings.alphaCurve.Evaluate(t / settings.duration));
+        Vector3 distance2D = transform.position - origin;
+        distance2D.y = 0;
+        StartCoroutine(FallOutRoutine(3f - distance2D.magnitude * 0.1f));
+    }
+
+    private void FallInState(float t)
+    {
+        material.SetFloat("_HeightOffset", settings.fallInMotion.Evaluate(t / settings.fallDuration) * settings.fallHeight);
+        material.SetFloat("_Alpha", settings.fallInAlpha.Evaluate(t / settings.fallDuration));
+    }
+
+    private void FallOutState(float t)
+    {
+        material.SetFloat("_HeightOffset", settings.fallOutMotion.Evaluate(t / settings.fallDuration) * settings.fallHeight);
+        material.SetFloat("_Alpha", settings.fallOutAlpha.Evaluate(t / settings.fallDuration));
     }
 
     private IEnumerator FallInRoutine(float delay)
     {
         yield return new WaitForSeconds(delay);
         float timePassed = 0;
-        while (timePassed <= settings.duration)
+        while (timePassed <= settings.fallDuration)
         {
-            SetFallState(timePassed);
+            FallInState(timePassed);
             yield return null;
             timePassed += Time.deltaTime;
         }
-        
+    }
+
+    private IEnumerator FallOutRoutine(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        float timePassed = 0;
+        while (timePassed <= settings.fallDuration)
+        {
+            FallOutState(timePassed);
+            yield return null;
+            timePassed += Time.deltaTime;
+        }
     }
 }

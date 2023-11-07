@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9177bf4917fd9e7458401f0fae96ebf7, type: 3}
   m_Name: MainSettings
   m_EditorClassIdentifier: 
-  startingLevel: level1
+  startingLevel: testLevel2

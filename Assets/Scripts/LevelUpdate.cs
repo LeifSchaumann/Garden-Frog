@@ -47,6 +47,7 @@ public abstract class LevelUpdate
     {
         public override void Execute()
         {
+            LevelManager.instance.UnloadLevel();
             OnFinish();
         }
     }

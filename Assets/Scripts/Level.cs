@@ -20,39 +20,39 @@ public class Level
     {
         List<LevelUpdate> updates = new List<LevelUpdate>();
 
-        if (GetCell(frogPos + dir).mainPO.isWalkable)
+        if (GetCell(frogPos + dir).PO1.isWalkable)
         {
             frogPos += dir;
             LevelManager.instance.AddUpdate(new LevelUpdate.FrogJump(frogPos));
-            if (GetCell(frogPos).secondPO.type == ObjectType.goal)
+            if (GetCell(frogPos).PO2.type == ObjectType.goal)
             {
                 LevelManager.instance.AddUpdate(new LevelUpdate.GoalReached());
             }
         }
-        else if (GetCell(frogPos + 2 * dir).mainPO.isWalkable)
+        else if (GetCell(frogPos + 2 * dir).PO1.isWalkable)
         {
             Cell landingCell = GetCell(frogPos + 2 * dir);
             frogPos = landingCell.pos;
             LevelManager.instance.AddUpdate(new LevelUpdate.FrogJump(frogPos));
-            if (GetCell(frogPos).secondPO.type == ObjectType.goal)
+            if (GetCell(frogPos).PO2.type == ObjectType.goal)
             {
                 LevelManager.instance.AddUpdate(new LevelUpdate.GoalReached());
             }
 
-            if (landingCell.mainPO.type == ObjectType.lilyPad)
+            if (landingCell.PO1.type == ObjectType.lilyPad)
             {
                 Vector2Int newPos = landingCell.pos;
-                while (GetCell(newPos + dir).mainPO.type == ObjectType.none && GetCell(newPos + dir).height == landingCell.height)
+                while (GetCell(newPos + dir).PO1.type == ObjectType.none && GetCell(newPos + dir).height == landingCell.height)
                 {
                     newPos += dir;
                 }
                 if (newPos != landingCell.pos)
                 {
                     Cell endCell = GetCell(newPos);
-                    endCell.mainPO = landingCell.mainPO;
-                    landingCell.mainPO = new PuzzleObject();
+                    endCell.PO1 = landingCell.PO1;
+                    landingCell.PO1 = new PuzzleObject();
                     frogPos = newPos;
-                    LevelManager.instance.AddUpdate(new LevelUpdate.Float(endCell.mainPO, newPos));
+                    LevelManager.instance.AddUpdate(new LevelUpdate.Float(endCell.PO1, newPos));
                 }
             }
         }

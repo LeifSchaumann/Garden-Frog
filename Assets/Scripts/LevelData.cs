@@ -24,19 +24,25 @@ public class LevelData
             {
                 cells[x, y] = new Cell();
                 cells[x, y].pos = new Vector2Int(x, y);
-                cells[x, y].height = levelData.heightMap[x][y] - '0';
+
+                char heightMapChar = levelData.heightMap[x][y];
+                if (heightMapChar - '0' >= 0 && heightMapChar - '0' < 10)
+                {
+                    cells[x, y].height = heightMapChar - '0';
+                    cells[x, y].PO0 = new PuzzleObject.Water();
+                }
 
                 switch (levelData.layer1[x][y])
                 {
                     case 'L':
-                        cells[x, y].mainPO = new PuzzleObject.LilyPad();
+                        cells[x, y].PO1 = new PuzzleObject.LilyPad();
                         currentLilyId++;
                         break;
                     case 'R':
-                        cells[x, y].mainPO = new PuzzleObject.Rock();
+                        cells[x, y].PO1 = new PuzzleObject.Rock();
                         break;
                     default:
-                        cells[x, y].mainPO = new PuzzleObject();
+                        cells[x, y].PO1 = new PuzzleObject();
                         break;
                 }
 
@@ -46,10 +52,10 @@ public class LevelData
                         frogPos = new Vector2Int(x, y);
                         break;
                     case 'G':
-                        cells[x, y].secondPO = new PuzzleObject.Goal();
+                        cells[x, y].PO2 = new PuzzleObject.Goal();
                         break;
                     default:
-                        cells[x, y].secondPO = new PuzzleObject();
+                        cells[x, y].PO2 = new PuzzleObject();
                         break;
                 }
             }
@@ -61,6 +67,7 @@ public class LevelData
 public enum ObjectType
 {
     none,
+    water,
     lilyPad,
     rock,
     goal
@@ -79,6 +86,14 @@ public class PuzzleObject
         isWalkable = false;
         canFloat = false;
         gameObject = null;
+    }
+
+    public class Water : PuzzleObject
+    {
+        public Water()
+        {
+            this.type = ObjectType.water;
+        }
     }
 
     public class LilyPad : PuzzleObject
@@ -112,15 +127,17 @@ public class PuzzleObject
 public class Cell
 {
     public int height;
-    public PuzzleObject mainPO;
-    public PuzzleObject secondPO;
+    public PuzzleObject PO0;
+    public PuzzleObject PO1;
+    public PuzzleObject PO2;
     public Vector2Int pos;
 
     public Cell()
     {
         this.height = -1;
-        this.mainPO = new PuzzleObject();
-        this.secondPO = new PuzzleObject();
+        this.PO0 = new PuzzleObject();
+        this.PO1 = new PuzzleObject();
+        this.PO2 = new PuzzleObject();
         this.pos = Vector2Int.zero;
     }
 }

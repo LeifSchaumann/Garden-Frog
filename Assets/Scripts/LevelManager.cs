@@ -30,33 +30,41 @@ public class LevelManager : MonoBehaviour
         FallIn();
     }
 
+    public void UnloadLevel()
+    {
+        FallOut();
+    }
+
     private void GenerateLevel()
     {
         for (int x = 0; x < level.size.x; x++)
         {
             for (int y = 0; y < level.size.y; y++)
             {
-                Vector3 waterPos = LevelToWorld(x, y) + Vector3.down * waterPrefab.transform.localScale.y / 2;
-                Instantiate(waterPrefab, waterPos, Quaternion.identity, transform);
-
-                PuzzleObject mainPO = level.GetCell(x, y).mainPO;
-                switch (mainPO.type)
+                PuzzleObject PO0 = level.GetCell(x, y).PO0;
+                if (PO0.type == ObjectType.water)
+                {
+                    Vector3 waterPos = LevelToWorld(x, y) + Vector3.down * waterPrefab.transform.localScale.y / 2;
+                    Instantiate(waterPrefab, waterPos, Quaternion.identity, transform);
+                }
+                PuzzleObject PO1 = level.GetCell(x, y).PO1;
+                switch (PO1.type)
                 {
                     case ObjectType.lilyPad:
                         Vector3 lilyPos = LevelToWorld(x, y) + Vector3.up * lilyPadPrefab.transform.localScale.y / 2;
-                        mainPO.gameObject = Instantiate(lilyPadPrefab, lilyPos, Quaternion.identity, transform);
+                        PO1.gameObject = Instantiate(lilyPadPrefab, lilyPos, Quaternion.identity, transform);
                         break;
                     case ObjectType.rock:
                         Vector3 rockPos = LevelToWorld(x, y) + Vector3.up * rockPrefab.transform.localScale.y / 2;
                         Instantiate(rockPrefab, rockPos, Quaternion.identity, transform);
                         break;
                 }
-                PuzzleObject secondPO = level.GetCell(x, y).secondPO;
-                switch (secondPO.type)
+                PuzzleObject PO2 = level.GetCell(x, y).PO2;
+                switch (PO2.type)
                 {
                     case ObjectType.goal:
                         Vector3 goalPos = LevelToWorld(x, y) + Vector3.up * 0.5f;
-                        secondPO.gameObject = Instantiate(goalPrefab, goalPos, Quaternion.identity, transform);
+                        PO2.gameObject = Instantiate(goalPrefab, goalPos, Quaternion.identity, transform);
                         break;
                 }
             }
@@ -70,6 +78,14 @@ public class LevelManager : MonoBehaviour
         foreach (Transform child in transform)
         {
             child.GetComponent<MaterialController>().FallIn(Vector3.zero);
+        }
+    }
+
+    private void FallOut()
+    {
+        foreach (Transform child in transform)
+        {
+            child.GetComponent<MaterialController>().FallOut(LevelToWorld(level.frogPos));
         }
     }
 
