@@ -26,7 +26,7 @@ public class MaterialController : MonoBehaviour
     {
         Vector3 distance2D = transform.position - origin;
         distance2D.y = 0;
-        StartCoroutine(FallOutRoutine(3f - distance2D.magnitude * 0.1f));
+        StartCoroutine(FallOutRoutine(2f - distance2D.magnitude * 0.1f));
     }
 
     private void FallInState(float t)

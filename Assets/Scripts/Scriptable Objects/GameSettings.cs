@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameSettings : ScriptableObject
 {
     [Header("Levels")]
-    public string startingLevel;
+    public TextAsset[] levelSequence;
 
     [Header("Falling Animation")]
     public AnimationCurve fallInMotion;

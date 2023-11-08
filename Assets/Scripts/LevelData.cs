@@ -9,9 +9,9 @@ public class LevelData
     public string[] heightMap;
     public string[] layer1;
     public string[] layer2;
-    public static Level Load(string levelName)
+    public static Level Load(TextAsset levelJson)
     {
-        TextAsset levelJson = Resources.Load<TextAsset>("Levels/" + levelName);
+        //TextAsset levelJson = Resources.Load<TextAsset>("Levels/" + levelName);
         LevelData levelData = JsonUtility.FromJson<LevelData>(levelJson.text);
 
         Cell[,] cells = new Cell[levelData.size.x, levelData.size.y];

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,16 +24,34 @@ public class LevelManager : MonoBehaviour
         updateQueue = new Queue<LevelUpdate>();
     }
 
-    public void LoadLevel(string levelName)
+    public void LoadLevel(TextAsset levelJson, Action onFinish)
     {
-        level = LevelData.Load(levelName);
+        level = LevelData.Load(levelJson);
         GenerateLevel();
-        FallIn();
+        FallIn(onFinish);
     }
 
-    public void UnloadLevel()
+    public void UnloadLevel(Action onFinish)
     {
-        FallOut();
+        //Debug.Log("UnloadLevel called");
+        if (level != null)
+        {
+            //Debug.Log("Level is not null");
+            FallOut(() =>
+            {
+                level = null;
+                updateQueue.Clear();
+                foreach (Transform child in transform)
+                {
+                    Destroy(child.gameObject);
+                }
+                onFinish();
+            });
+        }
+        else
+        {
+            onFinish();
+        }
     }
 
     private void GenerateLevel()
@@ -73,20 +92,29 @@ public class LevelManager : MonoBehaviour
         frog.transform.position = LevelToWorld(level.frogPos) + Vector3.up * frog.transform.localScale.y / 2;
     }
 
-    private void FallIn()
+    private void FallIn(Action onFinish)
     {
+        //Debug.Log("FallIn called");
         foreach (Transform child in transform)
         {
             child.GetComponent<MaterialController>().FallIn(Vector3.zero);
         }
+        StartCoroutine(waitThenCall(GameManager.instance.settings.fallDuration, onFinish));
     }
 
-    private void FallOut()
+    private void FallOut(Action onFinish)
     {
         foreach (Transform child in transform)
         {
             child.GetComponent<MaterialController>().FallOut(LevelToWorld(level.frogPos));
         }
+        StartCoroutine(waitThenCall(GameManager.instance.settings.fallDuration + 2f, onFinish));
+    }
+
+    IEnumerator waitThenCall(float t, Action onFinish)
+    {
+        yield return new WaitForSeconds(t);
+        onFinish();
     }
 
     public void AddUpdate(LevelUpdate update)
