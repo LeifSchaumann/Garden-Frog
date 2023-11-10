@@ -24,20 +24,21 @@ public class LevelManager : MonoBehaviour
         updateQueue = new Queue<LevelUpdate>();
     }
 
-    public void LoadLevel(TextAsset levelJson, Action onFinish)
+    public void LoadLevel(TextAsset levelJson, Action onFinish = null, Action onDefined = null)
     {
+        onFinish ??= () => { };
+        onDefined ??= () => { };
         level = LevelData.Load(levelJson);
+        onDefined();
         GenerateLevel();
         FallIn(onFinish);
     }
 
-    public void UnloadLevel(Action onFinish)
+    public void UnloadLevel(Action onFinish, bool instant = false) // INSTANT IS UNUSED
     {
-        //Debug.Log("UnloadLevel called");
         if (level != null)
         {
-            //Debug.Log("Level is not null");
-            FallOut(() =>
+            if (instant)
             {
                 level = null;
                 updateQueue.Clear();
@@ -46,7 +47,20 @@ public class LevelManager : MonoBehaviour
                     Destroy(child.gameObject);
                 }
                 onFinish();
-            });
+            }
+            else
+            {
+                FallOut(() =>
+                {
+                    level = null;
+                    updateQueue.Clear();
+                    foreach (Transform child in transform)
+                    {
+                        Destroy(child.gameObject);
+                    }
+                    onFinish();
+                });
+            }
         }
         else
         {
@@ -97,7 +111,7 @@ public class LevelManager : MonoBehaviour
         //Debug.Log("FallIn called");
         foreach (Transform child in transform)
         {
-            child.GetComponent<MaterialController>().FallIn(Vector3.zero);
+            child.GetComponent<MaterialController>().FallIn(LevelToWorld(0, 0));
         }
         StartCoroutine(waitThenCall(GameManager.instance.settings.fallDuration, onFinish));
     }
@@ -147,7 +161,7 @@ public class LevelManager : MonoBehaviour
 
     public Vector3 LevelToWorld(Vector2Int gridPos)
     {
-        return transform.TransformPoint(new Vector3(gridPos.x, level.GetCell(gridPos).height * stepHeight, gridPos.y));
+        return transform.TransformPoint(new Vector3(gridPos.x - level.size.x/2, level.GetCell(gridPos).height * stepHeight, gridPos.y - level.size.y / 2));
     }
     public Vector3 LevelToWorld(int x, int y)
     {
@@ -155,7 +169,7 @@ public class LevelManager : MonoBehaviour
     }
     public Vector3 LevelToWorld(Vector3 pos)
     {
-        return transform.TransformPoint(pos);
+        return transform.TransformPoint(pos + Vector3.left * level.size.x + Vector3.back * level.size.y);
     }
 }
 

@@ -22,18 +22,18 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        NextLevel();
+        NextLevel(true);
     }
 
-    public void NextLevel()
+    public void NextLevel(bool instant = false)
     {
         LevelManager.instance.UnloadLevel(() =>
         {
             currentLevel++;
             if (settings.levelSequence.Length > currentLevel)
             {
-                LevelManager.instance.LoadLevel(settings.levelSequence[currentLevel], () => {
-                    camMovement.CenterOnLevel();
+                LevelManager.instance.LoadLevel(settings.levelSequence[currentLevel], onDefined: () => {
+                    camMovement.FocusOn(LevelManager.instance.transform.position, instant);
                 });
             }
         });

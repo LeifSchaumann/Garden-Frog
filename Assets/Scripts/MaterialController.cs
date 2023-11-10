@@ -51,6 +51,7 @@ public class MaterialController : MonoBehaviour
             yield return null;
             timePassed += Time.deltaTime;
         }
+        FallInState(settings.fallDuration);
     }
 
     private IEnumerator FallOutRoutine(float delay)
@@ -63,5 +64,6 @@ public class MaterialController : MonoBehaviour
             yield return null;
             timePassed += Time.deltaTime;
         }
+        FallOutState(settings.fallDuration);
     }
 }

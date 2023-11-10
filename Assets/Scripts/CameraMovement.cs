@@ -16,8 +16,6 @@ public class CameraMovement : MonoBehaviour
         cam = GetComponent<Camera>();
 
         transform.rotation = Quaternion.LookRotation(viewDirection, Vector3.up);
-        targetPosition = transform.position;
-        targetSize = cam.orthographicSize;
     }
 
     private void Update()
@@ -26,11 +24,15 @@ public class CameraMovement : MonoBehaviour
         cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetSize, 0.003f);
     }
 
-    public void CenterOnLevel()
+    public void FocusOn(Vector3 focus, bool instant = false)
     {
         Vector2Int levelSize = LevelManager.instance.level.size;
-        Vector3 levelCenter = LevelManager.instance.LevelToWorld(new Vector3(levelSize.x / 2, 0, levelSize.y / 2));
-        targetSize = Mathf.Max(levelSize.x, levelSize.y) * 1.2f / 2f;
-        targetPosition = levelCenter - viewDirection.normalized * 30f;
+        targetSize = levelSize.y * 0.55f;
+        targetPosition = focus - viewDirection.normalized * 30f;
+        if (instant)
+        {
+            transform.position = targetPosition;
+            cam.orthographicSize = targetSize;
+        }
     }
 }
