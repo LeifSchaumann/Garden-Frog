@@ -7,12 +7,12 @@ public class MaterialController : MonoBehaviour
     private Material material;
     private GameSettings settings;
 
-    private void Start()
+    private void Awake()
     {
         material = GetComponent<Renderer>().material;
         settings = GameManager.instance.settings;
 
-        FallInState(0f);
+        HiddenState();
     }
 
     public void FallIn(Vector3 origin)
@@ -33,6 +33,16 @@ public class MaterialController : MonoBehaviour
     {
         material.SetFloat("_HeightOffset", settings.fallInMotion.Evaluate(t / settings.fallDuration) * settings.fallHeight);
         material.SetFloat("_Alpha", settings.fallInAlpha.Evaluate(t / settings.fallDuration));
+    }
+
+    public void VisibleState()
+    {
+        FallInState(settings.fallDuration);
+    }
+
+    public void HiddenState()
+    {
+        FallInState(0f);
     }
 
     private void FallOutState(float t)

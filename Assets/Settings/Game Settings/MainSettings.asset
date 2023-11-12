@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: MainSettings
   m_EditorClassIdentifier: 
   levelSequence:
+  - {fileID: 4900000, guid: 980cb12948d662143b318c82e097d53e, type: 3}
+  - {fileID: 4900000, guid: 4178978a661cc3e4c9a7305c36421b3d, type: 3}
+  - {fileID: 4900000, guid: f4c74ea105df1a84f925419fb25ac7d6, type: 3}
   - {fileID: 4900000, guid: 8d6832f860ce3dd42a287ec336f8bde6, type: 3}
   - {fileID: 4900000, guid: 0bc7f900c33559c4eae5a9cb4f97fa33, type: 3}
   - {fileID: 4900000, guid: a4aa30bc530c7b5499956fd552190290, type: 3}
@@ -75,11 +78,11 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 1.9097673
-      outSlope: 1.9097673
+      inSlope: 0.0151128685
+      outSlope: 0.0151128685
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.046420574
+      inWeight: 0.12995955
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

@@ -24,18 +24,19 @@ public class LevelManager : MonoBehaviour
         updateQueue = new Queue<LevelUpdate>();
     }
 
-    public void LoadLevel(TextAsset levelJson, Action onFinish = null, Action onDefined = null)
+    public void LoadLevel(TextAsset levelJson, Action onFinish = null, Action onDefined = null, bool instant = false)
     {
         onFinish ??= () => { };
         onDefined ??= () => { };
         level = LevelData.Load(levelJson);
         onDefined();
         GenerateLevel();
-        FallIn(onFinish);
+        FallIn(instant, onFinish);
     }
 
-    public void UnloadLevel(Action onFinish, bool instant = false) // INSTANT IS UNUSED
+    public void UnloadLevel(bool instant = false, Action onFinish = null) // INSTANT IS UNUSED
     {
+        onFinish ??= () => { };
         if (level != null)
         {
             if (instant)
@@ -50,7 +51,7 @@ public class LevelManager : MonoBehaviour
             }
             else
             {
-                FallOut(() =>
+                FallOut(false, () =>
                 {
                     level = null;
                     updateQueue.Clear();
@@ -106,23 +107,44 @@ public class LevelManager : MonoBehaviour
         frog.transform.position = LevelToWorld(level.frogPos) + Vector3.up * frog.transform.localScale.y / 2;
     }
 
-    private void FallIn(Action onFinish)
+    private void FallIn(bool instant, Action onFinish)
     {
-        //Debug.Log("FallIn called");
-        foreach (Transform child in transform)
+        if (instant)
         {
-            child.GetComponent<MaterialController>().FallIn(LevelToWorld(0, 0));
+            foreach (Transform child in transform)
+            {
+                child.GetComponent<MaterialController>().VisibleState();
+            }
+            onFinish();
         }
-        StartCoroutine(waitThenCall(GameManager.instance.settings.fallDuration, onFinish));
+        else
+        {
+            foreach (Transform child in transform)
+            {
+                child.GetComponent<MaterialController>().FallIn(LevelToWorld(0, 0));
+            }
+            StartCoroutine(waitThenCall(GameManager.instance.settings.fallDuration, onFinish));
+        }
     }
 
-    private void FallOut(Action onFinish)
+    private void FallOut(bool instant, Action onFinish)
     {
-        foreach (Transform child in transform)
+        if (instant)
         {
-            child.GetComponent<MaterialController>().FallOut(LevelToWorld(level.frogPos));
+            foreach (Transform child in transform)
+            {
+                child.GetComponent<MaterialController>().HiddenState();
+            }
+            onFinish();
         }
-        StartCoroutine(waitThenCall(GameManager.instance.settings.fallDuration + 2f, onFinish));
+        else
+        {
+            foreach (Transform child in transform)
+            {
+                child.GetComponent<MaterialController>().FallOut(LevelToWorld(level.frogPos));
+            }
+            StartCoroutine(waitThenCall(GameManager.instance.settings.fallDuration + 2f, onFinish));
+        }
     }
 
     IEnumerator waitThenCall(float t, Action onFinish)

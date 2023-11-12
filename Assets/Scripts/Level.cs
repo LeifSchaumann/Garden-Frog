@@ -42,10 +42,16 @@ public class Level
             if (landingCell.PO1.type == ObjectType.lilyPad)
             {
                 Vector2Int newPos = landingCell.pos;
+                if (GetCell(newPos + dir).PO1.type == ObjectType.none && GetCell(newPos + dir).height == landingCell.height)
+                {
+                    newPos += dir;
+                }
+                /*
                 while (GetCell(newPos + dir).PO1.type == ObjectType.none && GetCell(newPos + dir).height == landingCell.height)
                 {
                     newPos += dir;
                 }
+                */
                 if (newPos != landingCell.pos)
                 {
                     Cell endCell = GetCell(newPos);
