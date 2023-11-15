@@ -1,0 +1,27 @@
+{
+    "size": {
+        "x": 5,
+        "y": 5
+    },
+    "heightMap": [
+        "04050",
+        "03050",
+        "02010",
+        "40210",
+        "40300"
+    ],
+    "layer1": [
+        "RR0RR",
+        "RR0RR",
+        "RR0RR",
+        "R0RRR",
+        "R0RRR"
+    ],
+    "layer2": [
+        "RRRRR",
+        "RRRGR",
+        "RRRFR",
+        "RRRRR",
+        "RRRRR"
+    ]
+}

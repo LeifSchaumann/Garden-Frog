@@ -115,7 +115,9 @@ public abstract class PuzzleObject
             public void Jump(Vector2Int dir)
             {
                 Cell targetCell = cell.AdjacentCell(dir);
-                if (targetCell.PO1.isWalkable && !targetCell.PO2.isObstacle)
+                if (targetCell.PO1.isWalkable &&
+                    !targetCell.PO2.isObstacle &&
+                    targetCell.height < cell.height + 2)
                 {
                     Move(dir);
                     level.manager.AddUpdate(new LevelUpdate((Action onFinish) =>
@@ -127,7 +129,10 @@ public abstract class PuzzleObject
                 else
                 {
                     targetCell = cell.AdjacentCell(dir * 2);
-                    if (targetCell.PO1.isWalkable && !targetCell.PO2.isObstacle)
+                    if (targetCell.PO1.isWalkable &&
+                        !targetCell.PO2.isObstacle &&
+                        targetCell.height < cell.height + 2 &&
+                        cell.AdjacentCell(dir).height < cell.height + 2)
                     {
                         Move(dir * 2);
                         level.manager.AddUpdate(new LevelUpdate((Action onFinish) =>

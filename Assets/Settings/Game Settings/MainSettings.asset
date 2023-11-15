@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: MainSettings
   m_EditorClassIdentifier: 
   levelSequence:
+  - {fileID: 4900000, guid: 2fe95e69350d1ef479395a2d656266d1, type: 3}
   - {fileID: 4900000, guid: a530173861711764fb4da533be332fb9, type: 3}
+  - {fileID: 4900000, guid: 7b0ea2dfbd19fc445bac6df902840e38, type: 3}
   fallInMotion:
     serializedVersion: 2
     m_Curve:
