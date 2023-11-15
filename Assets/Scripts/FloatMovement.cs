@@ -7,18 +7,21 @@ public class FloatMovement : MonoBehaviour
 {
     public float floatSpeed;
 
-    public void Float(Vector2Int targetGridPos, Action onFinish)
+    public void Float(Vector2Int targetGridPos, Transform carry, Action onFinish)
     {
-        StartCoroutine(FloatRoutine(targetGridPos, onFinish));
+        StartCoroutine(FloatRoutine(targetGridPos, carry, onFinish));
     }
 
-    private IEnumerator FloatRoutine(Vector2Int targetGridPos, Action onFinish)
+    private IEnumerator FloatRoutine(Vector2Int targetGridPos, Transform carry, Action onFinish)
     {
         Vector3 targetPos = LevelManager.instance.LevelToWorld(targetGridPos) + Vector3.up * transform.localScale.y / 2;
         Vector3 startPos = transform.position;
         float floatTime = Vector3.Distance(targetPos, startPos) / floatSpeed;
         float timePassed = 0;
-        LevelManager.instance.frog.transform.parent = transform;
+        if (carry != null)
+        {
+            carry.parent = transform;
+        }
 
         while (timePassed < floatTime)
         {
@@ -28,7 +31,10 @@ public class FloatMovement : MonoBehaviour
         }
 
         transform.position = targetPos;
-        LevelManager.instance.frog.transform.parent = transform.parent;
+        if (carry != null)
+        {
+            carry.parent = transform.parent;
+        }
         onFinish();
     }
 }

@@ -15,10 +15,10 @@ public class LevelUpdate
 
     public class Float : LevelUpdate // ASSUMES PLAYER RIDES WITH OBJECT
     {
-        public Float(PuzzleObject.L1 PO1, Vector2Int newPos)
+        public Float(GameObject gameObject, Vector2Int newPos, Transform carry)
         {
             this.execute = (Action onFinish) => {
-                PO1.gameObject.GetComponent<FloatMovement>().Float(newPos, onFinish);
+                gameObject.GetComponent<FloatMovement>().Float(newPos, carry, onFinish);
             };
         }
     }

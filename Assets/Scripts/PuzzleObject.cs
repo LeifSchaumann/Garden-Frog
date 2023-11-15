@@ -45,13 +45,12 @@ public abstract class PuzzleObject
     public abstract class L1 : PuzzleObject
     {
         public bool isWalkable;
-        public bool canFloat;
+        public virtual void Push(Vector2Int dir) { }
         public class None : L1
         {
             public None()
             {
                 this.isWalkable = false;
-                this.canFloat = false;
             }
         }
         public class LilyPad : L1
@@ -59,7 +58,31 @@ public abstract class PuzzleObject
             public LilyPad()
             {
                 this.isWalkable = true;
-                this.canFloat = true;
+            }
+            public override void Push(Vector2Int dir)
+            {
+                PuzzleObject.L2 carry = cell.PO2;
+                while (true)
+                {
+                    Cell nextCell = cell.AdjacentCell(dir);
+                    if (nextCell.PO0.hasWater && nextCell.PO1 is PuzzleObject.L1.None && nextCell.height == cell.height)
+                    {
+                        Move(nextCell);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                if (carry.isCarried)
+                {
+                    carry.Move(cell);
+                    level.manager.AddUpdate(new LevelUpdate.Float(gameObject, pos, carry.gameObject.transform));
+                }
+                else
+                {
+                    level.manager.AddUpdate(new LevelUpdate.Float(gameObject, pos, null));
+                }
             }
         }
         public class Rock : L1
@@ -67,18 +90,19 @@ public abstract class PuzzleObject
             public Rock()
             {
                 this.isWalkable = true;
-                this.canFloat = false;
             }
         }
     }
     public abstract class L2 : PuzzleObject
     {
         public bool isObstacle;
+        public bool isCarried;
         public class None : L2
         {
             public None()
             {
                 this.isObstacle = false;
+                this.isCarried = false;
             }
         }
         public class Frog : L2
@@ -86,30 +110,53 @@ public abstract class PuzzleObject
             public Frog()
             {
                 this.isObstacle = true;
+                this.isCarried = true;
             }
             public void Jump(Vector2Int dir)
             {
                 Cell targetCell = cell.AdjacentCell(dir);
-                if (targetCell.PO1.isWalkable)
+                if (targetCell.PO1.isWalkable && !targetCell.PO2.isObstacle)
                 {
                     Move(dir);
                     level.manager.AddUpdate(new LevelUpdate((Action onFinish) =>
                     {
                         gameObject.GetComponent<FrogJump>().Jump(cell.pos, onFinish);
                     }));
+                    CheckForGoal();
+                }
+                else
+                {
+                    targetCell = cell.AdjacentCell(dir * 2);
+                    if (targetCell.PO1.isWalkable && !targetCell.PO2.isObstacle)
+                    {
+                        Move(dir * 2);
+                        level.manager.AddUpdate(new LevelUpdate((Action onFinish) =>
+                        {
+                            gameObject.GetComponent<FrogJump>().Jump(cell.pos, onFinish);
+                        }));
+                        CheckForGoal();
+                        cell.PO1.Push(dir);
+                    }
+                }
+            }
+            private void CheckForGoal()
+            {
+                if (cell.PO3 is PuzzleObject.L3.Goal goal)
+                {
+                    goal.Complete();
                 }
             }
         }
     }
     public abstract class L3 : PuzzleObject
     {
-        public class None : L3
-        {
-            public None() { }
-        }
+        public class None : L3 { }
         public class Goal : L3
         {
-            public Goal() { }
+            public void Complete()
+            {
+                GameManager.instance.NextLevel();
+            }
         }
     }
 }
