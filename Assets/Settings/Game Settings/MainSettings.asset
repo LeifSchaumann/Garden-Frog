@@ -13,14 +13,7 @@ MonoBehaviour:
   m_Name: MainSettings
   m_EditorClassIdentifier: 
   levelSequence:
-  - {fileID: 4900000, guid: 980cb12948d662143b318c82e097d53e, type: 3}
-  - {fileID: 4900000, guid: 4178978a661cc3e4c9a7305c36421b3d, type: 3}
-  - {fileID: 4900000, guid: f4c74ea105df1a84f925419fb25ac7d6, type: 3}
-  - {fileID: 4900000, guid: 8d6832f860ce3dd42a287ec336f8bde6, type: 3}
-  - {fileID: 4900000, guid: 0bc7f900c33559c4eae5a9cb4f97fa33, type: 3}
-  - {fileID: 4900000, guid: a4aa30bc530c7b5499956fd552190290, type: 3}
-  - {fileID: 4900000, guid: ca19b5ebfbbbbd74cb33b8b3640c95bb, type: 3}
-  - {fileID: 4900000, guid: 86e3a11f44dba3441ae8df9f01cbff3d, type: 3}
+  - {fileID: 4900000, guid: a530173861711764fb4da533be332fb9, type: 3}
   fallInMotion:
     serializedVersion: 2
     m_Curve:

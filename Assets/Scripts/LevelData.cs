@@ -25,14 +25,17 @@ public class LevelData
                 cells[x, y] = new Cell();
                 cells[x, y].pos = new Vector2Int(x, y);
 
-                char heightMapChar = levelData.heightMap[x][y];
+                int accessX = levelData.size.y - y - 1;
+                int accessY = x;
+
+                char heightMapChar = levelData.heightMap[accessX][accessY];
                 if (heightMapChar - '0' >= 0 && heightMapChar - '0' < 10)
                 {
                     cells[x, y].height = heightMapChar - '0';
                     cells[x, y].PO0 = new PuzzleObject.Water();
                 }
 
-                switch (levelData.layer1[x][y])
+                switch (levelData.layer1[accessX][accessY])
                 {
                     case 'L':
                         cells[x, y].PO1 = new PuzzleObject.LilyPad();
@@ -46,7 +49,7 @@ public class LevelData
                         break;
                 }
 
-                switch (levelData.layer2[x][y])
+                switch (levelData.layer2[accessX][accessY])
                 {
                     case 'F':
                         frogPos = new Vector2Int(x, y);
