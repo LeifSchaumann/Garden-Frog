@@ -13,134 +13,50 @@ public class LevelData
     {
         //TextAsset levelJson = Resources.Load<TextAsset>("Levels/" + levelName);
         LevelData levelData = JsonUtility.FromJson<LevelData>(levelJson.text);
+        Level level = new Level(levelData.size);
 
-        Cell[,] cells = new Cell[levelData.size.x, levelData.size.y];
-        Vector2Int frogPos = Vector2Int.zero;
-
-        int currentLilyId = 0;
         for (int x = 0; x < levelData.size.x; x++)
         {
             for (int y = 0; y < levelData.size.y; y++)
             {
-                cells[x, y] = new Cell();
-                cells[x, y].pos = new Vector2Int(x, y);
-
                 int accessX = levelData.size.y - y - 1;
                 int accessY = x;
 
                 char heightMapChar = levelData.heightMap[accessX][accessY];
                 if (heightMapChar - '0' >= 0 && heightMapChar - '0' < 10)
                 {
-                    cells[x, y].height = heightMapChar - '0';
-                    cells[x, y].PO0 = new PuzzleObject.Water();
+                    level.cells[x, y].height = heightMapChar - '0';
+                    level.cells[x, y].SetPO(new PuzzleObject.L0.Water());
                 }
 
                 switch (levelData.layer1[accessX][accessY])
                 {
                     case 'L':
-                        cells[x, y].PO1 = new PuzzleObject.LilyPad();
-                        currentLilyId++;
+                        level.cells[x, y].SetPO(new PuzzleObject.L1.LilyPad());
                         break;
                     case 'R':
-                        cells[x, y].PO1 = new PuzzleObject.Rock();
+                        level.cells[x, y].SetPO(new PuzzleObject.L1.Rock());
                         break;
                     default:
-                        cells[x, y].PO1 = new PuzzleObject();
+                        level.cells[x, y].SetPO(new PuzzleObject.L1.None());
                         break;
                 }
 
                 switch (levelData.layer2[accessX][accessY])
                 {
                     case 'F':
-                        frogPos = new Vector2Int(x, y);
+                        level.cells[x, y].SetPO(new PuzzleObject.L2.Frog());
+                        level.frogPos = new Vector2Int(x, y);
                         break;
                     case 'G':
-                        cells[x, y].PO2 = new PuzzleObject.Goal();
+                        level.cells[x, y].SetPO(new PuzzleObject.L3.Goal());
                         break;
                     default:
-                        cells[x, y].PO2 = new PuzzleObject();
+                        level.cells[x, y].SetPO(new PuzzleObject.L2.None());
                         break;
                 }
             }
         }
-        return new Level(cells, frogPos);
-    }
-}
-
-public enum ObjectType
-{
-    none,
-    water,
-    lilyPad,
-    rock,
-    goal
-}
-
-public class PuzzleObject
-{
-    public ObjectType type;
-    public bool isWalkable;
-    public bool canFloat;
-    public GameObject gameObject;
-
-    public PuzzleObject()
-    {
-        type = ObjectType.none;
-        isWalkable = false;
-        canFloat = false;
-        gameObject = null;
-    }
-
-    public class Water : PuzzleObject
-    {
-        public Water()
-        {
-            this.type = ObjectType.water;
-        }
-    }
-
-    public class LilyPad : PuzzleObject
-    {
-        public LilyPad()
-        {
-            this.type = ObjectType.lilyPad;
-            this.isWalkable = true;
-            this.canFloat = true;
-        }
-    }
-
-    public class Rock : PuzzleObject
-    {
-        public Rock()
-        {
-            this.type = ObjectType.rock;
-            this.isWalkable = true;
-        }
-    }
-
-    public class Goal : PuzzleObject
-    {
-        public Goal()
-        {
-            this.type = ObjectType.goal;
-        }
-    }
-}
-
-public class Cell
-{
-    public int height;
-    public PuzzleObject PO0;
-    public PuzzleObject PO1;
-    public PuzzleObject PO2;
-    public Vector2Int pos;
-
-    public Cell()
-    {
-        this.height = -1;
-        this.PO0 = new PuzzleObject();
-        this.PO1 = new PuzzleObject();
-        this.PO2 = new PuzzleObject();
-        this.pos = Vector2Int.zero;
+        return level;
     }
 }

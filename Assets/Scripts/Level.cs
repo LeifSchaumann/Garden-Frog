@@ -7,56 +7,70 @@ public class Level
     public Cell[,] cells;
     public Vector2Int frogPos;
     public Vector2Int size;
+    public LevelManager manager;
 
-    public Level(Cell[,] cells, Vector2Int frogPos)
+    public Level(Vector2Int size)
     {
-        this.cells = cells;
-        this.frogPos = frogPos;
-
-        this.size = new Vector2Int(cells.GetLength(0), cells.GetLength(1));
+        this.manager = LevelManager.instance;
+        this.size = size;
+        this.cells = new Cell[size.x, size.y];
+        this.frogPos = Vector2Int.zero;
+        for (int x = 0; x < size.x; x++)
+        {
+            for (int y = 0; y < size.y; y++)
+            {
+                cells[x, y] = new Cell(this, new Vector2Int(x, y));
+            }
+        }
     }
-
+    /*
     public void Move(Vector2Int dir)
     {
-        List<LevelUpdate> updates = new List<LevelUpdate>();
-
         if (GetCell(frogPos + dir).PO1.isWalkable)
         {
             frogPos += dir;
-            LevelManager.instance.AddUpdate(new LevelUpdate.FrogJump(frogPos));
-            if (GetCell(frogPos).PO2.type == ObjectType.goal)
+            manager.AddUpdate(new LevelUpdate.FrogJump(frogPos));
+            if (GetCell(frogPos).PO3 is PuzzleObject.L3.Goal)
             {
-                LevelManager.instance.AddUpdate(new LevelUpdate.GoalReached());
+                manager.AddUpdate(new LevelUpdate.GoalReached());
             }
         }
         else if (GetCell(frogPos + 2 * dir).PO1.isWalkable)
         {
             Cell landingCell = GetCell(frogPos + 2 * dir);
             frogPos = landingCell.pos;
-            LevelManager.instance.AddUpdate(new LevelUpdate.FrogJump(frogPos));
-            if (GetCell(frogPos).PO2.type == ObjectType.goal)
+            manager.AddUpdate(new LevelUpdate.FrogJump(frogPos));
+            if (GetCell(frogPos).PO3 is PuzzleObject.L3.Goal)
             {
-                LevelManager.instance.AddUpdate(new LevelUpdate.GoalReached());
+                manager.AddUpdate(new LevelUpdate.GoalReached());
             }
-
-            if (landingCell.PO1.type == ObjectType.lilyPad)
+            if (landingCell.PO1.canFloat)
             {
-                Vector2Int newPos = landingCell.pos;
-                while (GetCell(newPos + dir).PO1.type == ObjectType.none && GetCell(newPos + dir).height == landingCell.height)
+                Vector2Int floatEndPos = landingCell.pos;
+                while (true)
                 {
-                    newPos += dir;
+                    Cell nextCell = GetCell(floatEndPos + dir);
+                    if (nextCell.height == landingCell.height && nextCell.PO0.hasWater && nextCell.PO1 is PuzzleObject.L1.None)
+                    {
+                        floatEndPos += dir;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
-                if (newPos != landingCell.pos)
+                if (floatEndPos != landingCell.pos)
                 {
-                    Cell endCell = GetCell(newPos);
+                    Cell endCell = GetCell(floatEndPos);
                     endCell.PO1 = landingCell.PO1;
-                    landingCell.PO1 = new PuzzleObject();
-                    frogPos = newPos;
-                    LevelManager.instance.AddUpdate(new LevelUpdate.Float(endCell.PO1, newPos));
+                    landingCell.PO1 = new PuzzleObject.L1.None();
+                    frogPos = floatEndPos;
+                    manager.AddUpdate(new LevelUpdate.Float(endCell.PO1, floatEndPos));
                 }
             }
         }
     }
+    */
 
     private bool InBounds(Vector2Int pos)
     {
@@ -71,7 +85,7 @@ public class Level
         }
         else
         {
-            return new Cell();
+            return new Cell(this, pos);
         }
     }
 

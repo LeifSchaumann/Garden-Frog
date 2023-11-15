@@ -76,27 +76,35 @@ public class LevelManager : MonoBehaviour
             for (int y = 0; y < level.size.y; y++)
             {
                 PuzzleObject PO0 = level.GetCell(x, y).PO0;
-                if (PO0.type == ObjectType.water)
+                if (PO0 is PuzzleObject.L0.Water)
                 {
                     Vector3 waterPos = LevelToWorld(x, y) + Vector3.down * waterPrefab.transform.localScale.y / 2;
                     Instantiate(waterPrefab, waterPos, Quaternion.identity, transform);
                 }
                 PuzzleObject PO1 = level.GetCell(x, y).PO1;
-                switch (PO1.type)
+                switch (PO1)
                 {
-                    case ObjectType.lilyPad:
+                    case PuzzleObject.L1.LilyPad:
                         Vector3 lilyPos = LevelToWorld(x, y) + Vector3.up * lilyPadPrefab.transform.localScale.y / 2;
                         PO1.gameObject = Instantiate(lilyPadPrefab, lilyPos, Quaternion.identity, transform);
                         break;
-                    case ObjectType.rock:
+                    case PuzzleObject.L1.Rock:
                         Vector3 rockPos = LevelToWorld(x, y) + Vector3.up * rockPrefab.transform.localScale.y / 2;
                         Instantiate(rockPrefab, rockPos, Quaternion.identity, transform);
                         break;
                 }
                 PuzzleObject PO2 = level.GetCell(x, y).PO2;
-                switch (PO2.type)
+                switch (PO2)
                 {
-                    case ObjectType.goal:
+                    case PuzzleObject.L2.Frog:
+                        Vector3 frogPos = LevelToWorld(x, y) + Vector3.up * frogPrefab.transform.localScale.y / 2;
+                        PO2.gameObject = Instantiate(frogPrefab, frogPos, Quaternion.identity, transform);
+                        break;
+                }
+                PuzzleObject PO3 = level.GetCell(x, y).PO3;
+                switch (PO3)
+                {
+                    case PuzzleObject.L3.Goal:
                         Vector3 goalPos = LevelToWorld(x, y) + Vector3.up * 0.5f;
                         PO2.gameObject = Instantiate(goalPrefab, goalPos, Quaternion.identity, transform);
                         break;
@@ -177,7 +185,7 @@ public class LevelManager : MonoBehaviour
     {
         if (updateQueue.Count == 0)
         {
-            level.Move(dir);
+            //level.Move(dir);
         }
     }
 
