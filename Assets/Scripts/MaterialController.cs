@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,18 +16,18 @@ public class MaterialController : MonoBehaviour
         HiddenState();
     }
 
-    public void FallIn(Vector3 origin)
+    public void FallIn(Vector3 origin, Action onFinish)
     {
         Vector3 distance2D = transform.position - origin;
         distance2D.y = 0;
-        StartCoroutine(FallInRoutine(distance2D.magnitude * 0.1f));
+        StartCoroutine(FallInRoutine(distance2D.magnitude * 0.1f, onFinish));
     }
 
-    public void FallOut(Vector3 origin)
+    public void FallOut(Vector3 origin, Action onFinish)
     {
         Vector3 distance2D = transform.position - origin;
         distance2D.y = 0;
-        StartCoroutine(FallOutRoutine(2f - distance2D.magnitude * 0.1f));
+        StartCoroutine(FallOutRoutine(2f - distance2D.magnitude * 0.1f, onFinish));
     }
 
     private void FallInState(float t)
@@ -51,7 +52,7 @@ public class MaterialController : MonoBehaviour
         material.SetFloat("_Alpha", settings.fallOutAlpha.Evaluate(t / settings.fallDuration));
     }
 
-    private IEnumerator FallInRoutine(float delay)
+    private IEnumerator FallInRoutine(float delay, Action onFinish)
     {
         yield return new WaitForSeconds(delay);
         float timePassed = 0;
@@ -62,9 +63,10 @@ public class MaterialController : MonoBehaviour
             timePassed += Time.deltaTime;
         }
         FallInState(settings.fallDuration);
+        onFinish();
     }
 
-    private IEnumerator FallOutRoutine(float delay)
+    private IEnumerator FallOutRoutine(float delay, Action onFinish)
     {
         yield return new WaitForSeconds(delay);
         float timePassed = 0;
@@ -75,5 +77,6 @@ public class MaterialController : MonoBehaviour
             timePassed += Time.deltaTime;
         }
         FallOutState(settings.fallDuration);
+        onFinish();
     }
 }

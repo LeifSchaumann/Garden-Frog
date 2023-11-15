@@ -24,10 +24,10 @@ public class CameraMovement : MonoBehaviour
         cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetSize, 0.003f);
     }
 
-    public void FocusOn(Vector3 focus, bool instant = false)
+    public void FocusOn(Vector3 focus, bool instant = true, float zoomFactor = 1)
     {
         Vector2Int levelSize = LevelManager.instance.level.size;
-        targetSize = Mathf.Max(levelSize.y * 0.55f, levelSize.x * 9 / 16 * 0.7f);
+        targetSize = Mathf.Max(levelSize.y * 0.55f, levelSize.x * 9 / 16 * 0.7f) / zoomFactor;
         targetPosition = focus - viewDirection.normalized * 30f;
         if (instant)
         {

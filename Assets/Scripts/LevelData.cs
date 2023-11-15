@@ -14,6 +14,7 @@ public class LevelData
         //TextAsset levelJson = Resources.Load<TextAsset>("Levels/" + levelName);
         LevelData levelData = JsonUtility.FromJson<LevelData>(levelJson.text);
         Level level = new Level(levelData.size);
+        level.json = levelJson;
 
         for (int x = 0; x < levelData.size.x; x++)
         {

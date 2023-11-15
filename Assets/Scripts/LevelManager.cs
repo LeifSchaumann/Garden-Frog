@@ -18,27 +18,56 @@ public class LevelManager : MonoBehaviour
     public FrogJump frog;
     public Queue<LevelUpdate> updateQueue;
 
+    private bool canReset;
+
     private void Awake()
     {
         instance = this;
         updateQueue = new Queue<LevelUpdate>();
+        canReset = false;
     }
 
     public void LoadLevel(TextAsset levelJson, Action onFinish = null, Action onDefined = null, bool instant = false)
     {
         onFinish ??= () => { };
         onDefined ??= () => { };
-        level = LevelData.Load(levelJson);
-        onDefined();
-        GenerateLevel();
-        FallIn(instant, onFinish);
-    }
 
-    public void UnloadLevel(bool instant = false, Action onFinish = null) // INSTANT IS UNUSED
-    {
-        onFinish ??= () => { };
         if (level != null)
         {
+            UnloadLevel(instant, () =>
+            {
+                canReset = false;
+                level = LevelData.Load(levelJson);
+                onDefined();
+                GenerateLevel();
+                FallIn(instant, () =>
+                {
+                    canReset = true;
+                    onFinish();
+                });
+            });
+        }
+        else
+        {
+            canReset = false;
+            level = LevelData.Load(levelJson);
+            onDefined();
+            GenerateLevel();
+            FallIn(instant, () =>
+            {
+                canReset = true;
+                onFinish();
+            });
+        }
+    }
+
+    public void UnloadLevel(bool instant = false, Action onFinish = null)
+    {
+        onFinish ??= () => { };
+
+        if (level != null)
+        {
+            canReset = false;
             if (instant)
             {
                 level = null;
@@ -47,6 +76,8 @@ public class LevelManager : MonoBehaviour
                 {
                     Destroy(child.gameObject);
                 }
+                transform.DetachChildren();
+                canReset = true;
                 onFinish();
             }
             else
@@ -59,6 +90,8 @@ public class LevelManager : MonoBehaviour
                     {
                         Destroy(child.gameObject);
                     }
+                    transform.DetachChildren();
+                    canReset = true;
                     onFinish();
                 });
             }
@@ -66,6 +99,14 @@ public class LevelManager : MonoBehaviour
         else
         {
             onFinish();
+        }
+    }
+
+    public void ResetLevel()
+    {
+        if (canReset)
+        {
+            LoadLevel(level.json, instant: true);
         }
     }
 
@@ -125,11 +166,23 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            foreach (Transform child in transform)
+            int fallingCount = 0;
+            foreach (Transform child in transform) // IN THEORY THIS CAN FAIL IF THE BLOCKS FALL TOO FAST
             {
-                child.GetComponent<MaterialController>().FallIn(LevelToWorld(0, 0));
+                MaterialController matController = child.GetComponent<MaterialController>();
+                if (matController != null)
+                {
+                    fallingCount++;
+                    matController.FallIn(LevelToWorld(0, 0), () =>
+                    {
+                        fallingCount--;
+                        if (fallingCount == 0)
+                        {
+                            onFinish();
+                        }
+                    });
+                }
             }
-            StartCoroutine(waitThenCall(GameManager.instance.settings.fallDuration, onFinish));
         }
     }
 
@@ -145,18 +198,21 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            foreach (Transform child in transform)
+            int fallingCount = 0;
+            foreach (Transform child in transform) // IN THEORY THIS CAN FAIL IF THE BLOCKS FALL TOO FAST
             {
-                child.GetComponent<MaterialController>().FallOut(LevelToWorld(level.frog.pos));
+                fallingCount++;
+                child.GetComponent<MaterialController>().FallOut(LevelToWorld(level.frog.pos), () =>
+                {
+                    fallingCount--;
+                    if (fallingCount == 0)
+                    {
+                        onFinish();
+                    }
+                });
             }
-            StartCoroutine(waitThenCall(GameManager.instance.settings.fallDuration + 2f, onFinish));
+            //StartCoroutine(waitThenCall(GameManager.instance.settings.fallDuration + 2f, onFinish));
         }
-    }
-
-    IEnumerator waitThenCall(float t, Action onFinish)
-    {
-        yield return new WaitForSeconds(t);
-        onFinish();
     }
 
     public void AddUpdate(LevelUpdate update)

@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    public static InputManager instance;
     public float inputForgiveness;
 
     private float lastInputTime;
     private Vector2Int lastInputDir;
-    void Update()
+
+    private void Awake()
+    {
+        instance = this;
+    }
+    public void AcceptInput()
     {
         Vector2Int inputDir = Vector2Int.zero;
         if (Input.GetKeyDown(KeyCode.W))

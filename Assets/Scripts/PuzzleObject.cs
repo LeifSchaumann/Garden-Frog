@@ -160,7 +160,10 @@ public abstract class PuzzleObject
         {
             public void Complete()
             {
-                GameManager.instance.NextLevel();
+                level.manager.AddUpdate(new LevelUpdate((Action onFinish) =>
+                {
+                    GameManager.instance.NextLevel();
+                }));
             }
         }
     }
