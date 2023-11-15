@@ -26,6 +26,7 @@ public class Cell
 
     public void SetPO(PuzzleObject po)
     {
+        po.pos = pos;
         po.cell = this;
         po.level = level;
         switch (po)
@@ -41,6 +42,25 @@ public class Cell
                 break;
             case PuzzleObject.L3 poX:
                 PO3 = poX;
+                break;
+        }
+    }
+
+    public void ClearPO(PuzzleObject po)
+    {
+        switch (po)
+        {
+            case PuzzleObject.L0:
+                SetPO(new PuzzleObject.L0.None());
+                break;
+            case PuzzleObject.L1:
+                SetPO(new PuzzleObject.L1.None());
+                break;
+            case PuzzleObject.L2:
+                SetPO(new PuzzleObject.L2.None());
+                break;
+            case PuzzleObject.L3:
+                SetPO(new PuzzleObject.L3.None());
                 break;
         }
     }

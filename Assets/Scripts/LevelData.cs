@@ -45,8 +45,9 @@ public class LevelData
                 switch (levelData.layer2[accessX][accessY])
                 {
                     case 'F':
-                        level.cells[x, y].SetPO(new PuzzleObject.L2.Frog());
-                        level.frogPos = new Vector2Int(x, y);
+                        PuzzleObject.L2.Frog frog = new PuzzleObject.L2.Frog();
+                        level.cells[x, y].SetPO(frog);
+                        level.frog = frog;
                         break;
                     case 'G':
                         level.cells[x, y].SetPO(new PuzzleObject.L3.Goal());

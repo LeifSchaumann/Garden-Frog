@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Frog : MonoBehaviour
+public class FrogJump : MonoBehaviour
 {
     public float jumpSpeed;
     public AnimationCurve jumpCurve;

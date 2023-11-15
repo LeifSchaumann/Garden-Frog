@@ -1,53 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class LevelUpdate
+public class LevelUpdate
 {
-    public abstract void Execute();
-    public void OnFinish()
+    public Action<Action> execute;
+
+    public LevelUpdate() { }
+    public LevelUpdate(Action<Action> execute)
     {
-        LevelManager.instance.updateQueue.Dequeue();
-        LevelManager.instance.NextUpdate();
-    }
-
-    public class FrogJump : LevelUpdate
-    {
-        public Vector2Int newGridPos;
-
-        public FrogJump(Vector2Int newPos)
-        {
-            this.newGridPos = newPos;
-        }
-
-        public override void Execute()
-        {
-            LevelManager.instance.frog.Jump(newGridPos, OnFinish);
-        }
+        this.execute = execute;
     }
 
     public class Float : LevelUpdate // ASSUMES PLAYER RIDES WITH OBJECT
     {
-        public GameObject gameObject;
-        public Vector2Int newPos;
-
-        public Float(PuzzleObject layer1Data, Vector2Int newPos)
+        public Float(PuzzleObject.L1 PO1, Vector2Int newPos)
         {
-            this.gameObject = layer1Data.gameObject;
-            this.newPos = newPos;
-        }
-
-        public override void Execute()
-        {
-            gameObject.GetComponent<FloatMovement>().Float(newPos, OnFinish);
-        }
-    }
-
-    public class GoalReached : LevelUpdate
-    {
-        public override void Execute()
-        {
-            GameManager.instance.NextLevel();
+            this.execute = (Action onFinish) => {
+                PO1.gameObject.GetComponent<FloatMovement>().Float(newPos, onFinish);
+            };
         }
     }
 }

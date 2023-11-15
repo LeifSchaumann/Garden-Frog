@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour
     public float stepHeight;
     
     public Level level;
-    public Frog frog;
+    public FrogJump frog;
     public Queue<LevelUpdate> updateQueue;
 
     private void Awake()
@@ -111,8 +111,6 @@ public class LevelManager : MonoBehaviour
                 }
             }
         }
-        frog = Instantiate(frogPrefab, Vector3.zero, Quaternion.identity, transform).GetComponent<Frog>();
-        frog.transform.position = LevelToWorld(level.frogPos) + Vector3.up * frog.transform.localScale.y / 2;
     }
 
     private void FallIn(bool instant, Action onFinish)
@@ -149,7 +147,7 @@ public class LevelManager : MonoBehaviour
         {
             foreach (Transform child in transform)
             {
-                child.GetComponent<MaterialController>().FallOut(LevelToWorld(level.frogPos));
+                child.GetComponent<MaterialController>().FallOut(LevelToWorld(level.frog.pos));
             }
             StartCoroutine(waitThenCall(GameManager.instance.settings.fallDuration + 2f, onFinish));
         }
@@ -167,17 +165,18 @@ public class LevelManager : MonoBehaviour
         //Debug.Log("Added to queue, now has length " + updateQueue.Count);
         if (updateQueue.Count == 1)
         {
-            NextUpdate();
+            updateQueue.Peek().execute(UpdateFinished);
         }
         
     }
 
-    public void NextUpdate()
+    public void UpdateFinished()
     {
+        updateQueue.Dequeue();
         if (updateQueue.Count > 0)
         {
             //Debug.Log("Executing queue, now has length " + updateQueue.Count);
-            updateQueue.Peek().Execute();
+            updateQueue.Peek().execute(UpdateFinished);
         }
     }
 
@@ -185,7 +184,7 @@ public class LevelManager : MonoBehaviour
     {
         if (updateQueue.Count == 0)
         {
-            //level.Move(dir);
+            level.Move(dir);
         }
     }
 

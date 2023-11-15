@@ -5,7 +5,7 @@ using UnityEngine;
 public class Level
 {
     public Cell[,] cells;
-    public Vector2Int frogPos;
+    public PuzzleObject.L2.Frog frog;
     public Vector2Int size;
     public LevelManager manager;
 
@@ -14,7 +14,6 @@ public class Level
         this.manager = LevelManager.instance;
         this.size = size;
         this.cells = new Cell[size.x, size.y];
-        this.frogPos = Vector2Int.zero;
         for (int x = 0; x < size.x; x++)
         {
             for (int y = 0; y < size.y; y++)
@@ -22,6 +21,10 @@ public class Level
                 cells[x, y] = new Cell(this, new Vector2Int(x, y));
             }
         }
+    }
+    public void Move(Vector2Int dir)
+    {
+        frog.Jump(dir);
     }
     /*
     public void Move(Vector2Int dir)
