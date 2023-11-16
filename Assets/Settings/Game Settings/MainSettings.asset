@@ -149,4 +149,4 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   fallHeight: 20
-  fallDuration: 1
+  fallDuration: 0.7

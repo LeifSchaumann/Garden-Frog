@@ -62,9 +62,9 @@ public class GameManager : MonoBehaviour
 
     public void NextLevel()
     {
-        currentLevel++;
-        if (settings.levelSequence.Length > currentLevel)
+        if (settings.levelSequence.Length > currentLevel + 1)
         {
+            currentLevel++;
             LevelManager.instance.LoadLevel(settings.levelSequence[currentLevel], onDefined: () => {
                 camMovement.FocusOn(LevelManager.instance.LevelCenter(), true);
             });

@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour
                 StartCoroutine(FadeIn(mainContainer, 1f));
                 break;
             case GameScreen.play:
+                uiDoc.visualTreeAsset = titleUI; // TEMP
                 mainContainer = uiDoc.rootVisualElement.Q("Main");
                 StartCoroutine(FadeOut(mainContainer, 1f));
                 break;
