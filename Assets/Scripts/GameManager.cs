@@ -38,15 +38,20 @@ public class GameManager : MonoBehaviour
 
     public void SetScreen(GameScreen screen)
     {
-        UIManager.instance.ChangeScreen(screen);
+        
         switch (screen)
         {
             case GameScreen.title:
-                LevelManager.instance.LoadLevel(settings.levelSequence[currentLevel], instant: true, onDefined: () => {
-                    camMovement.FocusOn(LevelManager.instance.LevelCenter(), true, 0.5f);
+                bool instantZoom = currentScreen == GameScreen.title;
+                LevelManager.instance.LoadLevel(settings.levelSequence[currentLevel], instant: false, onDefined: () => {
+                    camMovement.FocusOn(LevelManager.instance.LevelCenter(), instantZoom, 0.5f);
+                }, onFinish: () =>
+                {
+                    UIManager.instance.ChangeScreen(screen);
                 });
                 break;
             case GameScreen.play:
+                UIManager.instance.ChangeScreen(screen);
                 LevelManager.instance.LoadLevel(settings.levelSequence[currentLevel], instant: true, onDefined: () => {
                     camMovement.FocusOn(LevelManager.instance.LevelCenter(), false, 1f);
                 });

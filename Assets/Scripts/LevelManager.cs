@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 public class LevelManager : MonoBehaviour
 {
@@ -198,11 +199,21 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
+            float maxDelay = 0;
+            Vector3 origin = LevelToWorld(level.frog.pos);
+            foreach (Transform child in transform)
+            {
+                Vector3 distance2D = child.transform.position - origin;
+                distance2D.y = 0;
+                maxDelay = Mathf.Max(distance2D.magnitude * 0.1f, maxDelay);
+            }
             int fallingCount = 0;
             foreach (Transform child in transform) // IN THEORY THIS CAN FAIL IF THE BLOCKS FALL TOO FAST
             {
                 fallingCount++;
-                child.GetComponent<MaterialController>().FallOut(LevelToWorld(level.frog.pos), () =>
+                Vector3 distance2D = child.transform.position - origin;
+                distance2D.y = 0;
+                child.GetComponent<MaterialController>().FallOut(maxDelay - distance2D.magnitude * 0.1f, () =>
                 {
                     fallingCount--;
                     if (fallingCount == 0)

@@ -20,13 +20,16 @@ public class UIManager : MonoBehaviour
 
     public void ChangeScreen(GameScreen screen)
     {
+        VisualElement mainContainer;
         switch (screen)
         {
             case GameScreen.title:
                 uiDoc.visualTreeAsset = titleUI;
+                mainContainer = uiDoc.rootVisualElement.Q("Main");
+                StartCoroutine(FadeIn(mainContainer, 1f));
                 break;
             case GameScreen.play:
-                VisualElement mainContainer = uiDoc.rootVisualElement.Q("Main");
+                mainContainer = uiDoc.rootVisualElement.Q("Main");
                 StartCoroutine(FadeOut(mainContainer, 1f));
                 break;
         }
@@ -42,5 +45,17 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
         element.style.opacity = 0;
-    } 
+    }
+
+    IEnumerator FadeIn(VisualElement element, float time)
+    {
+        float timePassed = 0;
+        while (timePassed < time)
+        {
+            timePassed += Time.deltaTime;
+            element.style.opacity = timePassed / time;
+            yield return null;
+        }
+        element.style.opacity = 1f;
+    }
 }

@@ -23,11 +23,9 @@ public class MaterialController : MonoBehaviour
         StartCoroutine(FallInRoutine(distance2D.magnitude * 0.1f, onFinish));
     }
 
-    public void FallOut(Vector3 origin, Action onFinish)
+    public void FallOut(float delay, Action onFinish)
     {
-        Vector3 distance2D = transform.position - origin;
-        distance2D.y = 0;
-        StartCoroutine(FallOutRoutine(2f - distance2D.magnitude * 0.1f, onFinish));
+        StartCoroutine(FallOutRoutine(delay, onFinish));
     }
 
     private void FallInState(float t)
