@@ -41,12 +41,12 @@ public class GameManager : MonoBehaviour
         {
             case GameScreen.title:
                 LevelManager.instance.LoadLevel(settings.levelSequence[currentLevel], instant: true, onDefined: () => {
-                    camMovement.FocusOn(LevelManager.instance.transform.position, true, 0.5f);
+                    camMovement.FocusOn(LevelManager.instance.LevelCenter(), true, 0.5f);
                 });
                 break;
             case GameScreen.play:
                 LevelManager.instance.LoadLevel(settings.levelSequence[currentLevel], instant: true, onDefined: () => {
-                    camMovement.FocusOn(LevelManager.instance.transform.position, true, 1f);
+                    camMovement.FocusOn(LevelManager.instance.LevelCenter(), false, 1f);
                 });
                 break;
         }
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
         if (settings.levelSequence.Length > currentLevel)
         {
             LevelManager.instance.LoadLevel(settings.levelSequence[currentLevel], onDefined: () => {
-                camMovement.FocusOn(LevelManager.instance.transform.position, true);
+                camMovement.FocusOn(LevelManager.instance.LevelCenter(), true);
             });
         }
     }

@@ -244,17 +244,17 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public Vector3 LevelToWorld(Vector2Int gridPos)
+    public Vector3 LevelToWorld(Vector2Int gridPos) // gives the center of this cell in world space
     {
-        return transform.TransformPoint(new Vector3(gridPos.x - level.size.x/2, level.GetCell(gridPos).height * stepHeight, gridPos.y - level.size.y / 2));
+        return transform.TransformPoint(new Vector3(gridPos.x - level.size.x / 2f + 0.5f, level.GetCell(gridPos).height * stepHeight, gridPos.y - level.size.y / 2f + 0.5f));
     }
     public Vector3 LevelToWorld(int x, int y)
     {
         return LevelToWorld(new Vector2Int(x, y));
     }
-    public Vector3 LevelToWorld(Vector3 pos)
+    public Vector3 LevelCenter()
     {
-        return transform.TransformPoint(pos + Vector3.left * level.size.x + Vector3.back * level.size.y);
+        return transform.position;
     }
 }
 

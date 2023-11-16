@@ -273,7 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33712e23471e0b648beaeb9445023f52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewDirection: {x: -0.5, y: -2, z: 2}
+  viewDirection: {x: -2, y: -2, z: 2}
 --- !u!1 &379814626
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,6 +605,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: a95ec8290213db9499f2a62ceecc8566, type: 2}
+  currentScreen: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
