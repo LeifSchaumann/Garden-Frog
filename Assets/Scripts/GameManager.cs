@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
         switch (screen)
         {
             case GameScreen.title:
+                UIManager.instance.ChangeScreen(screen);
                 LevelManager.instance.LoadLevel(settings.levelSequence[currentLevel], instant: true, onDefined: () => {
                     camMovement.FocusOn(LevelManager.instance.LevelCenter(), true, 0.5f);
                 });
