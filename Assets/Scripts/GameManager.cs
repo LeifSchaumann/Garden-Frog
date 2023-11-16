@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public enum GameScreen
 {
@@ -37,10 +38,10 @@ public class GameManager : MonoBehaviour
 
     public void SetScreen(GameScreen screen)
     {
+        UIManager.instance.ChangeScreen(screen);
         switch (screen)
         {
             case GameScreen.title:
-                UIManager.instance.ChangeScreen(screen);
                 LevelManager.instance.LoadLevel(settings.levelSequence[currentLevel], instant: true, onDefined: () => {
                     camMovement.FocusOn(LevelManager.instance.LevelCenter(), true, 0.5f);
                 });

@@ -106,7 +106,7 @@ public class LevelManager : MonoBehaviour
     {
         if (canReset)
         {
-            LoadLevel(level.json, instant: true);
+            LoadLevel(level.json, instant: false);
         }
     }
 

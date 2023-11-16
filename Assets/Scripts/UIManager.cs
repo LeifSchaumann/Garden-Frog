@@ -25,6 +25,22 @@ public class UIManager : MonoBehaviour
             case GameScreen.title:
                 uiDoc.visualTreeAsset = titleUI;
                 break;
+            case GameScreen.play:
+                VisualElement mainContainer = uiDoc.rootVisualElement.Q("Main");
+                StartCoroutine(FadeOut(mainContainer, 1f));
+                break;
         }
     }
+
+    IEnumerator FadeOut(VisualElement element, float time)
+    {
+        float timePassed = 0;
+        while (timePassed < time)
+        {
+            timePassed += Time.deltaTime;
+            element.style.opacity = 1 - timePassed/time;
+            yield return null;
+        }
+        element.style.opacity = 0;
+    } 
 }
