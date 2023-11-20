@@ -12,7 +12,7 @@ public class Level
 
     public Level(Vector2Int size)
     {
-        this.manager = LevelManager.instance;
+        this.manager = LevelManager.main;
         this.size = size;
         this.cells = new Cell[size.x, size.y];
         for (int x = 0; x < size.x; x++)

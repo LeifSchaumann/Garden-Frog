@@ -26,7 +26,7 @@ public class CameraMovement : MonoBehaviour
 
     public void FocusOn(Vector3 focus, bool instant = true, float zoomFactor = 1)
     {
-        Vector2Int levelSize = LevelManager.instance.level.size;
+        Vector2Int levelSize = LevelManager.main.level.size;
         targetSize = Mathf.Max(levelSize.y * 0.55f, levelSize.x * 9 / 16 * 0.7f) / zoomFactor;
         targetPosition = focus - viewDirection.normalized * 30f;
         if (instant)

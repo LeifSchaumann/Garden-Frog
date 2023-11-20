@@ -6,7 +6,7 @@ using static UnityEngine.UI.Image;
 
 public class LevelManager : MonoBehaviour
 {
-    public static LevelManager instance;
+    public static LevelManager main;
 
     public GameObject frogPrefab;
     public GameObject waterPrefab;
@@ -19,47 +19,28 @@ public class LevelManager : MonoBehaviour
     public FrogJump frog;
     public Queue<LevelUpdate> updateQueue;
 
-    private bool canReset;
-
     private void Awake()
     {
-        instance = this;
+        if (LevelManager.main == null)
+        {
+            main = this;
+        }
+        
         updateQueue = new Queue<LevelUpdate>();
-        canReset = false;
     }
 
-    public void LoadLevel(TextAsset levelJson, Action onFinish = null, Action onDefined = null, bool instant = false)
+    public void LoadLevel(TextAsset levelJson, bool instant = false, Action onFinish = null, Action onDefined = null)
     {
         onFinish ??= () => { };
         onDefined ??= () => { };
 
-        if (level != null)
+        level = LevelData.Load(levelJson);
+        onDefined();
+        GenerateLevel();
+        FallIn(instant, () =>
         {
-            UnloadLevel(instant, () =>
-            {
-                canReset = false;
-                level = LevelData.Load(levelJson);
-                onDefined();
-                GenerateLevel();
-                FallIn(instant, () =>
-                {
-                    canReset = true;
-                    onFinish();
-                });
-            });
-        }
-        else
-        {
-            canReset = false;
-            level = LevelData.Load(levelJson);
-            onDefined();
-            GenerateLevel();
-            FallIn(instant, () =>
-            {
-                canReset = true;
-                onFinish();
-            });
-        }
+            onFinish();
+        });
     }
 
     public void UnloadLevel(bool instant = false, Action onFinish = null)
@@ -68,34 +49,17 @@ public class LevelManager : MonoBehaviour
 
         if (level != null)
         {
-            canReset = false;
-            if (instant)
+            FallOut(instant, () =>
             {
                 level = null;
-                updateQueue.Clear();
+                //updateQueue.Clear();
                 foreach (Transform child in transform)
                 {
                     Destroy(child.gameObject);
                 }
                 transform.DetachChildren();
-                canReset = true;
                 onFinish();
-            }
-            else
-            {
-                FallOut(false, () =>
-                {
-                    level = null;
-                    updateQueue.Clear();
-                    foreach (Transform child in transform)
-                    {
-                        Destroy(child.gameObject);
-                    }
-                    transform.DetachChildren();
-                    canReset = true;
-                    onFinish();
-                });
-            }
+            });
         }
         else
         {
@@ -105,9 +69,9 @@ public class LevelManager : MonoBehaviour
 
     public void ResetLevel()
     {
-        if (canReset)
+        if (!IsUpdating())
         {
-            LoadLevel(level.json, instant: false);
+            AddUpdate(new LevelUpdate.Load(level.json, false));
         }
     }
 
@@ -157,6 +121,7 @@ public class LevelManager : MonoBehaviour
 
     private void FallIn(bool instant, Action onFinish)
     {
+        
         if (instant)
         {
             foreach (Transform child in transform)
@@ -228,28 +193,34 @@ public class LevelManager : MonoBehaviour
 
     public void AddUpdate(LevelUpdate update)
     {
+        //Debug.Log("Adding to queue");
         updateQueue.Enqueue(update);
-        //Debug.Log("Added to queue, now has length " + updateQueue.Count);
         if (updateQueue.Count == 1)
         {
-            updateQueue.Peek().execute(UpdateFinished);
+            ExecuteUpdate();
         }
-        
     }
-
+    private void ExecuteUpdate()
+    {
+        updateQueue.Peek().execute(this);
+    }
     public void UpdateFinished()
     {
+        //Debug.Log("Removing from queue");
         updateQueue.Dequeue();
         if (updateQueue.Count > 0)
         {
-            //Debug.Log("Executing queue, now has length " + updateQueue.Count);
-            updateQueue.Peek().execute(UpdateFinished);
+            ExecuteUpdate();
         }
+    }
+    public bool IsUpdating()
+    {
+        return updateQueue.Count > 0;
     }
 
     public void Move(Vector2Int dir)
     {
-        if (updateQueue.Count == 0)
+        if (!IsUpdating())
         {
             level.Move(dir);
         }

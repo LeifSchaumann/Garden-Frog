@@ -120,9 +120,9 @@ public abstract class PuzzleObject
                     targetCell.height < cell.height + 2)
                 {
                     Move(dir);
-                    level.manager.AddUpdate(new LevelUpdate((Action onFinish) =>
+                    level.manager.AddUpdate(new LevelUpdate((LevelManager manager) =>
                     {
-                        gameObject.GetComponent<FrogJump>().Jump(cell.pos, onFinish);
+                        gameObject.GetComponent<FrogJump>().Jump(cell.pos, () => { manager.UpdateFinished(); });
                     }));
                     CheckForGoal();
                 }
@@ -135,9 +135,9 @@ public abstract class PuzzleObject
                         cell.AdjacentCell(dir).height < cell.height + 2)
                     {
                         Move(dir * 2);
-                        level.manager.AddUpdate(new LevelUpdate((Action onFinish) =>
+                        level.manager.AddUpdate(new LevelUpdate((LevelManager manager) =>
                         {
-                            gameObject.GetComponent<FrogJump>().Jump(cell.pos, onFinish);
+                            gameObject.GetComponent<FrogJump>().Jump(cell.pos, () => { manager.UpdateFinished(); });
                         }));
                         CheckForGoal();
                         cell.PO1.Push(dir);
@@ -160,9 +160,10 @@ public abstract class PuzzleObject
         {
             public void Complete()
             {
-                level.manager.AddUpdate(new LevelUpdate((Action onFinish) =>
+                level.manager.AddUpdate(new LevelUpdate((LevelManager manager) =>
                 {
                     GameManager.instance.NextLevel();
+                    manager.UpdateFinished();
                 }));
             }
         }

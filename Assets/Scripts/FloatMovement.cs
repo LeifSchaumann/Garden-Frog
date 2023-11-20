@@ -14,7 +14,7 @@ public class FloatMovement : MonoBehaviour
 
     private IEnumerator FloatRoutine(Vector2Int targetGridPos, Transform carry, Action onFinish)
     {
-        Vector3 targetPos = LevelManager.instance.LevelToWorld(targetGridPos) + Vector3.up * transform.localScale.y / 2;
+        Vector3 targetPos = LevelManager.main.LevelToWorld(targetGridPos) + Vector3.up * transform.localScale.y / 2;
         Vector3 startPos = transform.position;
         float floatTime = Vector3.Distance(targetPos, startPos) / floatSpeed;
         float timePassed = 0;

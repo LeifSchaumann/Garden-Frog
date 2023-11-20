@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
 
     private CameraMovement camMovement;
     private int currentLevel;
+    private bool transitioning;
 
     private void Awake()
     {
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour
 
         camMovement = Camera.main.GetComponent<CameraMovement>();
         currentLevel = 0;
+        transitioning = false;
         currentScreen = GameScreen.title;
     }
 
@@ -38,23 +40,30 @@ public class GameManager : MonoBehaviour
 
     public void SetScreen(GameScreen screen)
     {
-        
+        transitioning = true;
         switch (screen)
         {
             case GameScreen.title:
                 bool instantZoom = currentScreen == GameScreen.title;
-                LevelManager.instance.LoadLevel(settings.levelSequence[currentLevel], instant: false, onDefined: () => {
-                    camMovement.FocusOn(LevelManager.instance.LevelCenter(), instantZoom, 0.5f);
+                LevelManager.main.AddUpdate(new LevelUpdate.Load(settings.levelSequence[currentLevel], false, onDefined: () => {
+                    camMovement.FocusOn(LevelManager.main.LevelCenter(), instantZoom, 0.5f);
                 }, onFinish: () =>
                 {
-                    UIManager.instance.ChangeScreen(screen);
-                });
+                    UIManager.instance.SetScreen(screen, () =>
+                    {
+                        transitioning = false;
+                    });
+                }));
                 break;
             case GameScreen.play:
-                UIManager.instance.ChangeScreen(screen);
-                LevelManager.instance.LoadLevel(settings.levelSequence[currentLevel], instant: true, onDefined: () => {
-                    camMovement.FocusOn(LevelManager.instance.LevelCenter(), false, 1f);
-                });
+                UIManager.instance.SetScreen(screen);
+                LevelManager.main.AddUpdate(new LevelUpdate.Load(settings.levelSequence[currentLevel], true, onDefined: () =>
+                {
+                    camMovement.FocusOn(LevelManager.main.LevelCenter(), false, 1f);
+                }, onFinish: () =>
+                {
+                    transitioning = false;
+                }));
                 break;
         }
         currentScreen = screen;
@@ -65,9 +74,9 @@ public class GameManager : MonoBehaviour
         if (settings.levelSequence.Length > currentLevel + 1)
         {
             currentLevel++;
-            LevelManager.instance.LoadLevel(settings.levelSequence[currentLevel], onDefined: () => {
-                camMovement.FocusOn(LevelManager.instance.LevelCenter(), true);
-            });
+            LevelManager.main.AddUpdate(new LevelUpdate.Load(settings.levelSequence[currentLevel], onDefined: () => {
+                camMovement.FocusOn(LevelManager.main.LevelCenter(), true);
+            }));
         }
     }
 
@@ -76,20 +85,26 @@ public class GameManager : MonoBehaviour
         switch (currentScreen)
         {
             case GameScreen.title:
-                if (Input.GetMouseButtonDown(0))
+                if (!transitioning)
                 {
-                    SetScreen(GameScreen.play);
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        SetScreen(GameScreen.play);
+                    }
                 }
                 break;
             case GameScreen.play:
-                InputManager.instance.AcceptInput();
-                if (Input.GetKeyDown(KeyCode.R))
+                if (!transitioning)
                 {
-                    LevelManager.instance.ResetLevel();
-                }
-                else if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    SetScreen(GameScreen.title);
+                    InputManager.instance.AcceptInput();
+                    if (Input.GetKeyDown(KeyCode.R))
+                    {
+                        LevelManager.main.ResetLevel();
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Escape))
+                    {
+                        SetScreen(GameScreen.title);
+                    }
                 }
                 break;
         }

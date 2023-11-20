@@ -46,7 +46,7 @@ public class InputManager : MonoBehaviour
 
         if (inputDir != Vector2Int.zero)
         {
-            LevelManager.instance.Move(inputDir);
+            LevelManager.main.Move(inputDir);
         }
     }
 }
