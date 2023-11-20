@@ -6,11 +6,18 @@ using UnityEngine;
 public class LevelUpdate
 {
     public Action<LevelManager> execute;
+    public LevelUpdate[] preUpdates;
+    public LevelUpdate[] postUpdates;
 
-    public LevelUpdate() { }
-    public LevelUpdate(Action<LevelManager> execute)
+    public LevelUpdate() {
+        this.preUpdates = new LevelUpdate[0];
+        this.postUpdates = new LevelUpdate[0];
+    }
+    public LevelUpdate(Action<LevelManager> execute, LevelUpdate[] preUpdates = null, LevelUpdate[] postUpdates = null)
     {
         this.execute = execute;
+        this.preUpdates = preUpdates ?? new LevelUpdate[0];
+        this.postUpdates = postUpdates ?? new LevelUpdate[0];
     }
 
     public class Load : LevelUpdate
@@ -20,26 +27,15 @@ public class LevelUpdate
             onFinish ??= () => { };
             onDefined ??= () => { };
 
+            this.preUpdates = new LevelUpdate[] { new Unload(instant) };
+            this.postUpdates = new LevelUpdate[] { new ChangeGridOpacity(1f) };
+
             this.execute = (LevelManager manager) => {
-                if (manager.level == null)
+                manager.LoadLevel(levelJson, instant, () =>
                 {
-                    manager.LoadLevel(levelJson, instant, () =>
-                    {
-                        onFinish();
-                        manager.UpdateFinished();
-                    }, onDefined);
-                }
-                else
-                {
-                    manager.UnloadLevel(instant, () =>
-                    {
-                        manager.LoadLevel(levelJson, instant, () =>
-                        {
-                            onFinish();
-                            manager.UpdateFinished();
-                        }, onDefined);
-                    });
-                }
+                    onFinish();
+                    manager.UpdateFinished();
+                }, onDefined);
             };
         }
     }
@@ -48,11 +44,14 @@ public class LevelUpdate
     {
         public Unload(bool instant = false, Action onFinish = null)
         {
+            onFinish ??= () => { };
+
+            this.preUpdates = new LevelUpdate[] { new ChangeGridOpacity(0f) };
+
             this.execute = (LevelManager manager) => {
                 manager.UnloadLevel(instant, () =>
                 {
                     onFinish();
-                    Debug.Log("calling UpdateFinished");
                     manager.UpdateFinished();
                 });
             };
@@ -68,6 +67,24 @@ public class LevelUpdate
                 {
                     manager.UpdateFinished();
                 });
+            };
+        }
+    }
+
+    public class ChangeGridOpacity : LevelUpdate
+    {
+        public ChangeGridOpacity(float targetOpacity)
+        {
+            this.execute = (LevelManager manager) => {
+                foreach (Transform child in manager.transform)
+                {
+                    GridMatController gmc = child.GetComponentInChildren<GridMatController>();
+                    if (gmc != null)
+                    {
+                        gmc.OpacityLerp(targetOpacity, 0.5f, () => { });
+                    }
+                }
+                manager.UpdateFinished();
             };
         }
     }

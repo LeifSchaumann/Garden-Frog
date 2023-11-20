@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MaterialController : MonoBehaviour
+public class FallingMatController : MonoBehaviour
 {
     private Material material;
     private GameSettings settings;

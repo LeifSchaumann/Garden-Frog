@@ -57,13 +57,13 @@ public class GameManager : MonoBehaviour
                 break;
             case GameScreen.play:
                 UIManager.instance.SetScreen(screen);
-                LevelManager.main.AddUpdate(new LevelUpdate.Load(settings.levelSequence[currentLevel], true, onDefined: () =>
-                {
+                //LevelManager.main.AddUpdate(new LevelUpdate.Load(settings.levelSequence[currentLevel], true, onDefined: () =>
+                //{
                     camMovement.FocusOn(LevelManager.main.LevelCenter(), false, 1f);
-                }, onFinish: () =>
-                {
+                //}, onFinish: () =>
+                //{
                     transitioning = false;
-                }));
+                //}));
                 break;
         }
         currentScreen = screen;
@@ -103,7 +103,10 @@ public class GameManager : MonoBehaviour
                     }
                     else if (Input.GetKeyDown(KeyCode.Escape))
                     {
-                        SetScreen(GameScreen.title);
+                        if (!LevelManager.main.IsUpdating())
+                        {
+                            SetScreen(GameScreen.title);
+                        }
                     }
                 }
                 break;

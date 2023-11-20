@@ -126,7 +126,7 @@ public class LevelManager : MonoBehaviour
         {
             foreach (Transform child in transform)
             {
-                child.GetComponent<MaterialController>().VisibleState();
+                child.GetComponent<FallingMatController>().VisibleState();
             }
             onFinish();
         }
@@ -135,7 +135,7 @@ public class LevelManager : MonoBehaviour
             int fallingCount = 0;
             foreach (Transform child in transform) // IN THEORY THIS CAN FAIL IF THE BLOCKS FALL TOO FAST
             {
-                MaterialController matController = child.GetComponent<MaterialController>();
+                FallingMatController matController = child.GetComponent<FallingMatController>();
                 if (matController != null)
                 {
                     fallingCount++;
@@ -158,7 +158,7 @@ public class LevelManager : MonoBehaviour
         {
             foreach (Transform child in transform)
             {
-                child.GetComponent<MaterialController>().HiddenState();
+                child.GetComponent<FallingMatController>().HiddenState();
             }
             onFinish();
         }
@@ -178,7 +178,7 @@ public class LevelManager : MonoBehaviour
                 fallingCount++;
                 Vector3 distance2D = child.transform.position - origin;
                 distance2D.y = 0;
-                child.GetComponent<MaterialController>().FallOut(maxDelay - distance2D.magnitude * 0.1f, () =>
+                child.GetComponent<FallingMatController>().FallOut(maxDelay - distance2D.magnitude * 0.1f, () =>
                 {
                     fallingCount--;
                     if (fallingCount == 0)
@@ -191,16 +191,25 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void AddUpdate(LevelUpdate update)
+    public void AddUpdate(LevelUpdate update, bool directCall = true)
     {
         //Debug.Log("Adding to queue");
-        updateQueue.Enqueue(update);
-        if (updateQueue.Count == 1)
+        bool startedEmpty = !IsUpdating();
+        foreach (LevelUpdate preUpdate in update.preUpdates)
         {
-            ExecuteUpdate();
+            AddUpdate(preUpdate, false);
+        }
+        updateQueue.Enqueue(update);
+        foreach (LevelUpdate postUpdate in update.postUpdates)
+        {
+            AddUpdate(postUpdate, false);
+        }
+        if (directCall && startedEmpty)
+        {
+            NextUpdate();
         }
     }
-    private void ExecuteUpdate()
+    private void NextUpdate()
     {
         updateQueue.Peek().execute(this);
     }
@@ -210,7 +219,7 @@ public class LevelManager : MonoBehaviour
         updateQueue.Dequeue();
         if (updateQueue.Count > 0)
         {
-            ExecuteUpdate();
+            NextUpdate();
         }
     }
     public bool IsUpdating()
