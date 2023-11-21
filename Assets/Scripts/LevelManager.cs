@@ -164,21 +164,24 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            float maxDelay = 0;
-            Vector3 origin = LevelToWorld(level.frog.pos);
+            //float maxDelay = 0;
+            //Vector3 origin = LevelToWorld(level.frog.pos);
+            Vector3 origin = LevelToWorld(0, 0);
+            /*
             foreach (Transform child in transform)
             {
                 Vector3 distance2D = child.transform.position - origin;
                 distance2D.y = 0;
                 maxDelay = Mathf.Max(distance2D.magnitude * 0.1f, maxDelay);
             }
+            */
             int fallingCount = 0;
             foreach (Transform child in transform) // IN THEORY THIS CAN FAIL IF THE BLOCKS FALL TOO FAST
             {
                 fallingCount++;
                 Vector3 distance2D = child.transform.position - origin;
                 distance2D.y = 0;
-                child.GetComponent<FallingMatController>().FallOut(maxDelay - distance2D.magnitude * 0.1f, () =>
+                child.GetComponent<FallingMatController>().FallOut(distance2D.magnitude * 0.1f, () =>
                 {
                     fallingCount--;
                     if (fallingCount == 0)

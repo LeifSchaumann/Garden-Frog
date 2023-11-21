@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 
 public enum GameScreen
 {
+    none,
     title,
     play,
     edit
@@ -30,7 +31,7 @@ public class GameManager : MonoBehaviour
         camMovement = Camera.main.GetComponent<CameraMovement>();
         currentLevel = 0;
         transitioning = false;
-        currentScreen = GameScreen.title;
+        currentScreen = GameScreen.none;
     }
 
     private void Start()
@@ -44,26 +45,43 @@ public class GameManager : MonoBehaviour
         switch (screen)
         {
             case GameScreen.title:
-                bool instantZoom = currentScreen == GameScreen.title;
-                LevelManager.main.AddUpdate(new LevelUpdate.Load(settings.levelSequence[currentLevel], false, onDefined: () => {
-                    camMovement.FocusOn(LevelManager.main.LevelCenter(), instantZoom, 0.5f);
-                }, onFinish: () =>
+                if (currentScreen == GameScreen.none)
                 {
-                    UIManager.instance.SetScreen(screen, () =>
+                    LevelManager.main.AddUpdate(new LevelUpdate.Load(settings.levelSequence[currentLevel], false, onDefined: () => {
+                        camMovement.FocusOn(LevelManager.main.LevelCenter(), true, 0.5f);
+                    }, onFinish: () =>
                     {
-                        transitioning = false;
-                    });
-                }));
+                        UIManager.instance.FadeInScreen(screen, onFinish: () =>
+                        {
+                            transitioning = false;
+                        });
+                    }));
+                }
+                else
+                {
+                    UIManager.instance.FadeOutScreen();
+                    LevelManager.main.AddUpdate(new LevelUpdate.Load(settings.levelSequence[currentLevel], false, onDefined: () => {
+                        camMovement.FocusOn(LevelManager.main.LevelCenter(), true, 0.5f);
+                    }, onFinish: () =>
+                    {
+                        UIManager.instance.FadeInScreen(screen, onFinish: () =>
+                        {
+                            transitioning = false;
+                        });
+                    }));
+                }
+                
                 break;
             case GameScreen.play:
-                UIManager.instance.SetScreen(screen);
-                //LevelManager.main.AddUpdate(new LevelUpdate.Load(settings.levelSequence[currentLevel], true, onDefined: () =>
-                //{
-                    camMovement.FocusOn(LevelManager.main.LevelCenter(), false, 1f);
-                //}, onFinish: () =>
-                //{
-                    transitioning = false;
-                //}));
+                if (currentScreen == GameScreen.title) // WIP
+                {
+                    UIManager.instance.FadeOutScreen();
+                    camMovement.FocusOn(LevelManager.main.LevelCenter(), false, 1f, () =>
+                    {
+                        UIManager.instance.FadeInScreen(screen);
+                        transitioning = false;
+                    });
+                }
                 break;
         }
         currentScreen = screen;

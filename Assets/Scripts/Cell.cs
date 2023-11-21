@@ -17,7 +17,7 @@ public class Cell
     {
         this.level = level;
         this.pos = pos;
-        this.height = 0;
+        this.height = -1;
         this.PO0 = new PuzzleObject.L0.None();
         this.PO1 = new PuzzleObject.L1.None();
         this.PO2 = new PuzzleObject.L2.None();

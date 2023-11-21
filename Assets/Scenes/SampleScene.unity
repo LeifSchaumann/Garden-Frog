@@ -274,6 +274,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewDirection: {x: -0.7, y: -2, z: 2}
+  zoomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &379814626
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,6 +360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   titleUI: {fileID: 9197481963319205126, guid: 9bc5857b15d7d6a48a510ac6c85a0990, type: 3}
+  playUI: {fileID: 9197481963319205126, guid: 65b14411b92de494f8bdaa0600870cbd, type: 3}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,7 +478,7 @@ MonoBehaviour:
   m_ShadowRenderingLayers: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 1
+  m_SoftShadowQuality: 3
 --- !u!1 &442310706
 GameObject:
   m_ObjectHideFlags: 0
