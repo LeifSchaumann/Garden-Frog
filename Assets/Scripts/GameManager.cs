@@ -19,10 +19,10 @@ public class GameManager : MonoBehaviour
 
     public GameSettings settings;
     public GameScreen currentScreen;
+    public bool transitioning;
 
     private CameraMovement camMovement;
     private int currentLevel;
-    private bool transitioning;
 
     private void Awake()
     {

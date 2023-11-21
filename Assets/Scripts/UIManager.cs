@@ -12,23 +12,23 @@ public class UIManager : MonoBehaviour
     public VisualTreeAsset playUI;
 
     private UIDocument uiDoc;
-    private Dictionary<GameScreen, VisualTreeAsset> screenToVTA;
+    //private Dictionary<GameScreen, VisualTreeAsset> screenToVTA;
 
     private void Awake()
     {
         instance = this;
 
         uiDoc = GetComponent<UIDocument>();
-        screenToVTA = new Dictionary<GameScreen, VisualTreeAsset> { {GameScreen.title, titleUI}, {GameScreen.play, playUI} };
+        //screenToVTA = new Dictionary<GameScreen, VisualTreeAsset> { {GameScreen.title, titleUI}, {GameScreen.play, playUI} };
     }
 
     public void FadeInScreen(GameScreen screen, Action onFinish = null)
     {
         onFinish ??= () => { };
 
-        uiDoc.visualTreeAsset = screenToVTA[screen];
+        LoadScreen(screen);
         VisualElement mainContainer = uiDoc.rootVisualElement.Q("Main");
-        StartCoroutine(FadeIn(mainContainer, 1f, onFinish));
+        StartCoroutine(SetOpacity(mainContainer, 1f, 1f, onFinish));
     }
 
     public void FadeOutScreen(Action onFinish = null)
@@ -36,10 +36,41 @@ public class UIManager : MonoBehaviour
         onFinish ??= () => { };
 
         VisualElement mainContainer = uiDoc.rootVisualElement.Q("Main");
-        StartCoroutine(FadeOut(mainContainer, 1f, onFinish));
+        StartCoroutine(SetOpacity(mainContainer, 0f, 1f, onFinish));
     }
 
-    IEnumerator FadeOut(VisualElement element, float time, Action onFinish = null)
+    private void LoadScreen(GameScreen screen)
+    {
+        switch (screen)
+        {
+            case GameScreen.title:
+                uiDoc.visualTreeAsset = titleUI;
+                break;
+            case GameScreen.play:
+                uiDoc.visualTreeAsset = playUI;
+                Button resetButton = uiDoc.rootVisualElement.Q<Button>("Reset");
+                resetButton.RegisterCallback<MouseEnterEvent>((MouseEnterEvent) => { resetButton.style.opacity = 1f; });
+                resetButton.RegisterCallback<MouseLeaveEvent>((MouseLeaveEvent) => { resetButton.style.opacity = 0.5f; });
+                resetButton.clicked += () =>
+                {
+                    UIInput(() =>
+                    {
+                        LevelManager.main.ResetLevel();
+                    });
+                };
+                break;
+        }
+    }
+
+    public void UIInput(Action action)
+    {
+        if (!GameManager.instance.transitioning)
+        {
+            action();
+        }
+    }
+
+    IEnumerator SetOpacity(VisualElement element, float opacity, float duration, Action onFinish = null)
     {
         onFinish ??= () => { };
 
@@ -50,29 +81,15 @@ public class UIManager : MonoBehaviour
         else
         {
             float timePassed = 0;
-            while (timePassed < time)
+            float startOpacity = element.style.opacity.value;
+            while (timePassed < duration)
             {
                 timePassed += Time.deltaTime;
-                element.style.opacity = 1 - timePassed / time;
+                element.style.opacity = Mathf.Lerp(startOpacity, opacity, timePassed / duration);
                 yield return null;
             }
-            element.style.opacity = 0;
+            element.style.opacity = opacity;
             onFinish();
         }
-    }
-
-    IEnumerator FadeIn(VisualElement element, float time, Action onFinish = null)
-    {
-        onFinish ??= () => { };
-
-        float timePassed = 0;
-        while (timePassed < time)
-        {
-            timePassed += Time.deltaTime;
-            element.style.opacity = timePassed / time;
-            yield return null;
-        }
-        element.style.opacity = 1f;
-        onFinish();
     }
 }
