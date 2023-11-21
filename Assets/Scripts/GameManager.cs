@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public GameSettings settings;
     public GameScreen currentScreen;
     public bool transitioning;
+    public event Action UIUpdate;
 
     private CameraMovement camMovement;
     private int currentLevel;
@@ -100,6 +101,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (UIUpdate != null) { UIUpdate(); }
+        
         switch (currentScreen)
         {
             case GameScreen.title:

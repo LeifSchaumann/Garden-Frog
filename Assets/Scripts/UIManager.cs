@@ -4,6 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+public enum UIInput
+{
+    reset,
+    back
+}
+
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
@@ -12,14 +18,12 @@ public class UIManager : MonoBehaviour
     public VisualTreeAsset playUI;
 
     private UIDocument uiDoc;
-    //private Dictionary<GameScreen, VisualTreeAsset> screenToVTA;
 
     private void Awake()
     {
         instance = this;
 
         uiDoc = GetComponent<UIDocument>();
-        //screenToVTA = new Dictionary<GameScreen, VisualTreeAsset> { {GameScreen.title, titleUI}, {GameScreen.play, playUI} };
     }
 
     public void FadeInScreen(GameScreen screen, Action onFinish = null)
@@ -48,25 +52,25 @@ public class UIManager : MonoBehaviour
                 break;
             case GameScreen.play:
                 uiDoc.visualTreeAsset = playUI;
-                Button resetButton = uiDoc.rootVisualElement.Q<Button>("Reset");
-                resetButton.RegisterCallback<MouseEnterEvent>((MouseEnterEvent) => { resetButton.style.opacity = 1f; });
-                resetButton.RegisterCallback<MouseLeaveEvent>((MouseLeaveEvent) => { resetButton.style.opacity = 0.5f; });
-                resetButton.clicked += () =>
-                {
-                    UIInput(() =>
-                    {
-                        LevelManager.main.ResetLevel();
-                    });
-                };
-                break;
-        }
-    }
 
-    public void UIInput(Action action)
-    {
-        if (!GameManager.instance.transitioning)
-        {
-            action();
+                Func<bool> levelNotUpdating = () => { return !LevelManager.main.IsUpdating(); };
+
+                Button resetButton = uiDoc.rootVisualElement.Q<Button>("Reset");
+                new IconButton(resetButton, () =>
+                {
+                    if (LevelManager.main.ResetLevel())
+                    {
+                        StartCoroutine(Spin(resetButton, 0.5f));
+                    }
+                }, levelNotUpdating);
+
+                Button backButton = uiDoc.rootVisualElement.Q<Button>("Back");
+                new IconButton(backButton, () =>
+                {
+                    GameManager.instance.SetScreen(GameScreen.title);
+                }, levelNotUpdating);
+
+                break;
         }
     }
 
@@ -89,6 +93,29 @@ public class UIManager : MonoBehaviour
                 yield return null;
             }
             element.style.opacity = opacity;
+            onFinish();
+        }
+    }
+
+    IEnumerator Spin(VisualElement element, float duration, Action onFinish = null)
+    {
+        onFinish ??= () => { };
+
+        if (element == null)
+        {
+            onFinish();
+        }
+        else
+        {
+            float timePassed = 0;
+            float startOpacity = element.style.opacity.value;
+            while (timePassed < duration)
+            {
+                timePassed += Time.deltaTime;
+                element.style.rotate = new StyleRotate(new Rotate(Mathf.Lerp(0f, 360f, timePassed / duration)));
+                yield return null;
+            }
+            element.style.rotate = new StyleRotate(new Rotate(0f));
             onFinish();
         }
     }

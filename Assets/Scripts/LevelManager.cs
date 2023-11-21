@@ -67,12 +67,14 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void ResetLevel()
+    public bool ResetLevel()
     {
         if (!IsUpdating())
         {
             AddUpdate(new LevelUpdate.Load(level.json, false));
+            return true;
         }
+        return false;
     }
 
     private void GenerateLevel()

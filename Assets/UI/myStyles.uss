@@ -1,0 +1,25 @@
+.button-icon {
+    background-image: url('project://database/Assets/Textures/reset.png?fileID=2800000&guid=ac7c5ec915a378141b92e89ecf931317&type=3#reset');
+    -unity-background-scale-mode: scale-to-fit;
+    width: 6%;
+    height: 8%;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    opacity: 0.5;
+    background-color: rgba(188, 188, 188, 0);
+    align-items: stretch;
+    right: auto;
+    left: 94%;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    rotate: 0;
+    transform-origin: center;
+}
