@@ -105,13 +105,6 @@ public class GameManager : MonoBehaviour
         switch (currentScreen)
         {
             case GameScreen.title:
-                if (!transitioning)
-                {
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        SetScreen(GameScreen.play);
-                    }
-                }
                 break;
             case GameScreen.play:
                 if (!transitioning)

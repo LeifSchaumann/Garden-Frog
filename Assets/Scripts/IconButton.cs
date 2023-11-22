@@ -11,21 +11,24 @@ public class IconButton
     private float targetOpacity;
     private Func<bool> activeCondition;
     private Action onClick;
+    private Action action;
     private KeyCode hotKeyCode;
 
-    public IconButton(Button button, Action action, Func<bool> activeCondition = null, KeyCode hotKeyCode = KeyCode.None)
+    public IconButton(Button button, Action action = null, Func<bool> activeCondition = null, KeyCode hotKeyCode = KeyCode.None)
     {
         this.button = button;
         this.hoveredOver = false;
         this.hotKeyCode = hotKeyCode;
+        this.action = action ?? (() => { });
+        this.activeCondition = activeCondition ?? (() => { return true; });
         this.onClick = () =>
         {
-            if (!GameManager.instance.transitioning && activeCondition())
+            if (!GameManager.instance.transitioning && this.activeCondition())
             {
-                action();
+                this.action();
             }
         };
-        this.activeCondition = activeCondition ?? (() => { return true; });
+        
 
         button.RegisterCallback<MouseEnterEvent>((MouseEnterEvent) => { this.hoveredOver = true; });
         button.RegisterCallback<MouseLeaveEvent>((MouseLeaveEvent) => { this.hoveredOver = false; });

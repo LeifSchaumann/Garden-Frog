@@ -54,6 +54,19 @@ public class UIManager : MonoBehaviour
         {
             case GameScreen.title:
                 uiDoc.visualTreeAsset = titleUI;
+
+                Button playButton = uiDoc.rootVisualElement.Q<Button>("Play");
+                new IconButton(playButton, () =>
+                {
+                    GameManager.instance.SetScreen(GameScreen.play);
+                }, hotKeyCode: KeyCode.Space);
+
+                Button editButton = uiDoc.rootVisualElement.Q<Button>("Edit");
+                new IconButton(editButton);
+
+                Button levelsButton = uiDoc.rootVisualElement.Q<Button>("Levels");
+                new IconButton(levelsButton);
+
                 break;
             case GameScreen.play:
                 uiDoc.visualTreeAsset = playUI;
@@ -74,7 +87,7 @@ public class UIManager : MonoBehaviour
                 {
                     GameManager.instance.SetScreen(GameScreen.title);
                 }, levelNotUpdating, KeyCode.Escape);
-
+                
                 break;
         }
     }
