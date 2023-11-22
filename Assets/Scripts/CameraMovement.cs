@@ -43,7 +43,7 @@ public class CameraMovement : MonoBehaviour
     {
         float startSize = cam.orthographicSize;
         Vector3 startPos = transform.position;
-        float duration = 2f;
+        float duration = 1f;
         float timePassed = 0;
 
         while (timePassed < duration)

@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     public GameSettings settings;
     public GameScreen currentScreen;
     public bool transitioning;
-    public event Action UIUpdate;
 
     private CameraMovement camMovement;
     private int currentLevel;
@@ -101,7 +100,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (UIUpdate != null) { UIUpdate(); }
+        UIManager.instance.UpdateUI();
         
         switch (currentScreen)
         {
@@ -118,17 +117,6 @@ public class GameManager : MonoBehaviour
                 if (!transitioning)
                 {
                     InputManager.instance.AcceptInput();
-                    if (Input.GetKeyDown(KeyCode.R))
-                    {
-                        LevelManager.main.ResetLevel();
-                    }
-                    else if (Input.GetKeyDown(KeyCode.Escape))
-                    {
-                        if (!LevelManager.main.IsUpdating())
-                        {
-                            SetScreen(GameScreen.title);
-                        }
-                    }
                 }
                 break;
         }

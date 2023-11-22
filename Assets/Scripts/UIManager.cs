@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.Rendering.FilterWindow;
 
 public enum UIInput
 {
@@ -16,6 +17,9 @@ public class UIManager : MonoBehaviour
 
     public VisualTreeAsset titleUI;
     public VisualTreeAsset playUI;
+
+    public event Action UIUpdate;
+    public event Action UIClear;
 
     private UIDocument uiDoc;
 
@@ -32,7 +36,7 @@ public class UIManager : MonoBehaviour
 
         LoadScreen(screen);
         VisualElement mainContainer = uiDoc.rootVisualElement.Q("Main");
-        StartCoroutine(SetOpacity(mainContainer, 1f, 1f, onFinish));
+        SetOpacity(mainContainer, 1f, 0.5f, onFinish);
     }
 
     public void FadeOutScreen(Action onFinish = null)
@@ -40,11 +44,12 @@ public class UIManager : MonoBehaviour
         onFinish ??= () => { };
 
         VisualElement mainContainer = uiDoc.rootVisualElement.Q("Main");
-        StartCoroutine(SetOpacity(mainContainer, 0f, 1f, onFinish));
+        SetOpacity(mainContainer, 0f, 0.5f, onFinish);
     }
 
     private void LoadScreen(GameScreen screen)
     {
+        ClearUI();
         switch (screen)
         {
             case GameScreen.title:
@@ -60,21 +65,42 @@ public class UIManager : MonoBehaviour
                 {
                     if (LevelManager.main.ResetLevel())
                     {
-                        StartCoroutine(Spin(resetButton, 0.5f));
+                        Spin(resetButton, 0.5f);
                     }
-                }, levelNotUpdating);
+                }, levelNotUpdating, KeyCode.R);
 
                 Button backButton = uiDoc.rootVisualElement.Q<Button>("Back");
                 new IconButton(backButton, () =>
                 {
                     GameManager.instance.SetScreen(GameScreen.title);
-                }, levelNotUpdating);
+                }, levelNotUpdating, KeyCode.Escape);
 
                 break;
         }
     }
 
-    IEnumerator SetOpacity(VisualElement element, float opacity, float duration, Action onFinish = null)
+    public void UpdateUI()
+    {
+        if (UIUpdate != null)
+        {
+            UIUpdate();
+        }
+    }
+
+    private void ClearUI()
+    {
+        if (UIClear != null)
+        {
+            UIClear();
+        }
+    }
+
+    public void SetOpacity(VisualElement element, float opacity, float duration, Action onFinish = null)
+    {
+        StartCoroutine(SetOpacityRoutine(element, opacity, duration, onFinish));
+    }
+
+    IEnumerator SetOpacityRoutine(VisualElement element, float opacity, float duration, Action onFinish)
     {
         onFinish ??= () => { };
 
@@ -97,7 +123,12 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    IEnumerator Spin(VisualElement element, float duration, Action onFinish = null)
+    public void Spin(VisualElement element, float duration, Action onFinish = null)
+    {
+        StartCoroutine(SpinRoutine(element, duration, onFinish));
+    }
+
+    IEnumerator SpinRoutine(VisualElement element, float duration, Action onFinish)
     {
         onFinish ??= () => { };
 
@@ -108,7 +139,6 @@ public class UIManager : MonoBehaviour
         else
         {
             float timePassed = 0;
-            float startOpacity = element.style.opacity.value;
             while (timePassed < duration)
             {
                 timePassed += Time.deltaTime;
