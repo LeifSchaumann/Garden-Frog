@@ -110,8 +110,11 @@ public class UIManager : MonoBehaviour
                     Button button = level.Q<Button>("Button");
                     int levelIndex = i;
                     button.clicked += () => {
-                        GameManager.instance.currentLevel = levelIndex;
-                        GameManager.instance.SetScreen(GameScreen.play);
+                        if (GameManager.instance.DoneTransitioning())
+                        {
+                            GameManager.instance.currentLevel = levelIndex;
+                            GameManager.instance.SetScreen(GameScreen.play);
+                        }
                     };
                     level.Q<Label>("Title").text = levelJson.name;
                     levelsContainer.Add(level);
