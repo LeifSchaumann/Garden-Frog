@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/My%20Styles.uss?fileID=7433441132597879392&amp;guid=78c0a38d58a93504485139f612693932&amp;type=3#My Styles" />
+    <ui:VisualElement name="Main" style="flex-grow: 1; -unity-font: initial; -unity-font-definition: initial; padding-top: 12px; padding-right: 12px; padding-bottom: 12px; padding-left: 12px; flex-direction: row; justify-content: center;">
+        <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Back" class="button-icon" style="position: absolute; top: auto; left: 0; background-image: url(&apos;project://database/Assets/Textures/Button%20Icons/back.png?fileID=2800000&amp;guid=37f901635bb6423498419d3d0d0ffd4c&amp;type=3#back&apos;);" />
+        <ui:ScrollView vertical-scroller-visibility="Hidden" scroll-deceleration-rate="0.03" style="flex-grow: 0; flex-wrap: wrap; flex-direction: row; width: 60%; justify-content: flex-start;">
+            <ui:VisualElement name="LevelsContainer" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; height: 100%; width: auto;" />
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

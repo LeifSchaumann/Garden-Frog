@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     public VisualTreeAsset titleUI;
     public VisualTreeAsset playUI;
     public VisualTreeAsset levelsUI;
+    public VisualTreeAsset levelTemplate;
 
     public event Action UIUpdate;
     public event Action UIClear;
@@ -100,6 +101,15 @@ public class UIManager : MonoBehaviour
                 {
                     GameManager.instance.SetScreen(GameScreen.title);
                 }, doneTransitioning, KeyCode.Escape);
+
+                VisualElement levelsContainer = uiDoc.rootVisualElement.Q("LevelsContainer");
+                foreach (TextAsset levelJson in GameManager.instance.settings.levelSequence)
+                {
+                    VisualElement level = levelTemplate.CloneTree().Q("Level");
+                    level.Q<Label>("Title").text = levelJson.name;
+                    levelsContainer.Add(level);
+                }
+
                 break;
         }
     }
