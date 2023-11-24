@@ -14,6 +14,8 @@ public class UIManager : MonoBehaviour
     public VisualTreeAsset levelsUI;
     public VisualTreeAsset levelTemplate;
 
+    public AnimationCurve pressScaleCurve;
+
     public event Action UIUpdate;
     public event Action UIClear;
 
@@ -199,6 +201,34 @@ public class UIManager : MonoBehaviour
                 yield return null;
             }
             element.style.rotate = new StyleRotate(new Rotate(0f));
+            onFinish();
+        }
+    }
+
+    public void Press(VisualElement element, float duration, Action onFinish = null)
+    {
+        StartCoroutine(PressRoutine(element, duration, onFinish));
+    }
+
+    IEnumerator PressRoutine(VisualElement element, float duration, Action onFinish)
+    {
+        onFinish ??= () => { };
+
+        if (element == null)
+        {
+            onFinish();
+        }
+        else
+        {
+            float timePassed = 0;
+            while (timePassed < duration)
+            {
+                timePassed += Time.deltaTime;
+                float scaleFactor = pressScaleCurve.Evaluate(timePassed / duration);
+                element.style.scale = new StyleScale(new Scale(new Vector2(scaleFactor, scaleFactor)));
+                yield return null;
+            }
+            element.style.scale = new StyleScale(new Scale(new Vector2(1, 1)));
             onFinish();
         }
     }

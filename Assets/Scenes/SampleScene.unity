@@ -365,6 +365,39 @@ MonoBehaviour:
     type: 3}
   levelTemplate: {fileID: 9197481963319205126, guid: 4b57f98c434e7b142b52fd5f9457e455,
     type: 3}
+  pressScaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.5072343
+      outSlope: -0.5072343
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.2564055
+    - serializedVersion: 3
+      time: 0.26705608
+      value: 0.90938795
+      inSlope: -0.05409519
+      outSlope: -0.05409519
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.25742173
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.050141692
+      outSlope: 0.050141692
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.107210696
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   isFading: 0
 --- !u!1 &410087039
 GameObject:
@@ -650,6 +683,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: a95ec8290213db9499f2a62ceecc8566, type: 2}
   currentScreen: 0
+  currentLevel: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

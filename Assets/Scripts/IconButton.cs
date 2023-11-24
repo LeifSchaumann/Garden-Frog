@@ -26,9 +26,9 @@ public class IconButton
             if (this.activeCondition())
             {
                 this.action();
+                UIManager.instance.Press(button, 0.5f);
             }
         };
-        
 
         button.RegisterCallback<MouseEnterEvent>((MouseEnterEvent) => { this.hoveredOver = true; });
         button.RegisterCallback<MouseLeaveEvent>((MouseLeaveEvent) => { this.hoveredOver = false; });
