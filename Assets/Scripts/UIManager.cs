@@ -5,21 +5,18 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEditor.Rendering.FilterWindow;
 
-public enum UIInput
-{
-    reset,
-    back
-}
-
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
 
     public VisualTreeAsset titleUI;
     public VisualTreeAsset playUI;
+    public VisualTreeAsset levelsUI;
 
     public event Action UIUpdate;
     public event Action UIClear;
+
+    public bool isFading;
 
     private UIDocument uiDoc;
 
@@ -28,6 +25,7 @@ public class UIManager : MonoBehaviour
         instance = this;
 
         uiDoc = GetComponent<UIDocument>();
+        isFading = false;
     }
 
     public void FadeInScreen(GameScreen screen, Action onFinish = null)
@@ -35,7 +33,7 @@ public class UIManager : MonoBehaviour
         onFinish ??= () => { };
 
         LoadScreen(screen);
-        VisualElement mainContainer = uiDoc.rootVisualElement.Q("Main");
+        VisualElement mainContainer = uiDoc.rootVisualElement.Q("Main"); // ALL UIS MUST HAVE A "Main" CONTAINER
         SetOpacity(mainContainer, 1f, 0.5f, onFinish);
     }
 
@@ -50,6 +48,7 @@ public class UIManager : MonoBehaviour
     private void LoadScreen(GameScreen screen)
     {
         ClearUI();
+        Func<bool> doneTransitioning = GameManager.instance.DoneTransitioning;
         switch (screen)
         {
             case GameScreen.title:
@@ -59,19 +58,23 @@ public class UIManager : MonoBehaviour
                 new IconButton(playButton, () =>
                 {
                     GameManager.instance.SetScreen(GameScreen.play);
-                }, hotKeyCode: KeyCode.Space);
+                }, doneTransitioning, KeyCode.Space);
 
                 Button editButton = uiDoc.rootVisualElement.Q<Button>("Edit");
-                new IconButton(editButton);
+                new IconButton(editButton, () =>
+                {
+
+                }, doneTransitioning, KeyCode.E);
 
                 Button levelsButton = uiDoc.rootVisualElement.Q<Button>("Levels");
-                new IconButton(levelsButton);
+                new IconButton(levelsButton, () =>
+                {
+                    GameManager.instance.SetScreen(GameScreen.levels);
+                }, doneTransitioning, KeyCode.L);
 
                 break;
             case GameScreen.play:
                 uiDoc.visualTreeAsset = playUI;
-
-                Func<bool> levelNotUpdating = () => { return !LevelManager.main.IsUpdating(); };
 
                 Button resetButton = uiDoc.rootVisualElement.Q<Button>("Reset");
                 new IconButton(resetButton, () =>
@@ -80,14 +83,23 @@ public class UIManager : MonoBehaviour
                     {
                         Spin(resetButton, 0.5f);
                     }
-                }, levelNotUpdating, KeyCode.R);
+                }, doneTransitioning, KeyCode.R);
 
                 Button backButton = uiDoc.rootVisualElement.Q<Button>("Back");
                 new IconButton(backButton, () =>
                 {
                     GameManager.instance.SetScreen(GameScreen.title);
-                }, levelNotUpdating, KeyCode.Escape);
+                }, doneTransitioning, KeyCode.Escape);
                 
+                break;
+            case GameScreen.levels:
+                uiDoc.visualTreeAsset = levelsUI;
+
+                backButton = uiDoc.rootVisualElement.Q<Button>("Back");
+                new IconButton(backButton, () =>
+                {
+                    GameManager.instance.SetScreen(GameScreen.title);
+                }, doneTransitioning, KeyCode.Escape);
                 break;
         }
     }
@@ -123,6 +135,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
+            isFading = true;
             float timePassed = 0;
             float startOpacity = element.style.opacity.value;
             while (timePassed < duration)
@@ -132,6 +145,7 @@ public class UIManager : MonoBehaviour
                 yield return null;
             }
             element.style.opacity = opacity;
+            isFading = false;
             onFinish();
         }
     }

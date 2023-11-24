@@ -19,6 +19,8 @@ public class LevelManager : MonoBehaviour
     public FrogJump frog;
     public Queue<LevelUpdate> updateQueue;
 
+    public bool levelIsLoaded;
+
     private void Awake()
     {
         if (LevelManager.main == null)
@@ -27,6 +29,7 @@ public class LevelManager : MonoBehaviour
         }
         
         updateQueue = new Queue<LevelUpdate>();
+        levelIsLoaded = false;
     }
 
     public void LoadLevel(TextAsset levelJson, bool instant = false, Action onFinish = null, Action onDefined = null)
@@ -34,11 +37,13 @@ public class LevelManager : MonoBehaviour
         onFinish ??= () => { };
         onDefined ??= () => { };
 
+        levelIsLoaded = false;
         level = LevelData.Load(levelJson);
         onDefined();
         GenerateLevel();
         FallIn(instant, () =>
         {
+            levelIsLoaded = true;
             onFinish();
         });
     }
@@ -47,6 +52,7 @@ public class LevelManager : MonoBehaviour
     {
         onFinish ??= () => { };
 
+        levelIsLoaded = false;
         if (level != null)
         {
             FallOut(instant, () =>

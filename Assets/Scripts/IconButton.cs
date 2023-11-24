@@ -23,7 +23,7 @@ public class IconButton
         this.activeCondition = activeCondition ?? (() => { return true; });
         this.onClick = () =>
         {
-            if (!GameManager.instance.transitioning && this.activeCondition())
+            if (this.activeCondition())
             {
                 this.action();
             }
@@ -50,9 +50,9 @@ public class IconButton
         {
             onClick();
         }
-        if (activeCondition())
+        if (activeCondition() || UIManager.instance.isFading)
         {
-            if (hoveredOver)
+            if (hoveredOver && !UIManager.instance.isFading)
             {
                 targetOpacity = 1f;
             }

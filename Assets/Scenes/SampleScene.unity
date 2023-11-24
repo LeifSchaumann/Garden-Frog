@@ -361,6 +361,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   titleUI: {fileID: 9197481963319205126, guid: 9bc5857b15d7d6a48a510ac6c85a0990, type: 3}
   playUI: {fileID: 9197481963319205126, guid: 65b14411b92de494f8bdaa0600870cbd, type: 3}
+  levelsUI: {fileID: 9197481963319205126, guid: 0ab662c2a809a024fbcbe95f3a6d18b8,
+    type: 3}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -644,6 +646,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: a95ec8290213db9499f2a62ceecc8566, type: 2}
   currentScreen: 0
+  transitioning: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
