@@ -91,7 +91,13 @@ public class UIManager : MonoBehaviour
                 {
                     GameManager.instance.SetScreen(GameScreen.title);
                 }, doneTransitioning, KeyCode.Escape);
-                
+
+                levelsButton = uiDoc.rootVisualElement.Q<Button>("Levels");
+                new IconButton(levelsButton, () =>
+                {
+                    GameManager.instance.SetScreen(GameScreen.levels);
+                }, doneTransitioning, KeyCode.L);
+
                 break;
             case GameScreen.levels:
                 uiDoc.visualTreeAsset = levelsUI;
