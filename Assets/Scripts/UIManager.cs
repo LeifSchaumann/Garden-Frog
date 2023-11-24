@@ -120,6 +120,7 @@ public class UIManager : MonoBehaviour
                     button.clicked += () => {
                         if (GameManager.instance.DoneTransitioning())
                         {
+                            Press(level, 0.5f);
                             GameManager.instance.currentLevel = levelIndex;
                             GameManager.instance.SetScreen(GameScreen.play);
                         }
