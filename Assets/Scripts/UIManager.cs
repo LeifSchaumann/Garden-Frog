@@ -103,9 +103,16 @@ public class UIManager : MonoBehaviour
                 }, doneTransitioning, KeyCode.Escape);
 
                 VisualElement levelsContainer = uiDoc.rootVisualElement.Q("LevelsContainer");
-                foreach (TextAsset levelJson in GameManager.instance.settings.levelSequence)
+                for (int i = 0; i < GameManager.instance.settings.levelSequence.Length; i++)
                 {
+                    TextAsset levelJson = GameManager.instance.settings.levelSequence[i];
                     VisualElement level = levelTemplate.CloneTree().Q("Level");
+                    Button button = level.Q<Button>("Button");
+                    int levelIndex = i;
+                    button.clicked += () => {
+                        GameManager.instance.currentLevel = levelIndex;
+                        GameManager.instance.SetScreen(GameScreen.play);
+                    };
                     level.Q<Label>("Title").text = levelJson.name;
                     levelsContainer.Add(level);
                 }

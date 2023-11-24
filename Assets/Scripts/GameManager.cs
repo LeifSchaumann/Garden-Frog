@@ -20,9 +20,9 @@ public class GameManager : MonoBehaviour
 
     public GameSettings settings;
     public GameScreen currentScreen;
+    public int currentLevel;
 
     private CameraMovement camMovement;
-    private int currentLevel;
 
     private void Awake()
     {
@@ -73,6 +73,18 @@ public class GameManager : MonoBehaviour
                     camMovement.FocusOn(LevelManager.main.LevelCenter(), false, 1f, () =>
                     {
                         UIManager.instance.FadeInScreen(screen);
+                    });
+                }
+                else
+                {
+                    UIManager.instance.FadeOutScreen(() =>
+                    {
+                        LevelManager.main.AddUpdate(new LevelUpdate.Load(settings.levelSequence[currentLevel], false, onDefined: () => {
+                            camMovement.FocusOn(LevelManager.main.LevelCenter(), true, 1f);
+                        }, onFinish: () =>
+                        {
+                            UIManager.instance.FadeInScreen(screen);
+                        }));
                     });
                 }
                 break;
