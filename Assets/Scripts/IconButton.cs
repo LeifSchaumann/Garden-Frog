@@ -26,21 +26,21 @@ public class IconButton
             if (this.activeCondition())
             {
                 this.action();
-                UIManager.instance.Press(button, 0.5f);
+                UIManager.main.Press(button);
             }
         };
 
         button.RegisterCallback<MouseEnterEvent>((MouseEnterEvent) => { this.hoveredOver = true; });
         button.RegisterCallback<MouseLeaveEvent>((MouseLeaveEvent) => { this.hoveredOver = false; });
         button.clicked += onClick;
-        UIManager.instance.UIUpdate += Update;
-        UIManager.instance.UIClear += Clear;
+        UIManager.main.UIUpdate += Update;
+        UIManager.main.UIClear += Clear;
     }
 
     private void Clear()
     {
-        UIManager.instance.UIUpdate -= Update;
-        UIManager.instance.UIClear -= Clear;
+        UIManager.main.UIUpdate -= Update;
+        UIManager.main.UIClear -= Clear;
         button.clicked -= onClick;
     }
 
@@ -50,9 +50,9 @@ public class IconButton
         {
             onClick();
         }
-        if (activeCondition() || UIManager.instance.isFading)
+        if (activeCondition() || UIManager.main.isFading)
         {
-            if (hoveredOver && !UIManager.instance.isFading)
+            if (hoveredOver && !UIManager.main.isFading)
             {
                 targetOpacity = 1f;
             }

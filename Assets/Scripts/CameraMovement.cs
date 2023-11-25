@@ -6,9 +6,6 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    public Vector3 viewDirection;
-    public AnimationCurve zoomCurve;
-
     private Camera cam;
     private Vector3 targetPos;
     private float targetSize;
@@ -16,8 +13,12 @@ public class CameraMovement : MonoBehaviour
     private void Awake()
     {
         cam = GetComponent<Camera>();
+    }
 
-        transform.rotation = Quaternion.LookRotation(viewDirection, Vector3.up);
+    private void Start()
+    {
+        transform.rotation = Quaternion.LookRotation(GameManager.main.settings.viewDirection, Vector3.up);
+
     }
 
     public void FocusOn(Vector3 focus, bool instant = true, float zoomFactor = 1, Action onFinish = null)
@@ -26,7 +27,7 @@ public class CameraMovement : MonoBehaviour
 
         Vector2Int levelSize = LevelManager.main.level.size;
         targetSize = Mathf.Max(levelSize.y * 0.55f, levelSize.x * 9 / 16 * 0.7f) / zoomFactor;
-        targetPos = focus - viewDirection.normalized * 30f;
+        targetPos = focus - GameManager.main.settings.viewDirection.normalized * 30f;
         if (instant)
         {
             transform.position = targetPos;
@@ -48,7 +49,7 @@ public class CameraMovement : MonoBehaviour
 
         while (timePassed < duration)
         {
-            cam.orthographicSize = Mathf.Lerp(startSize, targetSize, zoomCurve.Evaluate(timePassed / duration));
+            cam.orthographicSize = Mathf.Lerp(startSize, targetSize, GameManager.main.settings.zoomCurve.Evaluate(timePassed / duration));
             transform.position = Vector3.Lerp(startPos, targetPos, timePassed / duration);
             timePassed += Time.deltaTime;
             yield return null;

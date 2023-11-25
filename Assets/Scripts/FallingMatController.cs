@@ -11,7 +11,7 @@ public class FallingMatController : MonoBehaviour
     private void Awake()
     {
         material = GetComponent<Renderer>().material;
-        settings = GameManager.instance.settings;
+        settings = GameManager.main.settings;
 
         HiddenState();
     }

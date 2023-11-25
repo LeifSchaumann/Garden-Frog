@@ -16,17 +16,18 @@ public enum GameScreen
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
-
+    public static GameManager main;
+    
     public GameSettings settings;
     public GameScreen currentScreen;
     public int currentLevel;
+    public Photographer photographer;
 
     private CameraMovement camMovement;
 
     private void Awake()
     {
-        instance = this;
+        main = this;
 
         camMovement = Camera.main.GetComponent<CameraMovement>();
         currentLevel = 0;
@@ -49,18 +50,18 @@ public class GameManager : MonoBehaviour
                         camMovement.FocusOn(LevelManager.main.LevelCenter(), true, 0.5f);
                     }, onFinish: () =>
                     {
-                        UIManager.instance.FadeInScreen(screen);
+                        UIManager.main.FadeInScreen(screen);
                     }));
                 }
                 else
                 {
-                    UIManager.instance.FadeOutScreen(() =>
+                    UIManager.main.FadeOutScreen(() =>
                     {
                         LevelManager.main.AddUpdate(new LevelUpdate.Load(settings.levelSequence[currentLevel], false, onDefined: () => {
                             camMovement.FocusOn(LevelManager.main.LevelCenter(), true, 0.5f);
                         }, onFinish: () =>
                         {
-                            UIManager.instance.FadeInScreen(screen);
+                            UIManager.main.FadeInScreen(screen);
                         }));
                     });
                 }
@@ -69,30 +70,30 @@ public class GameManager : MonoBehaviour
             case GameScreen.play:
                 if (currentScreen == GameScreen.title) // WIP
                 {
-                    UIManager.instance.FadeOutScreen();
+                    UIManager.main.FadeOutScreen();
                     camMovement.FocusOn(LevelManager.main.LevelCenter(), false, 1f, () =>
                     {
-                        UIManager.instance.FadeInScreen(screen);
+                        UIManager.main.FadeInScreen(screen);
                     });
                 }
                 else
                 {
-                    UIManager.instance.FadeOutScreen(() =>
+                    UIManager.main.FadeOutScreen(() =>
                     {
                         LevelManager.main.AddUpdate(new LevelUpdate.Load(settings.levelSequence[currentLevel], false, onDefined: () => {
                             camMovement.FocusOn(LevelManager.main.LevelCenter(), true, 1f);
                         }, onFinish: () =>
                         {
-                            UIManager.instance.FadeInScreen(screen);
+                            UIManager.main.FadeInScreen(screen);
                         }));
                     });
                 }
                 break;
             case GameScreen.levels:
-                    UIManager.instance.FadeOutScreen();
+                    UIManager.main.FadeOutScreen();
                     LevelManager.main.AddUpdate(new LevelUpdate.Unload(onFinish: () =>
                     {
-                        UIManager.instance.FadeInScreen(screen);
+                        UIManager.main.FadeInScreen(screen);
                     }));
                 break;
         }
@@ -112,12 +113,12 @@ public class GameManager : MonoBehaviour
 
     public bool DoneTransitioning()
     {
-        return !UIManager.instance.isFading && !LevelManager.main.IsUpdating(); 
+        return !UIManager.main.isFading && !LevelManager.main.IsUpdating(); 
     }
 
     private void Update()
     {
-        UIManager.instance.UpdateUI();
+        UIManager.main.UpdateUI();
         
         switch (currentScreen)
         {

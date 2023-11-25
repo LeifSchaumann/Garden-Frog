@@ -7,23 +7,17 @@ using static UnityEngine.UI.Image;
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager main;
-
-    public GameObject frogPrefab;
-    public GameObject waterPrefab;
-    public GameObject lilyPadPrefab;
-    public GameObject rockPrefab;
-    public GameObject goalPrefab;
-    public float stepHeight;
     
+    public bool isMain;
     public Level level;
-    public FrogJump frog;
     public Queue<LevelUpdate> updateQueue;
 
+    [System.NonSerialized]
     public bool levelIsLoaded;
 
     private void Awake()
     {
-        if (LevelManager.main == null)
+        if (LevelManager.main == null && isMain)
         {
             main = this;
         }
@@ -85,6 +79,12 @@ public class LevelManager : MonoBehaviour
 
     private void GenerateLevel()
     {
+        GameObject waterPrefab = GameManager.main.settings.waterPrefab;
+        GameObject lilyPadPrefab = GameManager.main.settings.lilyPadPrefab;
+        GameObject rockPrefab = GameManager.main.settings.rockPrefab;
+        GameObject frogPrefab = GameManager.main.settings.frogPrefab;
+        GameObject goalPrefab = GameManager.main.settings.goalPrefab;
+
         for (int x = 0; x < level.size.x; x++)
         {
             for (int y = 0; y < level.size.y; y++)
@@ -248,7 +248,8 @@ public class LevelManager : MonoBehaviour
 
     public Vector3 LevelToWorld(Vector2Int gridPos) // gives the center of this cell in world space
     {
-        return transform.TransformPoint(new Vector3(gridPos.x - level.size.x / 2f + 0.5f, level.GetCell(gridPos).height * stepHeight, gridPos.y - level.size.y / 2f + 0.5f));
+        float y = level.GetCell(gridPos).height * GameManager.main.settings.stepHeight;
+        return transform.TransformPoint(new Vector3(gridPos.x - level.size.x / 2f + 0.5f, y, gridPos.y - level.size.y / 2f + 0.5f));
     }
     public Vector3 LevelToWorld(int x, int y)
     {

@@ -7,7 +7,7 @@ using static UnityEditor.Rendering.FilterWindow;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager instance;
+    public static UIManager main;
 
     public VisualTreeAsset titleUI;
     public VisualTreeAsset playUI;
@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        main = this;
 
         uiDoc = GetComponent<UIDocument>();
         isFading = false;
@@ -51,7 +51,7 @@ public class UIManager : MonoBehaviour
     private void LoadScreen(GameScreen screen)
     {
         ClearUI();
-        Func<bool> doneTransitioning = GameManager.instance.DoneTransitioning;
+        Func<bool> doneTransitioning = GameManager.main.DoneTransitioning;
         switch (screen)
         {
             case GameScreen.title:
@@ -60,7 +60,7 @@ public class UIManager : MonoBehaviour
                 Button playButton = uiDoc.rootVisualElement.Q<Button>("Play");
                 new IconButton(playButton, () =>
                 {
-                    GameManager.instance.SetScreen(GameScreen.play);
+                    GameManager.main.SetScreen(GameScreen.play);
                 }, doneTransitioning, KeyCode.Space);
 
                 Button editButton = uiDoc.rootVisualElement.Q<Button>("Edit");
@@ -72,7 +72,7 @@ public class UIManager : MonoBehaviour
                 Button levelsButton = uiDoc.rootVisualElement.Q<Button>("Levels");
                 new IconButton(levelsButton, () =>
                 {
-                    GameManager.instance.SetScreen(GameScreen.levels);
+                    GameManager.main.SetScreen(GameScreen.levels);
                 }, doneTransitioning, KeyCode.L);
 
                 break;
@@ -91,13 +91,13 @@ public class UIManager : MonoBehaviour
                 Button backButton = uiDoc.rootVisualElement.Q<Button>("Back");
                 new IconButton(backButton, () =>
                 {
-                    GameManager.instance.SetScreen(GameScreen.title);
+                    GameManager.main.SetScreen(GameScreen.title);
                 }, doneTransitioning, KeyCode.Escape);
 
                 levelsButton = uiDoc.rootVisualElement.Q<Button>("Levels");
                 new IconButton(levelsButton, () =>
                 {
-                    GameManager.instance.SetScreen(GameScreen.levels);
+                    GameManager.main.SetScreen(GameScreen.levels);
                 }, doneTransitioning, KeyCode.L);
 
                 break;
@@ -107,22 +107,22 @@ public class UIManager : MonoBehaviour
                 backButton = uiDoc.rootVisualElement.Q<Button>("Back");
                 new IconButton(backButton, () =>
                 {
-                    GameManager.instance.SetScreen(GameScreen.title);
+                    GameManager.main.SetScreen(GameScreen.title);
                 }, doneTransitioning, KeyCode.Escape);
 
                 VisualElement levelsContainer = uiDoc.rootVisualElement.Q("LevelsContainer");
-                for (int i = 0; i < GameManager.instance.settings.levelSequence.Length; i++)
+                for (int i = 0; i < GameManager.main.settings.levelSequence.Length; i++)
                 {
-                    TextAsset levelJson = GameManager.instance.settings.levelSequence[i];
+                    TextAsset levelJson = GameManager.main.settings.levelSequence[i];
                     VisualElement level = levelTemplate.CloneTree().Q("Level");
                     Button button = level.Q<Button>("Button");
                     int levelIndex = i;
                     button.clicked += () => {
-                        if (GameManager.instance.DoneTransitioning())
+                        if (GameManager.main.DoneTransitioning())
                         {
-                            Press(level, 0.5f);
-                            GameManager.instance.currentLevel = levelIndex;
-                            GameManager.instance.SetScreen(GameScreen.play);
+                            Press(level);
+                            GameManager.main.currentLevel = levelIndex;
+                            GameManager.main.SetScreen(GameScreen.play);
                         }
                     };
                     level.Q<Label>("Title").text = levelJson.name;
@@ -206,7 +206,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void Press(VisualElement element, float duration, Action onFinish = null)
+    public void Press(VisualElement element, float duration = 0.35f, Action onFinish = null)
     {
         StartCoroutine(PressRoutine(element, duration, onFinish));
     }
