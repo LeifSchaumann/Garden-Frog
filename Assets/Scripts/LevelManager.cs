@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.UI.Image;
 
 public class LevelManager : MonoBehaviour
 {
@@ -99,19 +97,19 @@ public class LevelManager : MonoBehaviour
                 switch (PO1)
                 {
                     case PuzzleObject.L1.LilyPad:
-                        Vector3 lilyPos = LevelToWorld(x, y) + Vector3.up * lilyPadPrefab.transform.localScale.y / 2;
-                        PO1.gameObject = Instantiate(lilyPadPrefab, lilyPos, Quaternion.identity, transform);
+                        Vector3 lilyPos = LevelToWorld(x, y);
+                        PO1.gameObject = Instantiate(lilyPadPrefab, lilyPos, RandomRotation(), transform);
                         break;
                     case PuzzleObject.L1.Rock:
-                        Vector3 rockPos = LevelToWorld(x, y) + Vector3.up * rockPrefab.transform.localScale.y / 2;
-                        Instantiate(rockPrefab, rockPos, Quaternion.identity, transform);
+                        Vector3 rockPos = LevelToWorld(x, y);
+                        Instantiate(rockPrefab, rockPos, RandomRotation(), transform);
                         break;
                 }
                 PuzzleObject PO2 = level.GetCell(x, y).PO2;
                 switch (PO2)
                 {
                     case PuzzleObject.L2.Frog:
-                        Vector3 frogPos = LevelToWorld(x, y) + Vector3.up * frogPrefab.transform.localScale.y / 2;
+                        Vector3 frogPos = LevelToWalkPos(x, y);
                         PO2.gameObject = Instantiate(frogPrefab, frogPos, Quaternion.identity, transform);
                         break;
                 }
@@ -258,6 +256,18 @@ public class LevelManager : MonoBehaviour
     public Vector3 LevelCenter()
     {
         return transform.position;
+    }
+    public Vector3 LevelToWalkPos(Vector2Int gridPos)
+    {
+        return LevelToWorld(gridPos) + Vector3.up * level.GetCell(gridPos).PO1.walkHeight;
+    }
+    public Vector3 LevelToWalkPos(int x, int y)
+    {
+        return LevelToWorld(x, y) + Vector3.up * level.GetCell(x, y).PO1.walkHeight;
+    }
+    private Quaternion RandomRotation()
+    {
+        return Quaternion.AngleAxis(UnityEngine.Random.Range(0f, 360f), Vector3.up);
     }
 }
 

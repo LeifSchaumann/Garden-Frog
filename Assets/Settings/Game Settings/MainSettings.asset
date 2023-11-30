@@ -162,7 +162,7 @@ MonoBehaviour:
   goalPrefab: {fileID: 3059360396552914193, guid: 1db7c7bc547125349a6a1761ccd3d2d2,
     type: 3}
   stepHeight: 0.4
-  viewDirection: {x: -0.5, y: -1, z: 1}
+  viewDirection: {x: -1, y: -3, z: 3}
   zoomCurve:
     serializedVersion: 2
     m_Curve:

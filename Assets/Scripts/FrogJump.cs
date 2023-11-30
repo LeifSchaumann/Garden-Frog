@@ -16,7 +16,7 @@ public class FrogJump : MonoBehaviour
 
     private IEnumerator JumpRoutine(Vector2Int targetGridPos, Action onFinish)
     {
-        Vector3 targetPos = LevelManager.main.LevelToWorld(targetGridPos) + Vector3.up * transform.localScale.y / 2;
+        Vector3 targetPos = LevelManager.main.LevelToWalkPos(targetGridPos);
         Vector3 startPos = transform.position;
         float jumpDistance = Vector3.Distance(targetPos, startPos);
         float jumpTime = jumpDistance / jumpSpeed;

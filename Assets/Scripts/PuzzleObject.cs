@@ -45,12 +45,14 @@ public abstract class PuzzleObject
     public abstract class L1 : PuzzleObject
     {
         public bool isWalkable;
+        public float walkHeight;
         public virtual void Push(Vector2Int dir) { }
         public class None : L1
         {
             public None()
             {
                 this.isWalkable = false;
+                walkHeight = 0;
             }
         }
         public class LilyPad : L1
@@ -58,6 +60,7 @@ public abstract class PuzzleObject
             public LilyPad()
             {
                 this.isWalkable = true;
+                this.walkHeight = 0.05f;
             }
             public override void Push(Vector2Int dir)
             {
@@ -90,6 +93,7 @@ public abstract class PuzzleObject
             public Rock()
             {
                 this.isWalkable = true;
+                this.walkHeight = 0.13f;
             }
         }
     }
