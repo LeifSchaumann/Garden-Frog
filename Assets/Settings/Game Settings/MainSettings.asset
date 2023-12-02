@@ -13,10 +13,18 @@ MonoBehaviour:
   m_Name: MainSettings
   m_EditorClassIdentifier: 
   levelSequence:
+  - {fileID: 4900000, guid: e2789b097eba1634389d0018cb50b80f, type: 3}
   - {fileID: 4900000, guid: 6eb1a4d1dc78d3444b2bca164bf1c333, type: 3}
+  - {fileID: 4900000, guid: f6e30e8b38921ed4eb7a065158dc89d6, type: 3}
+  - {fileID: 4900000, guid: c24cb800b2f0ae4458861dacc536edb7, type: 3}
+  - {fileID: 4900000, guid: be548622d5beb99449425ac54423d4b5, type: 3}
+  - {fileID: 4900000, guid: 61377b108fed0e14f9a4b53f8b39adef, type: 3}
+  - {fileID: 4900000, guid: 854f568ed6dbc68448c406635083b429, type: 3}
   - {fileID: 4900000, guid: a530173861711764fb4da533be332fb9, type: 3}
-  - {fileID: 4900000, guid: f726e9bd0041cdf4daffa7005bc3cf0e, type: 3}
-  - {fileID: 4900000, guid: 2fe95e69350d1ef479395a2d656266d1, type: 3}
+  - {fileID: 4900000, guid: 177f8d3d08b14064fb4b41121dde64ba, type: 3}
+  - {fileID: 4900000, guid: a530173861711764fb4da533be332fb9, type: 3}
+  - {fileID: 4900000, guid: 076ee253a18f8d545841ac00ea3ccfdd, type: 3}
+  - {fileID: 4900000, guid: e8f7d31c74d88754cb98fe39e5d4e70b, type: 3}
   fallInMotion:
     serializedVersion: 2
     m_Curve:
@@ -187,3 +195,5 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  algaeColor: {r: 0.394676, g: 0.6415094, b: 0.28686363, a: 0}
+  shallowColor: {r: 0.30758274, g: 0.47418994, b: 0.8490566, a: 1}

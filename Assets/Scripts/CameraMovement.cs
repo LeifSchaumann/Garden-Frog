@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
+    public LevelManager levelManager;
+
     private Camera cam;
     private Vector3 targetPos;
     private float targetSize;
@@ -25,38 +27,39 @@ public class CameraMovement : MonoBehaviour
     {
         onFinish ??= () => { };
 
-        Vector2Int levelSize = LevelManager.main.level.size;
-        targetSize = Mathf.Max(levelSize.y * 0.55f, levelSize.x * 9 / 16 * 0.7f) / zoomFactor;
-        targetPos = focus - GameManager.main.settings.viewDirection.normalized * 30f;
+        transform.position = focus - GameManager.main.settings.viewDirection.normalized * 30f;
+        Vector2Int levelSize = levelManager.level.size;
+        Vector3 leftCornerViewPos = cam.WorldToViewportPoint(levelManager.LevelToWorld(-1, -1));
+        Vector3 rightCornerViewPos = cam.WorldToViewportPoint(levelManager.LevelToWorld(levelSize.x, -1));
+        leftCornerViewPos = 2f * (leftCornerViewPos - 0.5f * Vector3.one);
+        rightCornerViewPos = 2f * (rightCornerViewPos - 0.5f * Vector3.one);
+        float zoomAdjustment = Mathf.Max(Mathf.Abs(leftCornerViewPos.x), Mathf.Abs(leftCornerViewPos.y), Mathf.Abs(rightCornerViewPos.x), Mathf.Abs(rightCornerViewPos.y));
+        targetSize = cam.orthographicSize * zoomAdjustment / zoomFactor;
         if (instant)
         {
-            transform.position = targetPos;
             cam.orthographicSize = targetSize;
             onFinish();
         }
         else
         {
-            StartCoroutine(FocusRoutine(targetPos, targetSize, onFinish));
+            StartCoroutine(FocusRoutine(targetSize, onFinish));
         }
     }
 
-    IEnumerator FocusRoutine(Vector3 targetPos, float targetSize, Action onFinish)
+    IEnumerator FocusRoutine(float targetSize, Action onFinish)
     {
         float startSize = cam.orthographicSize;
-        Vector3 startPos = transform.position;
         float duration = 1f;
         float timePassed = 0;
 
         while (timePassed < duration)
         {
             cam.orthographicSize = Mathf.Lerp(startSize, targetSize, GameManager.main.settings.zoomCurve.Evaluate(timePassed / duration));
-            transform.position = Vector3.Lerp(startPos, targetPos, timePassed / duration);
             timePassed += Time.deltaTime;
             yield return null;
         }
 
         cam.orthographicSize = targetSize;
-        transform.position = targetPos;
         onFinish();
     }
 }

@@ -31,8 +31,8 @@ public class LevelManager : MonoBehaviour
 
         levelIsLoaded = false;
         level = LevelData.Load(levelJson);
-        onDefined();
         GenerateLevel();
+        onDefined();
         FallIn(instant, () =>
         {
             levelIsLoaded = true;
@@ -87,11 +87,21 @@ public class LevelManager : MonoBehaviour
         {
             for (int y = 0; y < level.size.y; y++)
             {
-                PuzzleObject PO0 = level.GetCell(x, y).PO0;
-                if (PO0 is PuzzleObject.L0.Water)
+                PuzzleObject.L0 PO0 = level.GetCell(x, y).PO0;
+                if (PO0.hasWater)
                 {
                     Vector3 waterPos = LevelToWorld(x, y) + Vector3.down * waterPrefab.transform.localScale.y / 2;
-                    Instantiate(waterPrefab, waterPos, Quaternion.identity, transform);
+                    GameObject water = Instantiate(waterPrefab, waterPos, Quaternion.identity, transform);
+                    if (PO0 is PuzzleObject.L0.Algae)
+                    {
+                        water.GetComponent<Renderer>().material.color = GameManager.main.settings.algaeColor;
+                        water.GetComponent<Renderer>().material.SetInt("_hasWavePattern", 1);
+                    }
+                    else if (PO0 is PuzzleObject.L0.ShallowWater)
+                    {
+                        water.GetComponent<Renderer>().material.color = GameManager.main.settings.shallowColor;
+                        water.GetComponent<Renderer>().material.SetInt("_hasWavePattern", 1);
+                    }
                 }
                 PuzzleObject PO1 = level.GetCell(x, y).PO1;
                 switch (PO1)

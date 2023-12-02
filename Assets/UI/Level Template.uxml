@@ -9,7 +9,7 @@
                         <ui:VisualElement name="LevelImage" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Textures/Button%20Icons/edit.png?fileID=2800000&amp;guid=aae075b19d4370348a53d8b7ecf40de0&amp;type=3#edit&apos;); -unity-background-scale-mode: scale-to-fit;" />
                     </ui:Button>
                     <ui:VisualElement name="Info" style="flex-grow: 1; flex-shrink: 0; flex-basis: 0;">
-                        <ui:Label tabindex="-1" text="Level 1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Title" style="-unity-font: url(&apos;project://database/Assets/UI/Fonts/PlayfairDisplay-VariableFont_wght.ttf?fileID=12800000&amp;guid=d578441aba6e6f549b10a66275977b18&amp;type=3#PlayfairDisplay-VariableFont_wght&apos;); color: rgb(255, 255, 255); -unity-text-align: middle-center; font-size: 22px; flex-grow: 1; -unity-font-definition: initial;" />
+                        <ui:Label tabindex="-1" text="Level 1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Title" style="-unity-font: url(&apos;project://database/Assets/UI/Fonts/HedvigLettersSerif.ttf?fileID=12800000&amp;guid=ee7618f6a04be7648b830b61b2bf543a&amp;type=3#HedvigLettersSerif&apos;); color: rgb(255, 255, 255); -unity-text-align: middle-center; font-size: 22px; flex-grow: 1; -unity-font-definition: initial;" />
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>

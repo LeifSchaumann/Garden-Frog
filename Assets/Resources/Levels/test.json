@@ -1,0 +1,22 @@
+{
+    "heightMap": [
+        "0000000",
+        "0000000",
+        "0000000"
+    ],
+    "layer0": [
+        "WAWSWWW",
+        "WAWWWWW",
+        "WWXXWWW"
+    ],
+    "layer1": [
+        "WAWSLWR",
+        "WLWRWRR",
+        "WWXXWWR"
+    ],
+    "layer2": [
+        "WAWSLWR",
+        "WLWFWRR",
+        "WWXXWWG"
+    ]
+}

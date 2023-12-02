@@ -27,6 +27,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _SineAmplitude: 0
+    - _hasWavePattern: 0
     m_Colors:
     - _Color: {r: 0.16760412, g: 0.37333894, b: 0.8301887, a: 1}
   m_BuildTextureStacks: []

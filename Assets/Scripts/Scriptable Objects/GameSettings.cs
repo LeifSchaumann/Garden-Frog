@@ -27,4 +27,8 @@ public class GameSettings : ScriptableObject
     [Header("Camera Settings")]
     public Vector3 viewDirection;
     public AnimationCurve zoomCurve;
+
+    [Header("Colors")]
+    public Color algaeColor;
+    public Color shallowColor;
 }

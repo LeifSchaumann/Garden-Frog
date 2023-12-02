@@ -41,6 +41,20 @@ public abstract class PuzzleObject
                 this.hasWater = true;
             }
         }
+        public class ShallowWater : L0
+        {
+            public ShallowWater()
+            {
+                this.hasWater = true;
+            }
+        }
+        public class Algae : L0
+        {
+            public Algae()
+            {
+                this.hasWater = true;
+            }
+        }
     }
     public abstract class L1 : PuzzleObject
     {
@@ -52,7 +66,7 @@ public abstract class PuzzleObject
             public None()
             {
                 this.isWalkable = false;
-                walkHeight = 0;
+                walkHeight = -0.2f;
             }
         }
         public class LilyPad : L1
@@ -65,12 +79,17 @@ public abstract class PuzzleObject
             public override void Push(Vector2Int dir)
             {
                 PuzzleObject.L2 carry = cell.PO2;
+                bool first = true;
                 while (true)
                 {
                     Cell nextCell = cell.AdjacentCell(dir);
-                    if (nextCell.PO0.hasWater && nextCell.PO1 is PuzzleObject.L1.None && nextCell.height == cell.height)
+                    if (nextCell.PO0.hasWater &&
+                        nextCell.PO1 is PuzzleObject.L1.None &&
+                        nextCell.height == cell.height &&
+                        (first || !(cell.PO0 is PuzzleObject.L0.Algae)))
                     {
                         Move(nextCell);
+                        first = false;
                     }
                     else
                     {
@@ -119,7 +138,7 @@ public abstract class PuzzleObject
             public void Jump(Vector2Int dir)
             {
                 Cell targetCell = cell.AdjacentCell(dir);
-                if (targetCell.PO1.isWalkable &&
+                if ((targetCell.PO1.isWalkable || targetCell.PO0 is PuzzleObject.L0.ShallowWater) &&
                     !targetCell.PO2.isObstacle &&
                     targetCell.height < cell.height + 2)
                 {

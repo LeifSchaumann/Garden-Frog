@@ -5,29 +5,45 @@ using UnityEngine;
 [System.Serializable]
 public class LevelData
 {
-    public Vector2Int size;
     public string[] heightMap;
+    public string[] layer0;
     public string[] layer1;
     public string[] layer2;
     public static Level Load(TextAsset levelJson)
     {
         //TextAsset levelJson = Resources.Load<TextAsset>("Levels/" + levelName);
         LevelData levelData = JsonUtility.FromJson<LevelData>(levelJson.text);
-        Level level = new Level(levelData.size);
+        Vector2Int size = new Vector2Int(levelData.heightMap[0].Length, levelData.heightMap.Length);
+        Level level = new Level(size);
         level.json = levelJson;
 
-        for (int x = 0; x < levelData.size.x; x++)
+        for (int x = 0; x < size.x; x++)
         {
-            for (int y = 0; y < levelData.size.y; y++)
+            for (int y = 0; y < size.y; y++)
             {
-                int accessX = levelData.size.y - y - 1;
+                int accessX = size.y - y - 1;
                 int accessY = x;
 
                 char heightMapChar = levelData.heightMap[accessX][accessY];
                 if (heightMapChar - '0' >= 0 && heightMapChar - '0' < 10)
                 {
                     level.cells[x, y].height = heightMapChar - '0';
-                    level.cells[x, y].SetPO(new PuzzleObject.L0.Water());
+                }
+
+                switch (levelData.layer0[accessX][accessY])
+                {
+                    case 'X':
+                        level.cells[x, y].SetPO(new PuzzleObject.L0.None());
+                        break;
+                    case 'S':
+                        level.cells[x, y].SetPO(new PuzzleObject.L0.ShallowWater());
+                        break;
+                    case 'A':
+                        level.cells[x, y].SetPO(new PuzzleObject.L0.Algae());
+                        break;
+                    default:
+                        level.cells[x, y].SetPO(new PuzzleObject.L0.Water());
+                        break;
                 }
 
                 switch (levelData.layer1[accessX][accessY])
@@ -37,9 +53,6 @@ public class LevelData
                         break;
                     case 'R':
                         level.cells[x, y].SetPO(new PuzzleObject.L1.Rock());
-                        break;
-                    default:
-                        level.cells[x, y].SetPO(new PuzzleObject.L1.None());
                         break;
                 }
 
@@ -52,9 +65,6 @@ public class LevelData
                         break;
                     case 'G':
                         level.cells[x, y].SetPO(new PuzzleObject.L3.Goal());
-                        break;
-                    default:
-                        level.cells[x, y].SetPO(new PuzzleObject.L2.None());
                         break;
                 }
             }

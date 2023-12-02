@@ -20,15 +20,23 @@ public class FrogJump : MonoBehaviour
         Vector3 startPos = transform.position;
         float jumpDistance = Vector3.Distance(targetPos, startPos);
         float jumpTime = jumpDistance / jumpSpeed;
+        float turnTime = 0.15f;
+        Quaternion targetRotation = Quaternion.LookRotation(targetPos - startPos);
+        Quaternion startRotation = transform.rotation;
         float timePassed = 0;
 
         while (timePassed < jumpTime)
         {
+            if (timePassed < turnTime)
+            {
+                transform.rotation = Quaternion.Lerp(startRotation, targetRotation, timePassed / turnTime);
+            }
             transform.position = Vector3.Lerp(startPos, targetPos, timePassed / jumpTime) + Vector3.up * jumpCurve.Evaluate(timePassed / jumpTime) * jumpDistance;
             timePassed += Time.deltaTime;
             yield return null;
         }
         
+        transform.rotation = targetRotation;
         transform.position = targetPos;
         onFinish();
     }
