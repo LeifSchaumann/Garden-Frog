@@ -111,11 +111,20 @@ public class UIManager : MonoBehaviour
                 }, doneTransitioning, KeyCode.Escape);
 
                 VisualElement levelsContainer = uiDoc.rootVisualElement.Q("LevelsContainer");
-                for (int i = 0; i < GameManager.main.settings.levelSequence.Length; i++)
+                for (int i = 0; i < GameManager.main.levelSequence.Length; i++)
                 {
-                    TextAsset levelJson = GameManager.main.settings.levelSequence[i];
+                    LevelData levelData = GameManager.main.levelSequence[i];
                     VisualElement level = levelTemplate.CloneTree().Q("Level");
                     Button button = level.Q<Button>("Button");
+                    VisualElement stamp = level.Q("LilyStamp");
+                    if (levelData.completed)
+                    {
+                        stamp.style.opacity = 1f;
+                    }
+                    else
+                    {
+                        stamp.style.opacity = 0f;
+                    }
                     int levelIndex = i;
                     button.clicked += () => {
                         if (GameManager.main.DoneTransitioning())
@@ -125,7 +134,7 @@ public class UIManager : MonoBehaviour
                             GameManager.main.SetScreen(GameScreen.play);
                         }
                     };
-                    level.Q<Label>("Title").text = levelJson.name;
+                    level.Q<Label>("Title").text = (levelIndex + 1).ToString();
                     levelsContainer.Add(level);
                 }
 

@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
 
     public void NextLevel()
     {
-        if (settings.levelSequence.Length > currentLevel + 1)
+        if (levelSequence.Length > currentLevel + 1)
         {
             currentLevel++;
             LevelManager.main.AddUpdate(new LevelUpdate.Load(levelSequence[currentLevel], onDefined: () => {
