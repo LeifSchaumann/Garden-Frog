@@ -8,7 +8,7 @@ public class Level
     public PuzzleObject.L2.Frog frog;
     public Vector2Int size;
     public LevelManager manager;
-    public TextAsset json;
+    public LevelData data;
 
     public Level(Vector2Int size)
     {

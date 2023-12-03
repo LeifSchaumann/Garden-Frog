@@ -22,7 +22,7 @@ public class LevelUpdate
 
     public class Load : LevelUpdate
     {
-        public Load(TextAsset levelJson, bool instant = false, Action onFinish = null, Action onDefined = null)
+        public Load(LevelData levelData, bool instant = false, Action onFinish = null, Action onDefined = null)
         {
             onFinish ??= () => { };
             onDefined ??= () => { };
@@ -31,7 +31,7 @@ public class LevelUpdate
             this.postUpdates = new LevelUpdate[] { new ChangeGridOpacity(1f) };
 
             this.execute = (LevelManager manager) => {
-                manager.LoadLevel(levelJson, instant, () =>
+                manager.LoadLevel(levelData, instant, () =>
                 {
                     onFinish();
                     manager.UpdateFinished();

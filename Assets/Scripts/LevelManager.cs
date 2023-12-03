@@ -24,13 +24,13 @@ public class LevelManager : MonoBehaviour
         levelIsLoaded = false;
     }
 
-    public void LoadLevel(TextAsset levelJson, bool instant = false, Action onFinish = null, Action onDefined = null)
+    public void LoadLevel(LevelData levelData, bool instant = false, Action onFinish = null, Action onDefined = null)
     {
         onFinish ??= () => { };
         onDefined ??= () => { };
 
         levelIsLoaded = false;
-        level = LevelData.Load(levelJson);
+        level = levelData.MakeLevel();
         GenerateLevel();
         onDefined();
         FallIn(instant, () =>
@@ -69,7 +69,7 @@ public class LevelManager : MonoBehaviour
     {
         if (!IsUpdating())
         {
-            AddUpdate(new LevelUpdate.Load(level.json, false));
+            AddUpdate(new LevelUpdate.Load(level.data, false));
             return true;
         }
         return false;

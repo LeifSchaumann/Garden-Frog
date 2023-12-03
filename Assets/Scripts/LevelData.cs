@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,17 +6,34 @@ using UnityEngine;
 [System.Serializable]
 public class LevelData
 {
+    public int lilyRequirement;
     public string[] heightMap;
     public string[] layer0;
     public string[] layer1;
     public string[] layer2;
-    public static Level Load(TextAsset levelJson)
+
+    [NonSerialized]
+    public bool completed;
+    [NonSerialized]
+    public Vector2Int size;
+    [NonSerialized]
+    public TextAsset json;
+
+
+    public static LevelData LoadData(TextAsset levelJson)
     {
         //TextAsset levelJson = Resources.Load<TextAsset>("Levels/" + levelName);
         LevelData levelData = JsonUtility.FromJson<LevelData>(levelJson.text);
-        Vector2Int size = new Vector2Int(levelData.heightMap[0].Length, levelData.heightMap.Length);
+        levelData.completed = false;
+        levelData.size = new Vector2Int(levelData.heightMap[0].Length, levelData.heightMap.Length);
+        levelData.json = levelJson;
+        return levelData;
+    }
+
+    public Level MakeLevel()
+    {
         Level level = new Level(size);
-        level.json = levelJson;
+        level.data = this;
 
         for (int x = 0; x < size.x; x++)
         {
@@ -24,13 +42,13 @@ public class LevelData
                 int accessX = size.y - y - 1;
                 int accessY = x;
 
-                char heightMapChar = levelData.heightMap[accessX][accessY];
+                char heightMapChar = heightMap[accessX][accessY];
                 if (heightMapChar - '0' >= 0 && heightMapChar - '0' < 10)
                 {
                     level.cells[x, y].height = heightMapChar - '0';
                 }
 
-                switch (levelData.layer0[accessX][accessY])
+                switch (layer0[accessX][accessY])
                 {
                     case 'X':
                         level.cells[x, y].SetPO(new PuzzleObject.L0.None());
@@ -46,7 +64,7 @@ public class LevelData
                         break;
                 }
 
-                switch (levelData.layer1[accessX][accessY])
+                switch (layer1[accessX][accessY])
                 {
                     case 'L':
                         level.cells[x, y].SetPO(new PuzzleObject.L1.LilyPad());
@@ -56,7 +74,7 @@ public class LevelData
                         break;
                 }
 
-                switch (levelData.layer2[accessX][accessY])
+                switch (layer2[accessX][accessY])
                 {
                     case 'F':
                         PuzzleObject.L2.Frog frog = new PuzzleObject.L2.Frog();
@@ -71,4 +89,5 @@ public class LevelData
         }
         return level;
     }
+    
 }

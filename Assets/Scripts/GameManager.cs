@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public GameSettings settings;
     public GameScreen currentScreen;
     public int currentLevel;
+    public LevelData[] levelSequence;
     public Photographer photographer;
 
     private CameraMovement camMovement;
@@ -32,6 +33,12 @@ public class GameManager : MonoBehaviour
         camMovement = Camera.main.GetComponent<CameraMovement>();
         currentLevel = 0;
         currentScreen = GameScreen.none;
+
+        levelSequence = new LevelData[settings.levelSequence.Length];
+        for (int i = 0; i < settings.levelSequence.Length; i++)
+        {
+            levelSequence[i] = LevelData.LoadData(settings.levelSequence[i]);
+        }
     }
 
     private void Start()
@@ -46,7 +53,7 @@ public class GameManager : MonoBehaviour
             case GameScreen.title:
                 if (currentScreen == GameScreen.none)
                 {
-                    LevelManager.main.AddUpdate(new LevelUpdate.Load(settings.levelSequence[currentLevel], false, onDefined: () => {
+                    LevelManager.main.AddUpdate(new LevelUpdate.Load(levelSequence[currentLevel], false, onDefined: () => {
                         camMovement.FocusOn(LevelManager.main.LevelCenter(), true, 0.5f);
                     }, onFinish: () =>
                     {
@@ -57,7 +64,7 @@ public class GameManager : MonoBehaviour
                 {
                     UIManager.main.FadeOutScreen(() =>
                     {
-                        LevelManager.main.AddUpdate(new LevelUpdate.Load(settings.levelSequence[currentLevel], false, onDefined: () => {
+                        LevelManager.main.AddUpdate(new LevelUpdate.Load(levelSequence[currentLevel], false, onDefined: () => {
                             camMovement.FocusOn(LevelManager.main.LevelCenter(), true, 0.5f);
                         }, onFinish: () =>
                         {
@@ -80,7 +87,7 @@ public class GameManager : MonoBehaviour
                 {
                     UIManager.main.FadeOutScreen(() =>
                     {
-                        LevelManager.main.AddUpdate(new LevelUpdate.Load(settings.levelSequence[currentLevel], false, onDefined: () => {
+                        LevelManager.main.AddUpdate(new LevelUpdate.Load(levelSequence[currentLevel], false, onDefined: () => {
                             camMovement.FocusOn(LevelManager.main.LevelCenter(), true, 1f);
                         }, onFinish: () =>
                         {
@@ -105,7 +112,7 @@ public class GameManager : MonoBehaviour
         if (settings.levelSequence.Length > currentLevel + 1)
         {
             currentLevel++;
-            LevelManager.main.AddUpdate(new LevelUpdate.Load(settings.levelSequence[currentLevel], onDefined: () => {
+            LevelManager.main.AddUpdate(new LevelUpdate.Load(levelSequence[currentLevel], onDefined: () => {
                 camMovement.FocusOn(LevelManager.main.LevelCenter(), true);
             }));
         }
