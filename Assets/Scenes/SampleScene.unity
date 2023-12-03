@@ -343,6 +343,8 @@ MonoBehaviour:
     type: 3}
   levelTemplate: {fileID: 9197481963319205126, guid: 4b57f98c434e7b142b52fd5f9457e455,
     type: 3}
+  lockedLevelTemplate: {fileID: 9197481963319205126, guid: bc90a1816c50a1f4e81ccbb4ec827139,
+    type: 3}
   pressScaleCurve:
     serializedVersion: 2
     m_Curve:
@@ -794,6 +796,8 @@ MonoBehaviour:
   currentLevel: 0
   levelSequence: []
   photographer: {fileID: 0}
+  cheatsEnabled: 0
+  lilyCount: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

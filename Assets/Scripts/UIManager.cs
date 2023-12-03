@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     public VisualTreeAsset levelsUI;
     public VisualTreeAsset completedUI;
     public VisualTreeAsset levelTemplate;
+    public VisualTreeAsset lockedLevelTemplate;
 
     public AnimationCurve pressScaleCurve;
 
@@ -146,28 +147,44 @@ public class UIManager : MonoBehaviour
                 for (int i = 0; i < GameManager.main.levelSequence.Length; i++)
                 {
                     LevelData levelData = GameManager.main.levelSequence[i];
-                    VisualElement level = levelTemplate.CloneTree().Q("Level");
-                    Button button = level.Q<Button>("Button");
-                    VisualElement stamp = level.Q("LilyStamp");
-                    if (levelData.completed)
+                    if (!levelData.locked)
                     {
-                        stamp.style.opacity = 1f;
+                        VisualElement level = levelTemplate.CloneTree().Q("Level");
+                        Button button = level.Q<Button>("Button");
+                        VisualElement stamp = level.Q("LilyStamp");
+                        if (levelData.completed)
+                        {
+                            stamp.style.opacity = 1f;
+                        }
+                        else
+                        {
+                            stamp.style.opacity = 0f;
+                        }
+                        int levelIndex = i;
+                        button.clicked += () => {
+                            if (GameManager.main.DoneTransitioning())
+                            {
+                                Press(level);
+                                GameManager.main.currentLevel = levelIndex;
+                                GameManager.main.SetScreen(GameScreen.play);
+                            }
+                        };
+                        level.Q<Label>("Title").text = (levelIndex + 1).ToString();
+                        levelsContainer.Add(level);
                     }
                     else
                     {
-                        stamp.style.opacity = 0f;
+                        VisualElement level = lockedLevelTemplate.CloneTree().Q("Level");
+                        Button button = level.Q<Button>("Button");
+                        button.clicked += () => {
+                            if (GameManager.main.DoneTransitioning())
+                            {
+                                Press(level);
+                            }
+                        };
+                        level.Q<Label>("LilyRequirement").text = levelData.lilyRequirement.ToString();
+                        levelsContainer.Add(level);
                     }
-                    int levelIndex = i;
-                    button.clicked += () => {
-                        if (GameManager.main.DoneTransitioning())
-                        {
-                            Press(level);
-                            GameManager.main.currentLevel = levelIndex;
-                            GameManager.main.SetScreen(GameScreen.play);
-                        }
-                    };
-                    level.Q<Label>("Title").text = (levelIndex + 1).ToString();
-                    levelsContainer.Add(level);
                 }
                 break;
         }

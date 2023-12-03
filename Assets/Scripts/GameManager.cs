@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public int currentLevel;
     public LevelData[] levelSequence;
     public Photographer photographer;
+    public bool cheatsEnabled;
 
     public int lilyCount;
 
@@ -42,6 +43,10 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < settings.levelSequence.Length; i++)
         {
             levelSequence[i] = LevelData.LoadData(settings.levelSequence[i]);
+            if (cheatsEnabled)
+            {
+                levelSequence[i].locked = false;
+            }
         }
     }
 
@@ -122,7 +127,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = currentLevel + 1; i < levelSequence.Length; i++)
         {
-            if (!levelSequence[i].completed)
+            if (!levelSequence[i].completed && !levelSequence[i].locked)
             {
                 currentLevel = i;
                 SetScreen(GameScreen.play);
@@ -131,7 +136,7 @@ public class GameManager : MonoBehaviour
         }
         for (int i = 0; i < currentLevel; i++)
         {
-            if (!levelSequence[i].completed)
+            if (!levelSequence[i].completed && !levelSequence[i].locked)
             {
                 currentLevel = i;
                 SetScreen(GameScreen.play);
@@ -140,12 +145,14 @@ public class GameManager : MonoBehaviour
         }
         if (currentLevel + 1 < levelSequence.Length)
         {
-            currentLevel++;
+            if (!levelSequence[currentLevel + 1].locked)
+            {
+                currentLevel++;
+                SetScreen(GameScreen.play);
+                return;
+            }
         }
-        else
-        {
-            currentLevel = 0;
-        }
+        currentLevel = 0;
         SetScreen(GameScreen.play);
     }
 
@@ -155,6 +162,13 @@ public class GameManager : MonoBehaviour
         {
             lilyCount++;
             levelSequence[currentLevel].completed = true;
+            for (int i = 0; i < levelSequence.Length; i++)
+            {
+                if (levelSequence[i].lilyRequirement <= lilyCount)
+                {
+                    levelSequence[i].locked = false;
+                }
+            }
         }
         SetScreen(GameScreen.completed);
     }

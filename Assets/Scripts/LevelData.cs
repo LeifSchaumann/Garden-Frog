@@ -15,6 +15,8 @@ public class LevelData
     [NonSerialized]
     public bool completed;
     [NonSerialized]
+    public bool locked;
+    [NonSerialized]
     public Vector2Int size;
     [NonSerialized]
     public TextAsset json;
@@ -27,6 +29,7 @@ public class LevelData
         levelData.completed = false;
         levelData.size = new Vector2Int(levelData.heightMap[0].Length, levelData.heightMap.Length);
         levelData.json = levelJson;
+        levelData.locked = levelData.lilyRequirement > 0;
         return levelData;
     }
 
