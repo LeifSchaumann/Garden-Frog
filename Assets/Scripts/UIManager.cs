@@ -101,6 +101,9 @@ public class UIManager : MonoBehaviour
                     GameManager.main.SetScreen(GameScreen.levels);
                 }, doneTransitioning, KeyCode.L);
 
+                Label levelNumber = uiDoc.rootVisualElement.Q<Label>("LevelNumber");
+                levelNumber.text = (GameManager.main.currentLevel + 1).ToString();
+
                 break;
             case GameScreen.completed:
                 uiDoc.visualTreeAsset = completedUI;
@@ -122,6 +125,9 @@ public class UIManager : MonoBehaviour
                 {
                     GameManager.main.SetScreen(GameScreen.levels);
                 }, doneTransitioning, KeyCode.L);
+
+                Label completeMessage = uiDoc.rootVisualElement.Q<Label>("Title");
+                completeMessage.text = "Level " + (GameManager.main.currentLevel + 1).ToString() + " complete!";
 
                 break;
             case GameScreen.levels:
