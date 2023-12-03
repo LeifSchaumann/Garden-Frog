@@ -20,6 +20,8 @@ public class LevelData
     public Vector2Int size;
     [NonSerialized]
     public TextAsset json;
+    [NonSerialized]
+    public Texture2D photo;
 
 
     public static LevelData LoadData(TextAsset levelJson)

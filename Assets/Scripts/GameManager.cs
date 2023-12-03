@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Photographer.main.PhotographLevel(levelSequence[0]);
         SetScreen(GameScreen.title);
     }
 
@@ -63,7 +64,7 @@ public class GameManager : MonoBehaviour
                 if (currentScreen == GameScreen.none)
                 {
                     LevelManager.main.AddUpdate(new LevelUpdate.Load(levelSequence[currentLevel], false, onDefined: () => {
-                        camMovement.FocusOn(LevelManager.main.LevelCenter(), true, 0.5f);
+                        camMovement.SetZoom(true, 0.5f);
                     }, onFinish: () =>
                     {
                         UIManager.main.FadeInScreen(screen);
@@ -74,7 +75,7 @@ public class GameManager : MonoBehaviour
                     UIManager.main.FadeOutScreen(() =>
                     {
                         LevelManager.main.AddUpdate(new LevelUpdate.Load(levelSequence[currentLevel], false, onDefined: () => {
-                            camMovement.FocusOn(LevelManager.main.LevelCenter(), true, 0.5f);
+                            camMovement.SetZoom(true, 0.5f);
                         }, onFinish: () =>
                         {
                             UIManager.main.FadeInScreen(screen);
@@ -87,7 +88,7 @@ public class GameManager : MonoBehaviour
                 if (currentScreen == GameScreen.title)
                 {
                     UIManager.main.FadeOutScreen();
-                    camMovement.FocusOn(LevelManager.main.LevelCenter(), false, 1f, () =>
+                    camMovement.SetZoom(false, 1f, () =>
                     {
                         UIManager.main.FadeInScreen(screen);
                     });
@@ -97,7 +98,7 @@ public class GameManager : MonoBehaviour
                     UIManager.main.FadeOutScreen(() =>
                     {
                         LevelManager.main.AddUpdate(new LevelUpdate.Load(levelSequence[currentLevel], false, onDefined: () => {
-                            camMovement.FocusOn(LevelManager.main.LevelCenter(), true, 1f);
+                            camMovement.SetZoom(true, 1f);
                         }, onFinish: () =>
                         {
                             UIManager.main.FadeInScreen(screen);
@@ -114,7 +115,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameScreen.completed:
                 UIManager.main.FadeOutScreen();
-                camMovement.FocusOn(LevelManager.main.LevelCenter(), false, 0.7f, () =>
+                camMovement.SetZoom(false, 0.7f, () =>
                 {
                     UIManager.main.FadeInScreen(screen);
                 });

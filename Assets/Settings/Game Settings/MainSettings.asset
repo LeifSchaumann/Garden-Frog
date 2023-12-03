@@ -21,7 +21,6 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 854f568ed6dbc68448c406635083b429, type: 3}
   - {fileID: 4900000, guid: a530173861711764fb4da533be332fb9, type: 3}
   - {fileID: 4900000, guid: 177f8d3d08b14064fb4b41121dde64ba, type: 3}
-  - {fileID: 4900000, guid: a530173861711764fb4da533be332fb9, type: 3}
   - {fileID: 4900000, guid: 076ee253a18f8d545841ac00ea3ccfdd, type: 3}
   - {fileID: 4900000, guid: e8f7d31c74d88754cb98fe39e5d4e70b, type: 3}
   fallInMotion:

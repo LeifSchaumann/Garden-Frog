@@ -23,10 +23,11 @@ public class CameraMovement : MonoBehaviour
 
     }
 
-    public void FocusOn(Vector3 focus, bool instant = true, float zoomFactor = 1, Action onFinish = null)
+    public void SetZoom(bool instant = true, float zoomFactor = 1, Action onFinish = null)
     {
         onFinish ??= () => { };
 
+        Vector3 focus = levelManager.LevelCenter();
         transform.position = focus - GameManager.main.settings.viewDirection.normalized * 30f;
         Vector2Int levelSize = levelManager.level.size;
         Vector3 leftCornerViewPos = cam.WorldToViewportPoint(levelManager.LevelToWorld(-1, -1));

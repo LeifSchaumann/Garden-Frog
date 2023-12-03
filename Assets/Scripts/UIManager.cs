@@ -150,7 +150,13 @@ public class UIManager : MonoBehaviour
                     if (!levelData.locked)
                     {
                         VisualElement level = levelTemplate.CloneTree().Q("Level");
-                        Button button = level.Q<Button>("Button");
+
+                        if (levelData.photo != null)
+                        {
+                            VisualElement image = level.Q("LevelImage");
+                            image.style.backgroundImage = levelData.photo;
+                        }
+
                         VisualElement stamp = level.Q("LilyStamp");
                         if (levelData.completed)
                         {
@@ -160,6 +166,8 @@ public class UIManager : MonoBehaviour
                         {
                             stamp.style.opacity = 0f;
                         }
+                        
+                        Button button = level.Q<Button>("Button");
                         int levelIndex = i;
                         button.clicked += () => {
                             if (GameManager.main.DoneTransitioning())
