@@ -185,7 +185,7 @@ public abstract class PuzzleObject
             {
                 level.manager.AddUpdate(new LevelUpdate((LevelManager manager) =>
                 {
-                    GameManager.main.NextLevel();
+                    GameManager.main.LevelComplete();
                     manager.UpdateFinished();
                 }));
             }

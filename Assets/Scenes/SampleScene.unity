@@ -339,6 +339,8 @@ MonoBehaviour:
   playUI: {fileID: 9197481963319205126, guid: 65b14411b92de494f8bdaa0600870cbd, type: 3}
   levelsUI: {fileID: 9197481963319205126, guid: 0ab662c2a809a024fbcbe95f3a6d18b8,
     type: 3}
+  completedUI: {fileID: 9197481963319205126, guid: 83b2c0c51d0364e42826ce27336efbe2,
+    type: 3}
   levelTemplate: {fileID: 9197481963319205126, guid: 4b57f98c434e7b142b52fd5f9457e455,
     type: 3}
   pressScaleCurve:
@@ -790,6 +792,7 @@ MonoBehaviour:
   settings: {fileID: 11400000, guid: a95ec8290213db9499f2a62ceecc8566, type: 2}
   currentScreen: 0
   currentLevel: 0
+  levelSequence: []
   photographer: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

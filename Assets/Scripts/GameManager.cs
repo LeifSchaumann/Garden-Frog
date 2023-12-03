@@ -11,7 +11,8 @@ public enum GameScreen
     title,
     play,
     edit,
-    levels
+    levels,
+    completed
 }
 
 public class GameManager : MonoBehaviour
@@ -24,6 +25,8 @@ public class GameManager : MonoBehaviour
     public LevelData[] levelSequence;
     public Photographer photographer;
 
+    public int lilyCount;
+
     private CameraMovement camMovement;
 
     private void Awake()
@@ -33,6 +36,7 @@ public class GameManager : MonoBehaviour
         camMovement = Camera.main.GetComponent<CameraMovement>();
         currentLevel = 0;
         currentScreen = GameScreen.none;
+        lilyCount = 0;
 
         levelSequence = new LevelData[settings.levelSequence.Length];
         for (int i = 0; i < settings.levelSequence.Length; i++)
@@ -75,7 +79,7 @@ public class GameManager : MonoBehaviour
                 
                 break;
             case GameScreen.play:
-                if (currentScreen == GameScreen.title) // WIP
+                if (currentScreen == GameScreen.title)
                 {
                     UIManager.main.FadeOutScreen();
                     camMovement.FocusOn(LevelManager.main.LevelCenter(), false, 1f, () =>
@@ -103,19 +107,56 @@ public class GameManager : MonoBehaviour
                         UIManager.main.FadeInScreen(screen);
                     }));
                 break;
+            case GameScreen.completed:
+                UIManager.main.FadeOutScreen();
+                camMovement.FocusOn(LevelManager.main.LevelCenter(), false, 0.7f, () =>
+                {
+                    UIManager.main.FadeInScreen(screen);
+                });
+                break;
         }
         currentScreen = screen;
     }
 
     public void NextLevel()
     {
-        if (levelSequence.Length > currentLevel + 1)
+        for (int i = currentLevel + 1; i < levelSequence.Length; i++)
+        {
+            if (!levelSequence[i].completed)
+            {
+                currentLevel = i;
+                SetScreen(GameScreen.play);
+                return;
+            }
+        }
+        for (int i = 0; i < currentLevel; i++)
+        {
+            if (!levelSequence[i].completed)
+            {
+                currentLevel = i;
+                SetScreen(GameScreen.play);
+                return;
+            }
+        }
+        if (currentLevel + 1 < levelSequence.Length)
         {
             currentLevel++;
-            LevelManager.main.AddUpdate(new LevelUpdate.Load(levelSequence[currentLevel], onDefined: () => {
-                camMovement.FocusOn(LevelManager.main.LevelCenter(), true);
-            }));
         }
+        else
+        {
+            currentLevel = 0;
+        }
+        SetScreen(GameScreen.play);
+    }
+
+    public void LevelComplete()
+    {
+        if (levelSequence[currentLevel].completed == false)
+        {
+            lilyCount++;
+            levelSequence[currentLevel].completed = true;
+        }
+        SetScreen(GameScreen.completed);
     }
 
     public bool DoneTransitioning()

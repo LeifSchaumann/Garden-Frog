@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     public VisualTreeAsset titleUI;
     public VisualTreeAsset playUI;
     public VisualTreeAsset levelsUI;
+    public VisualTreeAsset completedUI;
     public VisualTreeAsset levelTemplate;
 
     public AnimationCurve pressScaleCurve;
@@ -62,13 +63,13 @@ public class UIManager : MonoBehaviour
                 {
                     GameManager.main.SetScreen(GameScreen.play);
                 }, doneTransitioning, KeyCode.Space);
-
+                /*
                 Button editButton = uiDoc.rootVisualElement.Q<Button>("Edit");
                 new IconButton(editButton, () =>
                 {
 
                 }, doneTransitioning, KeyCode.E);
-
+                */
                 Button levelsButton = uiDoc.rootVisualElement.Q<Button>("Levels");
                 new IconButton(levelsButton, () =>
                 {
@@ -101,6 +102,28 @@ public class UIManager : MonoBehaviour
                 }, doneTransitioning, KeyCode.L);
 
                 break;
+            case GameScreen.completed:
+                uiDoc.visualTreeAsset = completedUI;
+
+                backButton = uiDoc.rootVisualElement.Q<Button>("Back");
+                new IconButton(backButton, () =>
+                {
+                    GameManager.main.SetScreen(GameScreen.title);
+                }, doneTransitioning, KeyCode.Escape);
+
+                Button nextButton = uiDoc.rootVisualElement.Q<Button>("Next");
+                new IconButton(nextButton, () =>
+                {
+                    GameManager.main.NextLevel();
+                }, doneTransitioning, KeyCode.Space);
+
+                levelsButton = uiDoc.rootVisualElement.Q<Button>("Levels");
+                new IconButton(levelsButton, () =>
+                {
+                    GameManager.main.SetScreen(GameScreen.levels);
+                }, doneTransitioning, KeyCode.L);
+
+                break;
             case GameScreen.levels:
                 uiDoc.visualTreeAsset = levelsUI;
 
@@ -109,6 +132,9 @@ public class UIManager : MonoBehaviour
                 {
                     GameManager.main.SetScreen(GameScreen.title);
                 }, doneTransitioning, KeyCode.Escape);
+
+                Label lilyCountLabel = uiDoc.rootVisualElement.Q<Label>("LilyCountText");
+                lilyCountLabel.text = GameManager.main.lilyCount.ToString();
 
                 VisualElement levelsContainer = uiDoc.rootVisualElement.Q("LevelsContainer");
                 for (int i = 0; i < GameManager.main.levelSequence.Length; i++)
@@ -137,7 +163,6 @@ public class UIManager : MonoBehaviour
                     level.Q<Label>("Title").text = (levelIndex + 1).ToString();
                     levelsContainer.Add(level);
                 }
-
                 break;
         }
     }
