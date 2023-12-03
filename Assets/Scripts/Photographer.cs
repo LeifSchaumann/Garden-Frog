@@ -39,7 +39,7 @@ public class Photographer : MonoBehaviour
         yield return new WaitForEndOfFrame();
         //yield return new WaitForSeconds(0.1f);
 
-        Texture2D photo = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.RGB24, false, true); //, TextureFormat.RGB24, false);
+        Texture2D photo = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.RGBA32, false, true); //, TextureFormat.RGB24, false);
         cam.Render();
         RenderTexture.active = renderTexture;
         photo.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);

@@ -52,8 +52,27 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        Photographer.main.PhotographLevel(levelSequence[0]);
-        SetScreen(GameScreen.title);
+        ChainOperation((int i, Action onFinish) =>
+        {
+            Photographer.main.PhotographLevel(levelSequence[i], onFinish);
+        }, 0, levelSequence.Length, () => { 
+            SetScreen(GameScreen.title);
+        });
+    }
+
+    private void ChainOperation(Action<int, Action> action, int i, int maxI, Action onFinish)
+    {
+        if (i < maxI)
+        {
+            action(i, () =>
+            {
+                ChainOperation(action, i + 1, maxI, onFinish);
+            });
+        }
+        else
+        {
+            onFinish();
+        }
     }
 
     public void SetScreen(GameScreen screen)
@@ -115,7 +134,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameScreen.completed:
                 UIManager.main.FadeOutScreen();
-                camMovement.SetZoom(false, 0.7f, () =>
+                camMovement.SetZoom(false, 0.65f, () =>
                 {
                     UIManager.main.FadeInScreen(screen);
                 });
