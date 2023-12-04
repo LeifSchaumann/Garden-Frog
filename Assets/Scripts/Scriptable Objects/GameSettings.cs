@@ -22,6 +22,7 @@ public class GameSettings : ScriptableObject
     public GameObject lilyPadPrefab;
     public GameObject rockPrefab;
     public GameObject goalPrefab;
+    public GameObject wallPrefab;
     public float stepHeight;
 
     [Header("Camera Settings")]

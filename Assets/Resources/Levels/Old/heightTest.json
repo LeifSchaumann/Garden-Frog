@@ -1,14 +1,18 @@
 {
-    "size": {
-        "x": 5,
-        "y": 5
-    },
+    "lilyRequirement": 0,
     "heightMap": [
         "04050",
         "03050",
         "02010",
         "40210",
         "40300"
+    ],
+    "layer0": [
+        "WWWWW",
+        "WWWWW",
+        "WWWWW",
+        "WWWWW",
+        "WWWWW"
     ],
     "layer1": [
         "RR0RR",

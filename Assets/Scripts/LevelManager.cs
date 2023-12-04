@@ -82,16 +82,21 @@ public class LevelManager : MonoBehaviour
         GameObject rockPrefab = GameManager.main.settings.rockPrefab;
         GameObject frogPrefab = GameManager.main.settings.frogPrefab;
         GameObject goalPrefab = GameManager.main.settings.goalPrefab;
+        GameObject wallPrefab = GameManager.main.settings.wallPrefab;
 
         for (int x = 0; x < level.size.x; x++)
         {
             for (int y = 0; y < level.size.y; y++)
             {
-                PuzzleObject.L0 PO0 = level.GetCell(x, y).PO0;
+                Cell cell = level.GetCell(x, y);
+                PuzzleObject.L0 PO0 = cell.PO0;
                 if (PO0.hasWater)
                 {
-                    Vector3 waterPos = LevelToWorld(x, y) + Vector3.down * waterPrefab.transform.localScale.y / 2;
+                    float waterHeight = GameManager.main.settings.stepHeight * (cell.height + 1);
+                    Vector3 waterPos = LevelToWorld(x, y) + Vector3.down * waterHeight / 2;
                     GameObject water = Instantiate(waterPrefab, waterPos, Quaternion.identity, transform);
+                    water.transform.localScale = new Vector3(1f, waterHeight, 1f);
+
                     if (PO0 is PuzzleObject.L0.Algae)
                     {
                         water.GetComponent<Renderer>().material.color = GameManager.main.settings.algaeColor;
@@ -103,7 +108,7 @@ public class LevelManager : MonoBehaviour
                         water.GetComponent<Renderer>().material.SetInt("_hasWavePattern", 1);
                     }
                 }
-                PuzzleObject PO1 = level.GetCell(x, y).PO1;
+                PuzzleObject PO1 = cell.PO1;
                 switch (PO1)
                 {
                     case PuzzleObject.L1.LilyPad:
@@ -115,7 +120,7 @@ public class LevelManager : MonoBehaviour
                         Instantiate(rockPrefab, rockPos, RandomRotation(), transform);
                         break;
                 }
-                PuzzleObject PO2 = level.GetCell(x, y).PO2;
+                PuzzleObject PO2 = cell.PO2;
                 switch (PO2)
                 {
                     case PuzzleObject.L2.Frog:
@@ -123,13 +128,46 @@ public class LevelManager : MonoBehaviour
                         PO2.gameObject = Instantiate(frogPrefab, frogPos, Quaternion.identity, transform);
                         break;
                 }
-                PuzzleObject PO3 = level.GetCell(x, y).PO3;
+                PuzzleObject PO3 = cell.PO3;
                 switch (PO3)
                 {
                     case PuzzleObject.L3.Goal:
                         Vector3 goalPos = LevelToWorld(x, y) + Vector3.up * 0.5f;
                         PO2.gameObject = Instantiate(goalPrefab, goalPos, Quaternion.identity, transform);
                         break;
+                }
+            }
+        }
+
+        for (int x = 0; x <= level.size.x; x++)
+        {
+            for (int y = 0; y <= level.size.y; y++)
+            {
+                Cell cell = level.GetCell(x, y);
+                Cell leftCell = level.GetCell(x - 1, y);
+
+                int maxHeight = Math.Max(cell.height, leftCell.height);
+                if (maxHeight >= 0 && cell.height != leftCell.height)
+                {
+                    float wallHeight = GameManager.main.settings.stepHeight * (maxHeight + 1) + 0.05f;
+                    Vector3 wallPos = LevelToWorld(x, y);
+                    wallPos.y = 0f;
+                    wallPos += Vector3.down * GameManager.main.settings.stepHeight + Vector3.up * wallHeight / 2f + Vector3.left * 0.5f;
+                    GameObject wall = Instantiate(wallPrefab, wallPos, Quaternion.identity, transform);
+                    wall.transform.localScale = new Vector3(0.1f, wallHeight, 1.1f);
+                }
+
+                Cell bottomCell = level.GetCell(x, y - 1);
+
+                maxHeight = Math.Max(cell.height, bottomCell.height);
+                if (maxHeight >= 0 && cell.height != bottomCell.height)
+                {
+                    float wallHeight = GameManager.main.settings.stepHeight * (maxHeight + 1) + 0.05f;
+                    Vector3 wallPos = LevelToWorld(x, y);
+                    wallPos.y = 0f;
+                    wallPos += Vector3.down * GameManager.main.settings.stepHeight + Vector3.up * wallHeight / 2f + Vector3.back * 0.5f;
+                    GameObject wall = Instantiate(wallPrefab, wallPos, Quaternion.identity, transform);
+                    wall.transform.localScale = new Vector3(1.1f, wallHeight, 0.1f);
                 }
             }
         }
