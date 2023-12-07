@@ -25,6 +25,9 @@ MonoBehaviour:
   - {fileID: 4900000, guid: e8f7d31c74d88754cb98fe39e5d4e70b, type: 3}
   - {fileID: 4900000, guid: 2fe95e69350d1ef479395a2d656266d1, type: 3}
   - {fileID: 4900000, guid: e2789b097eba1634389d0018cb50b80f, type: 3}
+  - {fileID: 4900000, guid: dfba64af592a35247930a343ef264ae1, type: 3}
+  - {fileID: 4900000, guid: 72a91d95736c9e14e9ba72b8c836dd90, type: 3}
+  - {fileID: 4900000, guid: 622f9f754ea509740aaeefd57978da23, type: 3}
   fallInMotion:
     serializedVersion: 2
     m_Curve:
