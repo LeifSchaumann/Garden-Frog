@@ -28,6 +28,8 @@ MonoBehaviour:
   - {fileID: 4900000, guid: dfba64af592a35247930a343ef264ae1, type: 3}
   - {fileID: 4900000, guid: 72a91d95736c9e14e9ba72b8c836dd90, type: 3}
   - {fileID: 4900000, guid: 622f9f754ea509740aaeefd57978da23, type: 3}
+  - {fileID: 4900000, guid: ec65b60a07c2fe24fae4db66f5c8f331, type: 3}
+  - {fileID: 4900000, guid: 3e9c265eea1968b4aa5b10fa8d9283f2, type: 3}
   fallInMotion:
     serializedVersion: 2
     m_Curve:
