@@ -7,14 +7,18 @@ public class FloatMovement : MonoBehaviour
 {
     public float floatSpeed;
 
-    public void Float(Vector2Int targetGridPos, Transform carry, Action onFinish)
+    public void Float(Vector3 targetPos, Transform carry, Action onFinish)
     {
-        StartCoroutine(FloatRoutine(targetGridPos, carry, onFinish));
+        StartCoroutine(FloatRoutine(targetPos, carry, onFinish));
     }
 
-    private IEnumerator FloatRoutine(Vector2Int targetGridPos, Transform carry, Action onFinish)
+    public void Rotate(Vector3 pivotPos, float angle, Transform carry, Action onFinish)
     {
-        Vector3 targetPos = LevelManager.main.LevelToWorld(targetGridPos) + GameManager.main.settings.lilyPadPrefab.transform.position;
+        StartCoroutine(RotateRoutine(pivotPos, angle, carry, onFinish));
+    }
+
+    private IEnumerator FloatRoutine(Vector3 targetPos, Transform carry, Action onFinish)
+    {
         Vector3 startPos = transform.position;
         float floatTime = Vector3.Distance(targetPos, startPos) / floatSpeed;
         float timePassed = 0;
@@ -22,15 +26,43 @@ public class FloatMovement : MonoBehaviour
         {
             carry.parent = transform;
         }
-
         while (timePassed < floatTime)
         {
             transform.position = Vector3.Lerp(startPos, targetPos, timePassed / floatTime);
             timePassed += Time.deltaTime;
             yield return null;
         }
-
         transform.position = targetPos;
+        if (carry != null)
+        {
+            carry.parent = transform.parent;
+        }
+        onFinish();
+    }
+
+    private IEnumerator RotateRoutine(Vector3 pivotPos, float angle, Transform carry, Action onFinish)
+    {
+        Quaternion endRotation = Quaternion.AngleAxis(angle, Vector3.up);
+        float duration = 0.6f;
+        float timePassed = 0;
+        if (carry != null)
+        {
+            carry.parent = transform;
+        }
+        Transform pivot = new GameObject("Pivot").transform;
+        pivot.transform.position = pivotPos;
+        pivot.transform.rotation = Quaternion.identity;
+        pivot.parent = transform.parent;
+        transform.parent = pivot;
+        while (timePassed < duration)
+        {
+            pivot.rotation = Quaternion.Lerp(Quaternion.identity, endRotation, timePassed / duration);
+            timePassed += Time.deltaTime;
+            yield return null;
+        }
+        pivot.rotation = endRotation;
+        transform.parent = pivot.parent;
+        Destroy(pivot.gameObject);
         if (carry != null)
         {
             carry.parent = transform.parent;

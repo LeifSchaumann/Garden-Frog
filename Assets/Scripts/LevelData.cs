@@ -77,6 +77,20 @@ public class LevelData
                     case 'R':
                         level.cells[x, y].SetPO(new PuzzleObject.L1.Rock());
                         break;
+                    case 'v':
+                        PuzzleObject.L1.Log log = new PuzzleObject.L1.Log();
+                        PuzzleObject.L1.Log log2 = new PuzzleObject.L1.Log();
+                        level.cells[x, y].SetPO(log);
+                        level.cells[x, y - 1].SetPO(log2);
+                        log.SetPartner(log2);
+                        break;
+                    case '>':
+                        log = new PuzzleObject.L1.Log();
+                        log2 = new PuzzleObject.L1.Log();
+                        level.cells[x, y].SetPO(log);
+                        level.cells[x + 1, y].SetPO(log2);
+                        log.SetPartner(log2);
+                        break;
                 }
 
                 switch (layer2[accessX][accessY])

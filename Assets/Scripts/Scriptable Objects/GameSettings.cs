@@ -23,6 +23,7 @@ public class GameSettings : ScriptableObject
     public GameObject rockPrefab;
     public GameObject goalPrefab;
     public GameObject wallPrefab;
+    public GameObject logPrefab;
     public float stepHeight;
 
     [Header("Camera Settings")]

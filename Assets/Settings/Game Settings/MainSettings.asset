@@ -23,6 +23,8 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 177f8d3d08b14064fb4b41121dde64ba, type: 3}
   - {fileID: 4900000, guid: 076ee253a18f8d545841ac00ea3ccfdd, type: 3}
   - {fileID: 4900000, guid: e8f7d31c74d88754cb98fe39e5d4e70b, type: 3}
+  - {fileID: 4900000, guid: 2fe95e69350d1ef479395a2d656266d1, type: 3}
+  - {fileID: 4900000, guid: e2789b097eba1634389d0018cb50b80f, type: 3}
   fallInMotion:
     serializedVersion: 2
     m_Curve:
@@ -166,6 +168,10 @@ MonoBehaviour:
   rockPrefab: {fileID: 2489254177889365862, guid: 7f42e03c3c839654ba00af6ca4664f63,
     type: 3}
   goalPrefab: {fileID: 3059360396552914193, guid: 1db7c7bc547125349a6a1761ccd3d2d2,
+    type: 3}
+  wallPrefab: {fileID: 2898691332038586868, guid: fd5653efa5cd3f647a56b86b9c6ef01e,
+    type: 3}
+  logPrefab: {fileID: 2777785392007127811, guid: 58e254a7918222d4aa970152160c7749,
     type: 3}
   stepHeight: 0.4
   viewDirection: {x: -1, y: -3, z: 3}

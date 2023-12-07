@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static PuzzleObject.L1;
 
 public class LevelManager : MonoBehaviour
 {
@@ -83,6 +84,7 @@ public class LevelManager : MonoBehaviour
         GameObject frogPrefab = GameManager.main.settings.frogPrefab;
         GameObject goalPrefab = GameManager.main.settings.goalPrefab;
         GameObject wallPrefab = GameManager.main.settings.wallPrefab;
+        GameObject logPrefab = GameManager.main.settings.logPrefab;
 
         for (int x = 0; x < level.size.x; x++)
         {
@@ -117,7 +119,23 @@ public class LevelManager : MonoBehaviour
                         break;
                     case PuzzleObject.L1.Rock:
                         Vector3 rockPos = LevelToWorld(x, y);
-                        Instantiate(rockPrefab, rockPos, RandomRotation(), transform);
+                        PO1.gameObject = Instantiate(rockPrefab, rockPos, RandomRotation(), transform);
+                        break;
+                    case PuzzleObject.L1.Log log:
+                        if (log.partnerDir == Vector2Int.down)
+                        {
+                            Vector3 logPos = LevelToWorld(x, y) - Vector3.forward / 2f;
+                            GameObject logGO = Instantiate(logPrefab, logPos, Quaternion.AngleAxis(90f, Vector3.up), transform);
+                            log.gameObject = logGO;
+                            log.partner.gameObject = logGO;
+                        }
+                        if (log.partnerDir == Vector2Int.right)
+                        {
+                            Vector3 logPos = LevelToWorld(x, y) + Vector3.right / 2f;
+                            GameObject logGO = Instantiate(logPrefab, logPos, Quaternion.identity, transform);
+                            log.gameObject = logGO;
+                            log.partner.gameObject = logGO;
+                        }
                         break;
                 }
                 PuzzleObject PO2 = cell.PO2;

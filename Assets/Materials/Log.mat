@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Wall
+  m_Name: Log
   m_Shader: {fileID: -6465566751694194690, guid: 897eda68de7610b41960b07506a81264,
     type: 3}
   m_Parent: {fileID: 2100000, guid: a3486ca2d3d0d9945b8bb92887176d15, type: 2}
@@ -27,7 +27,7 @@ Material:
     m_Ints: []
     m_Floats: []
     m_Colors:
-    - _Color: {r: 0.23009966, g: 0.25088406, b: 0.2924528, a: 1}
+    - _Color: {r: 0.3773585, g: 0.2763474, b: 0.21502315, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &2641370400084966620
 MonoBehaviour:

@@ -58,12 +58,25 @@ public class LevelUpdate
         }
     }
 
-    public class Float : LevelUpdate // ASSUMES PLAYER RIDES WITH OBJECT
+    public class Float : LevelUpdate
     {
-        public Float(GameObject gameObject, Vector2Int newPos, Transform carry)
+        public Float(GameObject gameObject, Vector3 newPos, Transform carry)
         {
             this.execute = (LevelManager manager) => {
                 gameObject.GetComponent<FloatMovement>().Float(newPos, carry, () =>
+                {
+                    manager.UpdateFinished();
+                });
+            };
+        }
+    }
+
+    public class Rotate : LevelUpdate
+    {
+        public Rotate(GameObject gameObject, Vector3 pivotPos, float angle, Transform carry)
+        {
+            this.execute = (LevelManager manager) => {
+                gameObject.GetComponent<FloatMovement>().Rotate(pivotPos, angle, carry, () =>
                 {
                     manager.UpdateFinished();
                 });

@@ -61,12 +61,24 @@ public abstract class PuzzleObject
         public bool isWalkable;
         public float walkHeight;
         public virtual void Push(Vector2Int dir) { }
+        public bool CanFloatTo(Cell targetCell, int height)
+        {
+            return targetCell.PO0.hasWater && targetCell.PO1 is None && targetCell.height == height;
+        }
         public class None : L1
         {
             public None()
             {
                 this.isWalkable = false;
                 walkHeight = -0.2f;
+            }
+        }
+        public class Rock : L1
+        {
+            public Rock()
+            {
+                this.isWalkable = true;
+                this.walkHeight = 0.13f;
             }
         }
         public class LilyPad : L1
@@ -76,43 +88,122 @@ public abstract class PuzzleObject
                 this.isWalkable = true;
                 this.walkHeight = 0.05f;
             }
-            public override void Push(Vector2Int dir)
+            private bool Slide(Vector2Int dir)
             {
-                PuzzleObject.L2 carry = cell.PO2;
-                bool first = true;
-                while (true)
+                if (CanFloatTo(cell.AdjacentCell(dir), cell.height))
                 {
-                    Cell nextCell = cell.AdjacentCell(dir);
-                    if (nextCell.PO0.hasWater &&
-                        nextCell.PO1 is PuzzleObject.L1.None &&
-                        nextCell.height == cell.height &&
-                        (first || !(cell.PO0 is PuzzleObject.L0.Algae)))
-                    {
-                        Move(nextCell);
-                        first = false;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                if (carry.isCarried)
-                {
-                    carry.Move(cell);
-                    level.manager.AddUpdate(new LevelUpdate.Float(gameObject, pos, carry.gameObject.transform));
+                    Move(dir);
+                    return true;
                 }
                 else
                 {
-                    level.manager.AddUpdate(new LevelUpdate.Float(gameObject, pos, null));
+                    return false;
+                }
+            }
+            public override void Push(Vector2Int dir)
+            {
+                L2 carry = cell.PO2;
+                while (true)
+                {
+                    if (!Slide(dir)) { break; }
+                    if (cell.PO0 is L0.Algae) { break; }
+                }
+                Vector3 newPos = level.manager.LevelToWorld(pos);
+                if (carry.isCarried)
+                {
+                    carry.Move(cell);
+                    level.manager.AddUpdate(new LevelUpdate.Float(gameObject, newPos, carry.gameObject.transform));
+                }
+                else
+                {
+                    level.manager.AddUpdate(new LevelUpdate.Float(gameObject, newPos, null));
                 }
             }
         }
-        public class Rock : L1
+
+        public class Log : L1
         {
-            public Rock()
+            public Log partner;
+            public Vector2Int partnerDir;
+            public Log()
             {
                 this.isWalkable = true;
-                this.walkHeight = 0.13f;
+                this.walkHeight = 0.25f;
+            }
+            public void SetPartner(Log log)
+            {
+                partner = log;
+                log.partner = this;
+                partnerDir = partner.pos - pos;
+                log.partnerDir = -partnerDir;
+            }
+            private bool Slide(Vector2Int dir)
+            {
+                if (partnerDir == dir)
+                {
+                    return partner.Slide(dir);
+                }
+                else
+                {
+                    if (CanFloatTo(cell.AdjacentCell(dir), cell.height))
+                    {
+                        Move(dir);
+                        partner.Move(dir);
+                        return true;
+                    }
+                    else { return false; }
+                }
+            }
+            private bool Rotate(Vector2Int dir)
+            {
+                Cell diagonalCell = cell.AdjacentCell(dir);
+                Cell endCell = cell.AdjacentCell(dir + partnerDir);
+                if (CanFloatTo(diagonalCell, cell.height) && CanFloatTo(endCell, cell.height))
+                {
+                    Move(endCell);
+                    SetPartner(partner);
+                    return true;
+                }
+                else { return false; }
+            }
+            public override void Push(Vector2Int dir)
+            {
+                L2 carry = cell.PO2;
+                Vector3 offset = gameObject.transform.position - level.manager.LevelToWorld(pos);
+                if (Vector2.Dot(dir, partnerDir) > 0f)
+                {
+                    while (true)
+                    {
+                        if (!Slide(dir)) { break; }
+                        if (cell.PO0 is L0.Algae || partner.cell.PO0 is L0.Algae) { break; }
+                    }
+                    Vector3 newPos = level.manager.LevelToWorld(pos) + offset;
+                    if (carry.isCarried)
+                    {
+                        carry.Move(cell);
+                        level.manager.AddUpdate(new LevelUpdate.Float(gameObject, newPos, carry.gameObject.transform));
+                    }
+                    else
+                    {
+                        level.manager.AddUpdate(new LevelUpdate.Float(gameObject, newPos, null));
+                    }
+                }
+                else
+                {
+                    float angle = -90 * (dir.x - dir.y) * (partnerDir.x + partnerDir.y); // Math magic!
+                    if (Rotate(dir))
+                    {
+                        if (carry.isCarried)
+                        {
+                            carry.Move(cell);
+                            level.manager.AddUpdate(new LevelUpdate.Rotate(gameObject, level.manager.LevelToWorld(partner.pos), angle, carry.gameObject.transform));
+                        }
+                        else
+                        {
+                            level.manager.AddUpdate(new LevelUpdate.Rotate(gameObject, level.manager.LevelToWorld(partner.pos), angle, null));
+                        }
+                    }
+                }
             }
         }
     }
