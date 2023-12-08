@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     public int currentLevel;
     public LevelData[] levelSequence;
     public Photographer photographer;
-    public bool cheatsEnabled;
+    public bool unlockLevels;
 
     public int lilyCount;
 
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < settings.levelSequence.Length; i++)
         {
             levelSequence[i] = LevelData.LoadData(settings.levelSequence[i]);
-            if (cheatsEnabled)
+            if (unlockLevels)
             {
                 levelSequence[i].locked = false;
             }
