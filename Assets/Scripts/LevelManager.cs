@@ -150,7 +150,7 @@ public class LevelManager : MonoBehaviour
                 switch (PO3)
                 {
                     case PuzzleObject.L3.Goal:
-                        Vector3 goalPos = LevelToWorld(x, y) + Vector3.up * 0.5f;
+                        Vector3 goalPos = LevelToWorld(x, y) + Vector3.up * 0.7f;
                         PO2.gameObject = Instantiate(goalPrefab, goalPos, Quaternion.identity, transform);
                         break;
                 }
