@@ -115,18 +115,24 @@ public class UIManager : MonoBehaviour
                     GameManager.main.SetScreen(GameScreen.title);
                 }, doneTransitioning, KeyCode.Escape);
 
-                Button nextButton = uiDoc.rootVisualElement.Q<Button>("Next");
-                new IconButton(nextButton, () =>
+                resetButton = uiDoc.rootVisualElement.Q<Button>("Reset");
+                new IconButton(resetButton, () =>
                 {
-                    GameManager.main.NextLevel();
-                }, doneTransitioning, KeyCode.Space);
+                    GameManager.main.SetScreen(GameScreen.play);
+                }, doneTransitioning, KeyCode.R);
 
                 levelsButton = uiDoc.rootVisualElement.Q<Button>("Levels");
                 new IconButton(levelsButton, () =>
                 {
                     GameManager.main.SetScreen(GameScreen.levels);
                 }, doneTransitioning, KeyCode.L);
-                
+
+                Button nextButton = uiDoc.rootVisualElement.Q<Button>("Next");
+                new IconButton(nextButton, () =>
+                {
+                    GameManager.main.NextLevel();
+                }, doneTransitioning, KeyCode.Space);
+
                 //Label completeMessage = uiDoc.rootVisualElement.Q<Label>("Title");
                 //completeMessage.text = "Level " + (GameManager.main.currentLevel + 1).ToString() + " complete!";
 

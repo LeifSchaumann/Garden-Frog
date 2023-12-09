@@ -26,8 +26,8 @@
      inkscape:document-units="mm"
      showgrid="true"
      inkscape:zoom="3.9156336"
-     inkscape:cx="-485.36206"
-     inkscape:cy="494.30059"
+     inkscape:cx="-509.87917"
+     inkscape:cy="505.02682"
      inkscape:window-width="958"
      inkscape:window-height="981"
      inkscape:window-x="-8"
@@ -761,11 +761,6 @@
        id="path2-9-80-13-1-1-8"
        cx="-117.3014"
        cy="122.55084"
-       r="2" /><circle
-       style="fill:#5b5f5a;fill-opacity:1;stroke:none;stroke-width:0.799999;stroke-linejoin:round"
-       id="path2-9-80-13-1-1-9"
-       cx="-142.4404"
-       cy="117.57155"
        r="2" /><circle
        style="fill:#5b5f5a;fill-opacity:1;stroke:none;stroke-width:0.799999;stroke-linejoin:round"
        id="path2-9-80-13-1-1-9-0"
@@ -2683,6 +2678,12 @@
        id="path1-3"
        cx="-147.55064"
        cy="92.097374"
+       rx="1.7917471"
+       ry="1.3378379" /><ellipse
+       style="fill:#eebb00;fill-opacity:1;stroke:none;stroke-width:0.799999;stroke-linejoin:round"
+       id="path1-3-14"
+       cx="-122.56242"
+       cy="117.48992"
        rx="1.7917471"
        ry="1.3378379" /><ellipse
        style="fill:#eebb00;fill-opacity:1;stroke:none;stroke-width:0.799999;stroke-linejoin:round"
