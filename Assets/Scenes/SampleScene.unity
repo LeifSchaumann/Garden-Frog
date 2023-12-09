@@ -810,7 +810,7 @@ MonoBehaviour:
   currentLevel: 0
   levelSequence: []
   photographer: {fileID: 0}
-  unlockLevels: 1
+  unlockLevels: 0
   lilyCount: 0
 --- !u!1 &2116841973
 GameObject:

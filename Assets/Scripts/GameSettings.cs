@@ -5,6 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GameSettings", menuName = "Game Settings")]
 public class GameSettings : ScriptableObject
 {
+    public bool saveThumbnails;
+    public bool unlockAllLevels;
+    public bool showLevelNames;
+    
     [Header("Levels")]
     public TextAsset[] levelSequence;
 

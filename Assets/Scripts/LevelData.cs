@@ -26,7 +26,6 @@ public class LevelData
 
     public static LevelData LoadData(TextAsset levelJson)
     {
-        //TextAsset levelJson = Resources.Load<TextAsset>("Levels/" + levelName);
         LevelData levelData = JsonUtility.FromJson<LevelData>(levelJson.text);
         levelData.completed = false;
         levelData.size = new Vector2Int(levelData.heightMap[0].Length, levelData.heightMap.Length);
@@ -53,20 +52,23 @@ public class LevelData
                     level.cells[x, y].height = heightMapChar - '0';
                 }
 
-                switch (layer0[accessX][accessY])
+                if (level.cells[x, y].height != -1)
                 {
-                    case 'X':
-                        level.cells[x, y].SetPO(new PuzzleObject.L0.None());
-                        break;
-                    case 'S':
-                        level.cells[x, y].SetPO(new PuzzleObject.L0.ShallowWater());
-                        break;
-                    case 'A':
-                        level.cells[x, y].SetPO(new PuzzleObject.L0.Algae());
-                        break;
-                    default:
-                        level.cells[x, y].SetPO(new PuzzleObject.L0.Water());
-                        break;
+                    switch (layer0[accessX][accessY])
+                    {
+                        case 'X':
+                            level.cells[x, y].SetPO(new PuzzleObject.L0.None());
+                            break;
+                        case 'S':
+                            level.cells[x, y].SetPO(new PuzzleObject.L0.ShallowWater());
+                            break;
+                        case 'A':
+                            level.cells[x, y].SetPO(new PuzzleObject.L0.Algae());
+                            break;
+                        default:
+                            level.cells[x, y].SetPO(new PuzzleObject.L0.Water());
+                            break;
+                    }
                 }
 
                 switch (layer1[accessX][accessY])

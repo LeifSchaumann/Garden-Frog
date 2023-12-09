@@ -44,12 +44,15 @@ public class Photographer : MonoBehaviour
         RenderTexture.active = renderTexture;
         photo.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
         photo.Apply();
-        
-        //byte[] bytes = photo.EncodeToPNG();
-        //System.IO.File.WriteAllBytes("Assets/Level1.png", bytes);
-
         levelData.photo = photo;
         RenderTexture.active = null;
+
+        if (GameManager.main.settings.saveThumbnails)
+        {
+            byte[] bytes = levelData.photo.EncodeToPNG();
+            System.IO.File.WriteAllBytes("Assets/Textures/Thumbnails/" + levelData.json.name + ".png", bytes);
+        }
+        
         onFinish();
     }
 }

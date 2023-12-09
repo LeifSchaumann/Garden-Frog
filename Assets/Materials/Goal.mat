@@ -29,7 +29,7 @@ Material:
     - _SineAmplitude: 0.1
     - _hasWavePattern: 0
     m_Colors:
-    - _Color: {r: 0.94509804, g: 0.31372547, b: 0.58645654, a: 1}
+    - _Color: {r: 0.9528302, g: 0.34517616, b: 0.6206866, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &1538136273712457362
 MonoBehaviour:

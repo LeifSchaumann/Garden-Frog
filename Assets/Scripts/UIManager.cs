@@ -177,7 +177,14 @@ public class UIManager : MonoBehaviour
                                 GameManager.main.SetScreen(GameScreen.play);
                             }
                         };
-                        level.Q<Label>("Title").text = (levelIndex + 1).ToString();
+                        if (GameManager.main.settings.showLevelNames)
+                        {
+                            level.Q<Label>("Title").text = levelData.json.name;
+                        }
+                        else
+                        {
+                            level.Q<Label>("Title").text = (levelIndex + 1).ToString();
+                        }
                         levelsContainer.Add(level);
                     }
                     else

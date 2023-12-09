@@ -163,7 +163,7 @@ public class LevelManager : MonoBehaviour
             {
                 Cell cell = level.GetCell(x, y);
                 Cell leftCell = level.GetCell(x - 1, y);
-
+                
                 int maxHeight = Math.Max(cell.height, leftCell.height);
                 if (maxHeight >= 0 && cell.height != leftCell.height)
                 {
