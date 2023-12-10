@@ -203,7 +203,7 @@ public class UIManager : MonoBehaviour
                                 Press(level);
                             }
                         };
-                        level.Q<Label>("LilyRequirement").text = levelData.lilyRequirement.ToString();
+                        level.Q<Label>("LilyRequirement").text = (levelData.lilyRequirement - GameManager.main.lilyCount).ToString() + " more";
                         levelsContainer.Add(level);
                     }
                 }
