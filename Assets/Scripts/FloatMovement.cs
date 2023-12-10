@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class FloatMovement : MonoBehaviour
 {
+    // GameObject script which can move or slide objects in the level
+
     public float floatSpeed;
 
     public void Float(Vector3 targetPos, Transform carry, Action onFinish)

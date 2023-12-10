@@ -5,6 +5,8 @@ using static PuzzleObject.L1;
 
 public class LevelManager : MonoBehaviour
 {
+    // Manages the game objects in the scene so that they reflect the internal level representation
+
     public static LevelManager main;
     
     public bool isMain;
@@ -157,6 +159,7 @@ public class LevelManager : MonoBehaviour
             }
         }
 
+        // WALLS
         for (int x = 0; x <= level.size.x; x++)
         {
             for (int y = 0; y <= level.size.y; y++)

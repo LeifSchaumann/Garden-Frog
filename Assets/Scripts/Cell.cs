@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Cell
 {
+    // Class to represent the contents of a single grid square in a level
+
     public int height;
     public PuzzleObject.L0 PO0;
     public PuzzleObject.L1 PO1;

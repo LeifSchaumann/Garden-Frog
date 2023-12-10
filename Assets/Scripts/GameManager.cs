@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
         currentScreen = GameScreen.none;
         lilyCount = 0;
 
+        // Load all of the JSON files from the games settings into LevelData objects
         levelSequence = new LevelData[settings.levelSequence.Length];
         for (int i = 0; i < settings.levelSequence.Length; i++)
         {
@@ -51,6 +52,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        // Generate all of the level thumbnails, go to title screen when finished
         ChainOperation((int i, Action onFinish) =>
         {
             Photographer.main.PhotographLevel(levelSequence[i], onFinish);
@@ -59,6 +61,7 @@ public class GameManager : MonoBehaviour
         });
     }
 
+    // Function to chain together a bunch of actions which each call an onFinish action when they complete
     private void ChainOperation(Action<int, Action> action, int i, int maxI, Action onFinish)
     {
         if (i < maxI)
@@ -144,6 +147,7 @@ public class GameManager : MonoBehaviour
 
     public void NextLevel()
     {
+        // Find the next unlocked, unfinished level and go to it
         for (int i = currentLevel + 1; i < levelSequence.Length; i++)
         {
             if (!levelSequence[i].completed && !levelSequence[i].locked)

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public abstract class PuzzleObject
 {
+    // Class representing an object in the internal level representation, exists within a cell
+
     public GameObject gameObject;
     public Level level;
     public Cell cell;
@@ -23,6 +25,8 @@ public abstract class PuzzleObject
     {
         Move(level.GetCell(pos + dir));
     }
+
+    // Layer 0 is for different types of water
     public abstract class L0 : PuzzleObject
     {
         public bool hasWater;
@@ -56,6 +60,8 @@ public abstract class PuzzleObject
             }
         }
     }
+
+    // Layer 1 is for objects on top of water which move and can be walked on
     public abstract class L1 : PuzzleObject
     {
         public bool isWalkable;
@@ -190,7 +196,9 @@ public abstract class PuzzleObject
                 }
                 else
                 {
-                    float angle = -90 * (dir.x - dir.y) * (partnerDir.x + partnerDir.y); // Math magic!
+                    // Some mathematical witchcraft!!
+                    float angle = -90 * (dir.x - dir.y) * (partnerDir.x + partnerDir.y);
+
                     if (Rotate(dir))
                     {
                         if (carry.isCarried)
@@ -207,6 +215,8 @@ public abstract class PuzzleObject
             }
         }
     }
+
+    // Layer 2 is for the frog
     public abstract class L2 : PuzzleObject
     {
         public bool isObstacle;
@@ -267,6 +277,8 @@ public abstract class PuzzleObject
             }
         }
     }
+
+    // Layer 3 is for the goal (Note: goal is in layer2 in LevelData)
     public abstract class L3 : PuzzleObject
     {
         public class None : L3 { }

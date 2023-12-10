@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    // Tracks the player's input and includes an input forgiveness system
+
     public static InputManager instance;
     public float inputForgiveness;
 
@@ -17,19 +19,19 @@ public class InputManager : MonoBehaviour
     public void AcceptInput()
     {
         Vector2Int inputDir = Vector2Int.zero;
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
             inputDir = Vector2Int.up;
         }
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
             inputDir = Vector2Int.left;
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             inputDir = Vector2Int.down;
         }
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             inputDir = Vector2Int.right;
         }

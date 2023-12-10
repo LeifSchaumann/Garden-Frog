@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class LevelUpdate
 {
+    // Class to store updates that the LevelManager needs to make
+
     public Action<LevelManager> execute;
     public LevelUpdate[] preUpdates;
     public LevelUpdate[] postUpdates;

@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class FrogJump : MonoBehaviour
 {
+    // Makes the jumping animation of the frog game object
+
     public float jumpSpeed;
     public AnimationCurve jumpCurve;
 

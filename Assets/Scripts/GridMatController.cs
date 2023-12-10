@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class GridMatController : MonoBehaviour
 {
+    // Gives the grid markers the ability to fade in and out
+    
     private Material material;
 
     private void Awake()

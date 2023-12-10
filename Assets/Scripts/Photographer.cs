@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Photographer : MonoBehaviour
 {
+    // Scipt attached to camera which generates the thumbnails for the levels
+
     public static Photographer main;
     
     private CameraMovement camMove;

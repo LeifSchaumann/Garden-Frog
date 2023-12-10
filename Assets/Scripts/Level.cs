@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Level
 {
+    // Internal, mutable representation of the level. Stores a grid of cells.
+    
     public Cell[,] cells;
     public PuzzleObject.L2.Frog frog;
     public Vector2Int size;

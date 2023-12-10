@@ -6,6 +6,8 @@ using UnityEngine.UIElements;
 
 public class IconButton
 {
+    // Class to control the behavior of a simple button
+
     private Button button;
     private bool hoveredOver;
     private float targetOpacity;

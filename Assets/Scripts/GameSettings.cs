@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GameSettings", menuName = "Game Settings")]
 public class GameSettings : ScriptableObject
 {
+    // Scriptable object to store all of the game settings in a centralized place
+
     public bool saveThumbnails;
     public bool unlockAllLevels;
     public bool showLevelNames;

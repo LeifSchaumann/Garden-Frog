@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class FallingMatController : MonoBehaviour
 {
+    // Script to animate objects by setting the properties of their FallingObject material
+
     private Material material;
     private GameSettings settings;
 

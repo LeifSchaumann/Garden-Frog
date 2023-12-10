@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
+    // Put on a camera to give it the ability to center on a level
+
     public LevelManager levelManager;
 
     private Camera cam;
@@ -29,13 +31,17 @@ public class CameraMovement : MonoBehaviour
 
         Vector3 focus = levelManager.LevelCenter();
         transform.position = focus - GameManager.main.settings.viewDirection.normalized * 30f;
+
+        // Calculate the default zoom which will have the level fill the screen
         Vector2Int levelSize = levelManager.level.size;
         Vector3 leftCornerViewPos = cam.WorldToViewportPoint(levelManager.LevelToWorld(-1, -1));
         Vector3 rightCornerViewPos = cam.WorldToViewportPoint(levelManager.LevelToWorld(levelSize.x, -1));
         leftCornerViewPos = 2f * (leftCornerViewPos - 0.5f * Vector3.one);
         rightCornerViewPos = 2f * (rightCornerViewPos - 0.5f * Vector3.one);
         float zoomAdjustment = Mathf.Max(Mathf.Abs(leftCornerViewPos.x), Mathf.Abs(leftCornerViewPos.y), Mathf.Abs(rightCornerViewPos.x), Mathf.Abs(rightCornerViewPos.y));
+        
         targetSize = cam.orthographicSize * zoomAdjustment / zoomFactor;
+
         if (instant)
         {
             cam.orthographicSize = targetSize;
@@ -43,11 +49,11 @@ public class CameraMovement : MonoBehaviour
         }
         else
         {
-            StartCoroutine(FocusRoutine(targetSize, onFinish));
+            StartCoroutine(SetZoomRoutine(targetSize, onFinish));
         }
     }
 
-    IEnumerator FocusRoutine(float targetSize, Action onFinish)
+    IEnumerator SetZoomRoutine(float targetSize, Action onFinish)
     {
         float startSize = cam.orthographicSize;
         float duration = 1f;

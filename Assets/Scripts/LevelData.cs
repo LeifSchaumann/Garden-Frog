@@ -6,6 +6,8 @@ using UnityEngine;
 [System.Serializable]
 public class LevelData
 {
+    // Stores immutable data about the level setup, JSON files deserialize into this
+
     public int lilyRequirement;
     public string[] heightMap;
     public string[] layer0;
@@ -22,7 +24,6 @@ public class LevelData
     public TextAsset json;
     [NonSerialized]
     public Texture2D photo;
-
 
     public static LevelData LoadData(TextAsset levelJson)
     {
