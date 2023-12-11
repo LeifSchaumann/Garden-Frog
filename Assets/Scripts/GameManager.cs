@@ -183,17 +183,22 @@ public class GameManager : MonoBehaviour
     {
         if (levelSequence[currentLevel].completed == false)
         {
-            lilyCount++;
             levelSequence[currentLevel].completed = true;
-            for (int i = 0; i < levelSequence.Length; i++)
-            {
-                if (levelSequence[i].lilyRequirement <= lilyCount)
-                {
-                    levelSequence[i].locked = false;
-                }
-            }
+            GainLily();
         }
         SetScreen(GameScreen.completed);
+    }
+
+    private void GainLily(int n = 1)
+    {
+        lilyCount += n;
+        for (int i = 0; i < levelSequence.Length; i++)
+        {
+            if (levelSequence[i].lilyRequirement <= lilyCount)
+            {
+                levelSequence[i].locked = false;
+            }
+        }
     }
 
     public bool DoneTransitioning()
@@ -213,6 +218,13 @@ public class GameManager : MonoBehaviour
                 if (LevelManager.main.levelIsLoaded)
                 {
                     InputManager.instance.AcceptInput();
+                }
+                break;
+            case GameScreen.levels:
+                if (Input.GetKey(KeyCode.P) && Input.GetKeyDown(KeyCode.Q))
+                {
+                    GainLily();
+                    UIManager.main.UpdateUI();
                 }
                 break;
         }

@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/My%20Styles.uss?fileID=7433441132597879392&amp;guid=78c0a38d58a93504485139f612693932&amp;type=3#My Styles" />
+    <ui:VisualElement name="Main" style="flex-grow: 1; -unity-font: initial; -unity-font-definition: initial; padding-top: 12px; padding-right: 12px; padding-bottom: 12px; padding-left: 12px;">
+        <ui:Label tabindex="-1" text="Pondside." parse-escape-sequences="true" display-tooltip-when-elided="true" name="Title" style="-unity-text-align: upper-left; color: rgb(255, 255, 255); font-size: 100px; -unity-font: url(&apos;project://database/Assets/UI/Fonts/HedvigLettersSerif.ttf?fileID=12800000&amp;guid=ee7618f6a04be7648b830b61b2bf543a&amp;type=3#HedvigLettersSerif&apos;); -unity-font-style: normal; flex-grow: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 28px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+        <ui:VisualElement name="MenuBar" style="flex-grow: 1; justify-content: center; align-items: flex-end; flex-direction: row; padding-bottom: 1%;">
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Play" class="button-icon" style="left: auto; background-image: url(&apos;project://database/Assets/Textures/Button%20Icons/play.png?fileID=2800000&amp;guid=f9934ff0a13d2084da75e9ec4b23897c&amp;type=3#play&apos;);" />
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Levels" class="button-icon" style="left: auto; background-image: url(&apos;project://database/Assets/Textures/Button%20Icons/levels.png?fileID=2800000&amp;guid=d4971c0771f44254088648720d879eb7&amp;type=3#levels&apos;);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
