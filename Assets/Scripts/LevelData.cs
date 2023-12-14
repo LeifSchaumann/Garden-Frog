@@ -57,9 +57,6 @@ public class LevelData
                 {
                     switch (layer0[accessX][accessY])
                     {
-                        case 'X':
-                            level.cells[x, y].SetPO(new PuzzleObject.L0.None());
-                            break;
                         case 'S':
                             level.cells[x, y].SetPO(new PuzzleObject.L0.ShallowWater());
                             break;
