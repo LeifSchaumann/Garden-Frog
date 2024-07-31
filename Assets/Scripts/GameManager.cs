@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviour
     public GameScreen currentScreen;
     public int currentLevel;
     public LevelData[] levelSequence;
-    public Photographer photographer;
 
     public int lilyCount;
 

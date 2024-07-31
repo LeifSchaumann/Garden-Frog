@@ -23,7 +23,9 @@ public class FrogJump : MonoBehaviour
         float jumpDistance = Vector3.Distance(targetPos, startPos);
         float jumpTime = jumpDistance / jumpSpeed;
         float turnTime = 0.15f;
-        Quaternion targetRotation = Quaternion.LookRotation(targetPos - startPos);
+        Vector3 flatMove = targetPos - startPos;
+        flatMove.y = 0;
+        Quaternion targetRotation = Quaternion.LookRotation(flatMove);
         Quaternion startRotation = transform.rotation;
         float timePassed = 0;
 
